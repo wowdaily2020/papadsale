@@ -24,91 +24,53 @@
     .subbrands{font-size:13px;font-weight:700;opacity:.9}
     .nav-links a{color:#fff;text-decoration:none;font-weight:700;padding:8px 12px;border-radius:8px;transition:background .2s}
     .nav-links a:hover{background:rgba(255,255,255,0.15)}
-    .btn-whatsapp,.btn-ig{border:none;padding:10px 16px;border-radius:50px;font-weight:800;display:flex;align-items:center;gap:8px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.15)}
+    .btn-whatsapp,.btn-ig,.btn-cart{border:none;padding:10px 16px;border-radius:50px;font-weight:800;display:flex;align-items:center;gap:8px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.15)}
     .btn-whatsapp{background:#25D366;color:#fff}
     .btn-ig{background:#E1306C;color:#fff}
+    .btn-cart{background:#111827;color:#fff}
     .btn-ig:hover{background:#c82c62}
     .btn-whatsapp:hover{background:#22bb5f}
 
-    /* Promo ticker: single line, right-to-left feel */
+    /* Promo ticker */
     .ticker{--speed:34s;background:#fff3e6;border-bottom:1px solid rgba(15,23,42,.06);position:relative;overflow:hidden;white-space:nowrap;padding:6px 0;text-align:center}
     .ticker span{display:inline-block;padding-left:100%;padding-right:2rem;font-weight:800;color:#7c2d12;letter-spacing:.2px;animation:scrollLeft var(--speed) linear infinite}
     .ticker:hover span{animation-play-state:paused}
     @keyframes scrollLeft{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
 
     main{margin-top:0}
-    .two{display:grid;grid-template-columns:1fr;gap:16px}
-    @media(min-width:960px){.two{grid-template-columns:2fr 1fr}}
 
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+    /* Product grid: 3x3 on desktop, 2 on tablet, 1 on mobile */
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+    @media(max-width:1024px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:560px){.grid{grid-template-columns:1fr}}
     .card{background:#ffffff;border:1px solid #e5e7eb;border-radius:16px;padding:14px;box-shadow:0 10px 20px rgba(2,8,23,.04);transition:transform .15s ease, box-shadow .15s ease}
     .card:hover{transform:translateY(-2px); box-shadow:0 14px 28px rgba(2,8,23,.08)}
     .chip{display:inline-block;padding:4px 10px;border-radius:999px;background:#eef2ff;color:#3730a3;font-weight:700;font-size:12px}
     .line{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed #e2e8f0}
-
-    .panel{background:#ffffff;border:1px solid #e5e7eb;border-radius:16px;padding:16px;box-shadow:0 10px 20px rgba(2,8,23,.04)}
-    .cart{position:sticky;top:92px}
-    input,textarea,select{width:100%;padding:10px;border:1px solid #e2e8f0;border-radius:12px;font:inherit}
-    label{font-size:13px;color:#334155;font-weight:700}
-    .form-grid{display:grid;grid-template-columns:1fr;gap:10px}
-    @media(min-width:720px){.form-grid{grid-template-columns:1fr 1fr}}
-    .btn{padding:10px 12px;border:0;border-radius:12px;cursor:pointer;font-weight:800}
-    .btn.primary{background:#0f172a;color:#fff}
-    .btn.outline{background:#fff;color:#0f172a;border:1px solid #e2e8f0}
-    .btn.secondary{background:#0f766e;color:#fff}
     .price{font-weight:800}
 
-    /* Product image marquee carousel */
+    /* Marquee carousel (above grid) */
     .pc{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:10px;margin:6px 0 14px 0;box-shadow:0 6px 16px rgba(2,8,23,.05)}
     .pc-viewport{overflow:hidden}
     .pc-track{display:flex;gap:12px;will-change:transform;animation:pc-scroll var(--pc-speed,28s) linear infinite}
     .pc:hover .pc-track{animation-play-state:paused}
-    .pc-item{flex:0 0 240px;border-radius:12px;overflow:hidden;position:relative;background:#fff}
+    .pc-item{flex:0 0 clamp(220px,24vw,260px);border-radius:12px;overflow:hidden;position:relative;background:#fff}
     .pc-item img{width:100%;height:140px;object-fit:cover;display:block}
     .pc-cap{position:absolute;left:8px;bottom:8px;background:rgba(15,23,42,.7);color:#fff;padding:4px 8px;border-radius:999px;font-weight:800;font-size:12px}
     @keyframes pc-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-    .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#0f172a;color:#fff;padding:10px 14px;border-radius:12px;display:none;z-index:40}
-    .toast.show{display:block;animation:fade 2s ease}
-    @keyframes fade{0%{opacity:0;transform:translate(-50%,10px)}10%,80%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,10px)}}
+    /* Panels */
+    .panel{background:#ffffff;border:1px solid #e5e7eb;border-radius:16px;padding:16px;box-shadow:0 10px 20px rgba(2,8,23,.04)}
 
-    .modal{position:fixed;inset:0;background:rgba(2,8,23,.5);display:none;align-items:center;justify-content:center;z-index:50}
-    .modal.show{display:flex}
-    .modal-card{background:#fff;border-radius:20px;max-width:520px;padding:24px;text-align:center;box-shadow:0 30px 60px rgba(2,8,23,.25)}
-    .check{width:70px;height:70px;border-radius:50%;display:grid;place-items:center;margin:0 auto 10px auto;background:linear-gradient(135deg,#22c55e,#0ea5e9);color:#fff;font-size:34px;animation:pop .5s ease}
-    @keyframes pop{0%{transform:scale(.5);opacity:0}100%{transform:scale(1);opacity:1}}
-    .confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:60}
-    .piece{position:absolute;font-size:22px;animation:fall 1.6s linear forwards}
-    @keyframes fall{to{transform:translateY(100vh) rotate(360deg);opacity:0}}
-    section{scroll-margin-top:90px}
-      /* --- Responsive refinements (no content changes) --- */
-    .muted{color:#64748b}
-    /* tighter container on small screens */
-    @media(max-width:1200px){.container{padding:16px}}
-    /* Desktop/Laptop defaults already good; tune mids + mobile */
-    @media(max-width:1024px){
-      .grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
-      .pc-item{flex:0 0 clamp(170px,34vw,220px)}
-      .pc-item img{height:clamp(120px,24vw,150px)}
-    }
-    @media(max-width:820px){
-      .two{grid-template-columns:1fr}
-      .cart{position:static}
-      .pc{margin:4px 0 10px}
-      .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-    }
-    @media(max-width:480px){
-      .nav-links{display:none}
-      .grid{grid-template-columns:1fr}
-      nav{padding:10px 14px}
-    }
-    /* Instagram row behaves like a carousel on small screens */
-    #igRow{gap:12px;padding-bottom:8px;align-items:stretch}
+    /* Views */
+    [hidden]{display:none !important}
+    #shopView h2{margin:0 0 10px 0}
+
+    /* Instagram row */
+    #igRow{gap:12px;padding-bottom:8px;align-items:stretch;display:flex;overflow-x:auto;scroll-snap-type:x mandatory}
     #igRow > *{flex:0 0 360px;scroll-snap-align:center}
-    @media(max-width:900px){
-      #igRow{overflow-x:auto}
-      #igRow > *{flex:0 0 88vw;max-width:88vw}
-    }
+    @media(max-width:900px){#igRow > *{flex:0 0 88vw;max-width:88vw}}
+
     footer{padding-bottom:40px}
   </style>
 </head>
@@ -123,11 +85,12 @@
         </div>
       </div>
       <div class="nav-links">
-        <a href="#menu">Menu</a>
+        <a href="#shop">Menu</a>
         <a href="#ig">Instagram</a>
         <a href="#contact">Contact</a>
       </div>
       <div style="display:flex;gap:8px;align-items:center">
+        <a href="#cart" class="btn-cart" id="cartBtn" aria-label="Cart">Cart (0)</a>
         <a href="https://instagram.com/papadsale.live" target="_blank" class="btn-ig" aria-label="Instagram">Instagram</a>
         <a href="https://wa.me/919978113276" target="_blank" class="btn-whatsapp" aria-label="WhatsApp">WhatsApp</a>
       </div>
@@ -139,68 +102,70 @@
   </div>
 
   <main class="container">
-    <div class="two">
-      <section id="menu">
-        <h2 style="margin:0 0 10px 0">Menu</h2>
-        <!-- Product Shuffle Carousel -->
-        <div class="pc" aria-label="Product highlights">
-          <div class="pc-viewport">
-            <div class="pc-track" id="pcTrack"></div>
-          </div>
+
+    <!-- =============== SHOP VIEW (Products only) =============== -->
+    <section id="shopView">
+      <a id="shop"></a>
+      <h2>Menu</h2>
+      <div class="pc" aria-label="Product highlights">
+        <div class="pc-viewport"><div class="pc-track" id="pcTrack"></div></div>
+      </div>
+      <div id="productGrid" class="grid"></div>
+    </section>
+
+    <!-- =============== CART/DELIVERY VIEW (Full page) =============== -->
+    <section id="cartView" hidden>
+      <h2>Your Cart & Checkout</h2>
+      <div class="panel" id="cartPanel">
+        <div id="cartLines">No items yet.</div>
+        <div class="line" style="margin-top:8px"><strong>Total</strong><strong id="total">₹0</strong></div>
+      </div>
+
+      <div class="panel" style="margin-top:12px">
+        <h3>🚚 Delivery Info</h3>
+        <div class="form-grid">
+          <div><label>Full Name</label><input id="custName" placeholder="Your name" /></div>
+          <div><label>Phone (WhatsApp)</label><input id="custPhone" placeholder="10‑digit" maxlength="10" /></div>
         </div>
-        <div id="productGrid" class="grid"></div>
-      </section>
-
-      <aside class="cart" id="cart">
-        <div class="panel">
-          <h3>🧺 Your Cart</h3>
-          <div id="cartLines" class="muted">No items yet.</div>
-          <div class="line"><strong>Total</strong><strong id="total">₹0</strong></div>
+        <div class="form-grid" style="margin-top:8px">
+          <div><label>House & Street</label><input id="addrLine1" placeholder="House / Flat, Street" /></div>
+          <div><label>Area / Landmark</label><input id="addrLine2" placeholder="Area, Landmark" /></div>
         </div>
-
-        <div class="panel" style="margin-top:12px">
-          <h3>🚚 Delivery Info</h3>
-          <div class="form-grid">
-            <div><label>Full Name</label><input id="custName" placeholder="Your name" /></div>
-            <div><label>Phone (WhatsApp)</label><input id="custPhone" placeholder="10‑digit" maxlength="10" /></div>
-          </div>
-          <div class="form-grid" style="margin-top:8px">
-            <div><label>House & Street</label><input id="addrLine1" placeholder="House / Flat, Street" /></div>
-            <div><label>Area / Landmark</label><input id="addrLine2" placeholder="Area, Landmark" /></div>
-          </div>
-          <div class="form-grid" style="margin-top:8px">
-            <div><label>City</label><input id="custCity" placeholder="Ahmedabad" /></div>
-            <div><label>Pincode</label><input id="custPin" placeholder="3800xx" maxlength="6" /></div>
-          </div>
-
-          <div class="panel" style="margin-top:12px">
-            <h3>💳 Pay via UPI</h3>
-            <label>UPI ID (Pay with any UPI app)</label>
-            <input id="upiId" value="9978113276@okbizaxis" />
-            <div class="actions" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px">
-              <div style="display:flex;gap:8px;align-items:center">
-                <label for="upiAmt">Amount (auto‑filled)</label>
-                <input id="upiAmt" placeholder="₹" style="width:120px" />
-              </div>
-              <button id="copyUpiBtn" class="btn outline" type="button">Copy UPI ID</button>
-              <a id="openUpiBtn" class="btn secondary" href="#" type="button">Open UPI App</a>
-            </div>
-            <div class="qr" style="display:flex;gap:10px;align-items:center;margin-top:8px">
-              <img id="upiQr" src="./assets/qr.png" alt="UPI QR" style="width:140px;height:140px;border-radius:8px;border:1px solid #e5e7eb;object-fit:cover;background:#fff"/>
-              <div class="muted">Scan the QR in any UPI app or use the buttons above.</div>
-            </div>
-          </div>
-
-          <button class="btn secondary block" id="placeOrderBtn" style="margin-top:12px">Place Order on WhatsApp</button>
+        <div class="form-grid" style="margin-top:8px">
+          <div><label>City</label><input id="custCity" placeholder="Ahmedabad" /></div>
+          <div><label>Pincode</label><input id="custPin" placeholder="3800xx" maxlength="6" /></div>
         </div>
-      </aside>
-    </div>
+      </div>
+
+      <div class="panel" style="margin-top:12px">
+        <h3>💳 Pay via UPI</h3>
+        <label>UPI ID (Pay with any UPI app)</label>
+        <input id="upiId" value="9978113276@okbizaxis" />
+        <div class="actions" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px">
+          <div style="display:flex;gap:8px;align-items:center">
+            <label for="upiAmt">Amount (auto‑filled)</label>
+            <input id="upiAmt" placeholder="₹" style="width:120px" />
+          </div>
+          <button id="copyUpiBtn" class="btn outline" type="button">Copy UPI ID</button>
+          <a id="openUpiBtn" class="btn secondary" href="#" type="button">Open UPI App</a>
+        </div>
+        <div class="qr" style="display:flex;gap:10px;align-items:center;margin-top:8px">
+          <img id="upiQr" src="./assets/qr.png" alt="UPI QR" style="width:140px;height:140px;border-radius:8px;border:1px solid #e5e7eb;object-fit:cover;background:#fff"/>
+          <div class="muted">Scan the QR in any UPI app or use the buttons above.</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
+        <a href="#shop" class="btn outline">← Continue Shopping</a>
+        <button class="btn secondary" id="placeOrderBtn">Place Order on WhatsApp</button>
+      </div>
+    </section>
 
     <section id="ig" style="margin-top:24px">
       <h3>Follow us on <a href="https://instagram.com/papadsale.live" target="_blank" rel="noopener">@papadsale.live</a></h3>
       <div style="min-height:420px;position:relative">
-        <div class="ig-embeds" id="igRow" aria-busy="true" aria-live="polite" style="display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin-top:12px">
-          <div style="height:420px;display:grid;place-items:center;color:#7c2d12;background:#fff3e6;border:1px dashed #f59e0b;border-radius:12px;flex:0 0 360px">Loading Instagram…</div>
+        <div class="ig-embeds" id="igRow" aria-busy="true" aria-live="polite">
+          <div style="height:420px;display:grid;place-items:center;color:#7c2d12;background:#fff3e6;border:1px dashed #f59e0b;border-radius:12px">Loading Instagram…</div>
         </div>
       </div>
       <p class="muted" style="font-size:12px;margin-top:6px">These are live Instagram embeds. If they don’t load immediately, refresh once.</p>
@@ -312,8 +277,8 @@
         cart.set(prod.id,{prod,qty:prev+addQty});
         q = 0;
         renderCart();
+        updateCartBadge();
         showToast(`${prod.name} added ✓`);
-        document.querySelector('#cart').scrollIntoView({behavior:'smooth'});
       }
       qEl.textContent = q;
     }
@@ -321,7 +286,8 @@
     function addToCart(id,qty){ const p=PRODUCTS.find(x=>x.id===id); if(!p) return; const prev = cart.get(id)?.qty||0; cart.set(id,{prod:p,qty:prev+qty}); }
 
     function renderCart(){
-      if(cart.size===0){ cartLines.textContent='No items yet.'; totalEl.textContent='₹0'; el('#upiAmt').value=''; return; }
+      if(!cartLines) return; // when still on shop view before mount
+      if(cart.size===0){ cartLines.textContent='No items yet.'; totalEl.textContent='₹0'; el('#upiAmt') && (el('#upiAmt').value=''); return; }
       const frag = document.createDocumentFragment(); let t=0;
       cart.forEach(({prod,qty})=>{
         const row = document.createElement('div'); row.className='line';
@@ -329,7 +295,7 @@
         frag.appendChild(row); t += prod.price*qty;
       });
       cartLines.innerHTML=''; cartLines.appendChild(frag);
-      totalEl.textContent = formatINR(t); el('#upiAmt').value = t>0 ? String(t) : '';
+      totalEl.textContent = formatINR(t); el('#upiAmt') && (el('#upiAmt').value = t>0 ? String(t) : '');
       toggleUpiOpen(); saveCart();
     }
 
@@ -380,17 +346,17 @@
       const uBiz = `https://wa.me/${BUSINESS_WA}?text=${encodeURIComponent(text)}`; window.open(uBiz,'_blank');
       const confirmText = `Thank you! Your order has been received by PapadSale.\nOrder ID: ${orderId}\n\n${text}`;
       const uCust = `https://wa.me/91${phone}?text=${encodeURIComponent(confirmText)}`; window.open(uCust,'_blank');
-      showSuccess(); cart.clear(); renderCart(); saveCart();
+      showSuccess(); cart.clear(); renderCart(); updateCartBadge(); saveCart();
     }
 
     const openBtn = document.getElementById('openUpiBtn');
-    function toggleUpiOpen(){ const amt = el('#upiAmt').value; openBtn.setAttribute('aria-disabled', (!amt?'true':'false')); openBtn.style.opacity = amt? '1' : '0.6'; }
-    openBtn.addEventListener('click', (e)=>{
+    function toggleUpiOpen(){ if(!openBtn) return; const amt = el('#upiAmt')?.value; openBtn.setAttribute('aria-disabled', (!amt?'true':'false')); openBtn.style.opacity = amt? '1' : '0.6'; }
+    openBtn && openBtn.addEventListener('click', (e)=>{
       e.preventDefault(); const upiId = (document.querySelector('#upiId').value||DEFAULT_UPI).trim(); const amt = document.querySelector('#upiAmt').value; const note = 'PapadSale Order';
       if(!amt){ showToast('Add items to cart first'); return; }
       const link = upiDeepLink(upiId, amt, note); e.currentTarget.href = link; location.href = link;
     });
-    document.getElementById('copyUpiBtn').addEventListener('click', copyUPI);
+    document.getElementById('copyUpiBtn') && document.getElementById('copyUpiBtn').addEventListener('click', copyUPI);
 
     // persistence
     const formIds=['custName','custPhone','addrLine1','addrLine2','custCity','custPin','upiId'];
@@ -400,14 +366,34 @@
     function loadForm(){ try{ const obj=JSON.parse(localStorage.getItem('ps_form')||'{}'); Object.entries(obj).forEach(([k,v])=>{ const node=el('#'+k); if(node) node.value=v; }); }catch(e){} }
     formIds.forEach(id=>{ const node=el('#'+id); if(node) node.addEventListener('input', saveForm); });
 
+    // Router-like view switcher using hash
+    function showView(){
+      const hash = location.hash || '#shop';
+      const shop = document.getElementById('shopView');
+      const cartV = document.getElementById('cartView');
+      if(hash === '#cart'){
+        shop.setAttribute('hidden',''); cartV.removeAttribute('hidden');
+        renderCart(); toggleUpiOpen();
+      }else{
+        cartV.setAttribute('hidden',''); shop.removeAttribute('hidden');
+      }
+      updateCartBadge();
+    }
+    window.addEventListener('hashchange', showView);
+
+    function updateCartBadge(){
+      const btn = document.getElementById('cartBtn');
+      let count = 0; cart.forEach(v=> count += v.qty||0);
+      btn.textContent = `Cart (${count})`;
+    }
+
     // Init
     loadForm();
     loadCart();
     renderProductCarousel();
     renderProducts();
-    renderCart();
-    toggleUpiOpen();
-    window.addEventListener('load',()=>{ document.getElementById('menu')?.scrollIntoView({behavior:'smooth'}); });
+    updateCartBadge();
+    showView();
 
     // Instagram embeds hydrate after load
     window.addEventListener('load',()=>{
