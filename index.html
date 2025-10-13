@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PapadSale • Gujarati Snacks</title>
+  <meta name="description" content="Order Gujarati papad, mathiya & chorafali. WhatsApp checkout + UPI." />
+  <meta name="theme-color" content="#ff7a18" />
+  <link rel="icon" href="./assets/logo.png">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#0f172a;--muted:#475569;--bg:#fff7ed;--card:#ffffff;--brand:#f97316;--brand2:#fb923c;--accent:#f59e0b}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);font-family:Nunito,system-ui,sans-serif;color:var(--ink)}
+    .container{max-width:1200px;margin:auto;padding:20px}
+    /* Animated gradient navbar */
+    header{position:sticky;top:0;background:linear-gradient(270deg,#ff7a18,#ff9a44,#ff7a18);background-size:600% 600%;animation:gradientShift 12s ease infinite;color:#fff;z-index:10;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+    @keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+    nav{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:10px 20px}
+    .nav-left{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .logo-img{width:52px;height:52px;border-radius:50%;object-fit:cover;background:#fff;padding:6px;box-shadow:0 0 0 3px rgba(255,255,255,.7), 0 10px 24px rgba(255,122,24,.45)}
+    .brand-group{display:flex;flex-direction:column;align-items:flex-start}
+    .brand-title{margin:0;font-size:20px;font-weight:800;line-height:1.2}
+    .subbrands{font-size:13px;font-weight:700;opacity:.9}
+    .nav-links a{color:#fff;text-decoration:none;font-weight:700;padding:8px 12px;border-radius:8px;transition:background .2s}
+    .nav-links a:hover{background:rgba(255,255,255,0.15)}
+    .btn-whatsapp,.btn-ig{border:none;padding:10px 16px;border-radius:50px;font-weight:800;display:flex;align-items:center;gap:8px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.15)}
+    .btn-whatsapp{background:#25D366;color:#fff}
+    .btn-ig{background:#E1306C;color:#fff}
+    .btn-ig:hover{background:#c82c62}
+    .btn-whatsapp:hover{background:#22bb5f}
+
+    /* Promo ticker: single line, right-to-left feel */
+    .ticker{--speed:34s;background:#fff3e6;border-bottom:1px solid rgba(15,23,42,.06);position:relative;overflow:hidden;white-space:nowrap;padding:6px 0;text-align:center}
+    .ticker span{display:inline-block;padding-left:100%;padding-right:2rem;font-weight:800;color:#7c2d12;letter-spacing:.2px;animation:scrollLeft var(--speed) linear infinite}
+    .ticker:hover span{animation-play-state:paused}
+    @keyframes scrollLeft{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+
+    main{margin-top:0}
+    .two{display:grid;grid-template-columns:1fr;gap:16px}
+    @media(min-width:960px){.two{grid-template-columns:2fr 1fr}}
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+    .card{background:#ffffff;border:1px solid #e5e7eb;border-radius:16px;padding:14px;box-shadow:0 10px 20px rgba(2,8,23,.04);transition:transform .15s ease, box-shadow .15s ease}
+    .card:hover{transform:translateY(-2px); box-shadow:0 14px 28px rgba(2,8,23,.08)}
+    .chip{display:inline-block;padding:4px 10px;border-radius:999px;background:#eef2ff;color:#3730a3;font-weight:700;font-size:12px}
+    .line{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed #e2e8f0}
+
+    .panel{background:#ffffff;border:1px solid #e5e7eb;border-radius:16px;padding:16px;box-shadow:0 10px 20px rgba(2,8,23,.04)}
+    .cart{position:sticky;top:92px}
+    input,textarea,select{width:100%;padding:10px;border:1px solid #e2e8f0;border-radius:12px;font:inherit}
+    label{font-size:13px;color:#334155;font-weight:700}
+    .form-grid{display:grid;grid-template-columns:1fr;gap:10px}
+    @media(min-width:720px){.form-grid{grid-template-columns:1fr 1fr}}
+    .btn{padding:10px 12px;border:0;border-radius:12px;cursor:pointer;font-weight:800}
+    .btn.primary{background:#0f172a;color:#fff}
+    .btn.outline{background:#fff;color:#0f172a;border:1px solid #e2e8f0}
+    .btn.secondary{background:#0f766e;color:#fff}
+    .price{font-weight:800}
+
+    /* Product image marquee carousel */
+    .pc{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:10px;margin:6px 0 14px 0;box-shadow:0 6px 16px rgba(2,8,23,.05)}
+    .pc-viewport{overflow:hidden}
+    .pc-track{display:flex;gap:12px;will-change:transform;animation:pc-scroll var(--pc-speed,28s) linear infinite}
+    .pc:hover .pc-track{animation-play-state:paused}
+    .pc-item{flex:0 0 240px;border-radius:12px;overflow:hidden;position:relative;background:#fff}
+    .pc-item img{width:100%;height:140px;object-fit:cover;display:block}
+    .pc-cap{position:absolute;left:8px;bottom:8px;background:rgba(15,23,42,.7);color:#fff;padding:4px 8px;border-radius:999px;font-weight:800;font-size:12px}
+    @keyframes pc-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+    .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#0f172a;color:#fff;padding:10px 14px;border-radius:12px;display:none;z-index:40}
+    .toast.show{display:block;animation:fade 2s ease}
+    @keyframes fade{0%{opacity:0;transform:translate(-50%,10px)}10%,80%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,10px)}}
+
+    .modal{position:fixed;inset:0;background:rgba(2,8,23,.5);display:none;align-items:center;justify-content:center;z-index:50}
+    .modal.show{display:flex}
+    .modal-card{background:#fff;border-radius:20px;max-width:520px;padding:24px;text-align:center;box-shadow:0 30px 60px rgba(2,8,23,.25)}
+    .check{width:70px;height:70px;border-radius:50%;display:grid;place-items:center;margin:0 auto 10px auto;background:linear-gradient(135deg,#22c55e,#0ea5e9);color:#fff;font-size:34px;animation:pop .5s ease}
+    @keyframes pop{0%{transform:scale(.5);opacity:0}100%{transform:scale(1);opacity:1}}
+    .confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:60}
+    .piece{position:absolute;font-size:22px;animation:fall 1.6s linear forwards}
+    @keyframes fall{to{transform:translateY(100vh) rotate(360deg);opacity:0}}
+    section{scroll-margin-top:90px}
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="container">
+      <div class="nav-left">
+        <img src="./assets/logo.png" class="logo-img" alt="PapadSale logo">
+        <div class="brand-group">
+          <h1 class="brand-title">PapadSale</h1>
+          <div class="subbrands">crispy • organic • homemade</div>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a href="#menu">Menu</a>
+        <a href="#ig">Instagram</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <a href="https://instagram.com/papadsale.live" target="_blank" class="btn-ig" aria-label="Instagram">Instagram</a>
+        <a href="https://wa.me/919978113276" target="_blank" class="btn-whatsapp" aria-label="WhatsApp">WhatsApp</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="ticker" aria-label="Highlights and promotions">
+    <span>🛍️ New! Aaswad Combo Packs • 🎁 15% OFF this week • 🍘 Fresh Papads daily • 📦 Free Delivery over ₹499 • ❤️ Follow @papadsale.live • 🧾 GST Invoice available • ⏰ Same-day delivery in city</span>
+  </div>
+
+  <main class="container">
+    <div class="two">
+      <section id="menu">
+        <h2 style="margin:0 0 10px 0">Menu</h2>
+        <!-- Product Shuffle Carousel -->
+        <div class="pc" aria-label="Product highlights">
+          <div class="pc-viewport">
+            <div class="pc-track" id="pcTrack"></div>
+          </div>
+        </div>
+        <div id="productGrid" class="grid"></div>
+      </section>
+
+      <aside class="cart" id="cart">
+        <div class="panel">
+          <h3>🧺 Your Cart</h3>
+          <div id="cartLines" class="muted">No items yet.</div>
+          <div class="line"><strong>Total</strong><strong id="total">₹0</strong></div>
+        </div>
+
+        <div class="panel" style="margin-top:12px">
+          <h3>🚚 Delivery Info</h3>
+          <div class="form-grid">
+            <div><label>Full Name</label><input id="custName" placeholder="Your name" /></div>
+            <div><label>Phone (WhatsApp)</label><input id="custPhone" placeholder="10-digit" maxlength="10" /></div>
+          </div>
+          <div class="form-grid" style="margin-top:8px">
+            <div><label>House & Street</label><input id="addrLine1" placeholder="House / Flat, Street" /></div>
+            <div><label>Area / Landmark</label><input id="addrLine2" placeholder="Area, Landmark" /></div>
+          </div>
+          <div class="form-grid" style="margin-top:8px">
+            <div><label>City</label><input id="custCity" placeholder="Ahmedabad" /></div>
+            <div><label>Pincode</label><input id="custPin" placeholder="3800xx" maxlength="6" /></div>
+          </div>
+
+          <div class="panel" style="margin-top:12px">
+            <h3>💳 Pay via UPI</h3>
+            <label>UPI ID (Pay with any UPI app)</label>
+            <input id="upiId" value="9978113276@okbizaxis" />
+            <div class="actions" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px">
+              <div style="display:flex;gap:8px;align-items:center">
+                <label for="upiAmt">Amount (auto-filled)</label>
+                <input id="upiAmt" placeholder="₹" style="width:120px" />
+              </div>
+              <button id="copyUpiBtn" class="btn outline" type="button">Copy UPI ID</button>
+              <a id="openUpiBtn" class="btn secondary" href="#" type="button">Open UPI App</a>
+            </div>
+            <div class="qr" style="display:flex;gap:10px;align-items:center;margin-top:8px">
+              <img id="upiQr" src="./assets/qr.png" alt="UPI QR" style="width:140px;height:140px;border-radius:8px;border:1px solid #e5e7eb;object-fit:cover;background:#fff"/>
+              <div class="muted">Scan the QR in any UPI app or use the buttons above.</div>
+            </div>
+          </div>
+
+          <button class="btn secondary block" id="placeOrderBtn" style="margin-top:12px">Place Order on WhatsApp</button>
+        </div>
+      </aside>
+    </div>
+
+    <section id="ig" style="margin-top:24px">
+      <h3>Follow us on <a href="https://instagram.com/papadsale.live" target="_blank" rel="noopener">@papadsale.live</a></h3>
+      <div style="min-height:420px;position:relative">
+        <div class="ig-embeds" id="igRow" aria-busy="true" aria-live="polite" style="display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;margin-top:12px">
+          <div style="height:420px;display:grid;place-items:center;color:#7c2d12;background:#fff3e6;border:1px dashed #f59e0b;border-radius:12px;flex:0 0 360px">Loading Instagram…</div>
+        </div>
+      </div>
+      <p class="muted" style="font-size:12px;margin-top:6px">These are live Instagram embeds. If they don’t load immediately, refresh once.</p>
+    </section>
+
+    <footer id="contact" style="margin-top:40px;text-align:center">
+      <p>© <span id="year"></span> PapadSale • Made with ❤️ for Gujarati food lovers.</p>
+      <p class="muted">Need help? WhatsApp us: <a href="https://wa.me/919978113276" target="_blank" rel="noopener">+91 99781 13276</a></p>
+    </footer>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite">Added to cart ✓</div>
+  <div id="successModal" class="modal" role="dialog" aria-modal="true" aria-label="Order placed">
+    <div class="modal-card">
+      <div class="check">✓</div>
+      <h2 style="margin:6px 0 0 0">Thank you!</h2>
+      <p class="muted" style="margin:6px 0 12px 0">Your order has been sent on WhatsApp. We’ll confirm shortly.</p>
+      <a class="btn primary" href="https://instagram.com/papadsale.live" target="_blank" rel="noopener">Follow us @papadsale.live</a>
+      <div style="margin-top:10px"><button id="closeModal" class="btn outline" type="button">Close</button></div>
+    </div>
+  </div>
+  <div id="confetti" class="confetti"></div>
+
+  <script>
+    const BUSINESS_WA = '919978113276';
+    const DEFAULT_UPI = '9978113276@okbizaxis';
+    const PRODUCTS = [
+      { id:'papad-plain', name:'Papad (Plain)', brand:'PapadSale', unit:'200g', price:70, cat:'Papad', img:'./assets/papad1.jpg' },
+      { id:'papad-masala', name:'Papad (Masala)', brand:'PapadSale', unit:'200g', price:80, cat:'Papad', img:'./assets/papad1.jpg' },
+      { id:'aaswad-mathiya', name:'Mathiya', brand:'Aaswad', unit:'500g', price:160, cat:'Mathiya', img:'./assets/mathiya1.jpg' },
+      { id:'aaswad-chorafali', name:'Chorafali', brand:'Aaswad', unit:'500g', price:160, cat:'Chorafali', img:'./assets/chorafali1.jpg' },
+      { id:'yash-mathiya', name:'Mathiya', brand:'Yash', unit:'500g', price:150, cat:'Mathiya', img:'./assets/mathiya1.jpg' },
+      { id:'yash-chorafali', name:'Chorafali', brand:'Yash', unit:'500g', price:150, cat:'Chorafali', img:'./assets/chorafali1.jpg' },
+      { id:'combo-aaswad', name:'Combo • Aaswad Mathiya + Chorafali', brand:'Aaswad', unit:'2 × 500g', price:320, cat:'Combos', img:'./assets/mathiya1.jpg' },
+      { id:'combo-yash', name:'Combo • Yash Mathiya + Chorafali', brand:'Yash', unit:'2 × 500g', price:299, cat:'Combos', img:'./assets/chorafali1.jpg' },
+      { id:'khakhra', name:'Khakhra (Coming Soon)', brand:'—', unit:'—', price:0, cat:'Coming Soon', img:'./assets/papad1.jpg', coming:true }
+    ];
+
+    const cart = new Map();
+    const el = s => document.querySelector(s);
+    const grid = el('#productGrid');
+    const cartLines = el('#cartLines');
+    const totalEl = el('#total');
+    el('#year').textContent = new Date().getFullYear();
+
+    const INR = new Intl.NumberFormat('en-IN');
+    const formatINR = n => '₹'+INR.format(Math.max(0,Math.round(Number(n)||0)));
+
+    function validatePhone(num){ return /^[6-9]\d{9}$/.test(num||''); }
+    function showToast(msg){ const t=el('#toast'); t.textContent=msg||'Added to cart ✓'; t.classList.add('show'); setTimeout(()=> t.classList.remove('show'), 1800); }
+    function upiDeepLink(upiId, amount, note){
+      const params = new URLSearchParams({ pa: upiId, pn: 'PapadSale', cu: 'INR' });
+      const amt = (amount||'').toString().replace(/[^0-9.]/g,'');
+      if(amt) params.set('am', amt);
+      if(note) params.set('tn', note);
+      return `upi://pay?${params.toString()}`;
+    }
+
+    function shuffle(arr){ for(let i=arr.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [arr[i],arr[j]]=[arr[j],arr[i]]; } return arr; }
+    function renderProductCarousel(){
+      const track = document.getElementById('pcTrack'); if(!track) return;
+      const items = shuffle(PRODUCTS.filter(p=>!p.coming)).map(p=>({img:p.img,name:p.name,brand:p.brand||'PapadSale'}));
+      const dup = items.concat(items);
+      track.innerHTML = dup.map(it=>`<div class='pc-item'>
+          <img src='${it.img}' alt='${it.name}'>
+          <div class='pc-cap'>${it.name}</div>
+        </div>`).join('');
+      const speed = Math.max(20, items.length * 4);
+      track.style.setProperty('--pc-speed', speed+'s');
+    }
+
+    function renderProducts(){
+      grid.innerHTML='';
+      PRODUCTS.forEach(p=>{
+        const card = document.createElement('div'); card.className='card';
+        card.innerHTML = `
+          <img src="${p.img}" alt="${p.name}" style="width:100%;height:140px;object-fit:cover;border-radius:10px" onerror="this.style.display='none'" />
+          <div class=\"line\" style=\"border-bottom:0; padding-bottom:0;\">
+            <div>
+              <div class=\"chip\">${p.brand||'PapadSale'}</div>
+              <h3 style=\"margin:6px 0 2px 0\">${p.name}</h3>
+              <div class=\"muted\">Pack: ${p.unit}</div>
+            </div>
+            <div class=\"price\">${p.price? formatINR(p.price) : '—'}</div>
+          </div>
+          <div class=\"line\" style=\"border-bottom:0; padding-top:8px;\">
+            <div style=\"display:flex;gap:8px;align-items:center\">
+              <button class=\"btn outline\" data-act=\"dec\" ${p.coming?'disabled':''}>−</button>
+              <strong id=\"q-${p.id}\">0</strong>
+              <button class=\"btn outline\" data-act=\"inc\" ${p.coming?'disabled':''}>＋</button>
+            </div>
+            <button class=\"btn primary\" data-act=\"add\" ${p.coming?'disabled':''}>Add</button>
+          </div>`;
+        card.querySelectorAll('button').forEach(b=> b.addEventListener('click', ()=> onProductClick(p,b.dataset.act)) );
+        grid.appendChild(card);
+      });
+    }
+
+    function onProductClick(prod, act){
+      const qEl = el(`#q-${prod.id}`);
+      let q = parseInt(qEl.textContent,10);
+      if(act==='inc') q++;
+      if(act==='dec') q = Math.max(0,q-1);
+      if(act==='add'){
+        const prev = cart.get(prod.id)?.qty || 0;
+        const addQty = Math.max(1,q);
+        if(prod.id==='combo-aaswad'){ addToCart('aaswad-mathiya',1); addToCart('aaswad-chorafali',1); }
+        else if(prod.id==='combo-yash'){ addToCart('yash-mathiya',1); addToCart('yash-chorafali',1); }
+        cart.set(prod.id,{prod,qty:prev+addQty});
+        q = 0;
+        renderCart();
+        showToast(`${prod.name} added ✓`);
+        document.querySelector('#cart').scrollIntoView({behavior:'smooth'});
+      }
+      qEl.textContent = q;
+    }
+
+    function addToCart(id,qty){ const p=PRODUCTS.find(x=>x.id===id); if(!p) return; const prev = cart.get(id)?.qty||0; cart.set(id,{prod:p,qty:prev+qty}); }
+
+    function renderCart(){
+      if(cart.size===0){ cartLines.textContent='No items yet.'; totalEl.textContent='₹0'; el('#upiAmt').value=''; return; }
+      const frag = document.createDocumentFragment(); let t=0;
+      cart.forEach(({prod,qty})=>{
+        const row = document.createElement('div'); row.className='line';
+        row.innerHTML = `<span>${prod.name} ${prod.brand? '('+prod.brand+')':''} × ${qty}</span><span>${formatINR(prod.price*qty)}</span>`;
+        frag.appendChild(row); t += prod.price*qty;
+      });
+      cartLines.innerHTML=''; cartLines.appendChild(frag);
+      totalEl.textContent = formatINR(t); el('#upiAmt').value = t>0 ? String(t) : '';
+      toggleUpiOpen(); saveCart();
+    }
+
+    function makeOrderText(){
+      let lines=[]; const orderId = genOrderId(); lines.push(`*PapadSale – New Order* (#${orderId})`); if(cart.size===0){ lines.push('_(Cart empty)_'); }
+      cart.forEach(({prod,qty})=>{ if(qty>0) lines.push(`• ${prod.name}${prod.brand? ' ('+prod.brand+')':''} × ${qty}`); });
+      const total = totalEl.textContent; lines.push(`Total: ${total}`); lines.push('');
+      const name = el('#custName').value.trim();
+      const phone = el('#custPhone').value.trim();
+      const l1 = el('#addrLine1').value.trim(); const l2 = el('#addrLine2').value.trim();
+      const city = el('#custCity').value.trim(); const pin = el('#custPin').value.trim();
+      const upiId = (el('#upiId').value||DEFAULT_UPI).trim();
+      const upiAmt = (el('#upiAmt').value||'').toString().replace(/[^0-9.]/g,'');
+      if(name) lines.push(`Name: ${name}`);
+      if(validatePhone(phone)) lines.push(`Customer WhatsApp: +91 ${phone}`);
+      const addrParts=[l1,l2,city&&`City: ${city}`,pin&&`PIN: ${pin}`].filter(Boolean);
+      if(addrParts.length){ lines.push('Address:'); addrParts.forEach(p=>lines.push(`  - ${p}`)); }
+      lines.push(`Payment: UPI (ID: ${upiId})`); if(upiAmt) lines.push(`UPI Amount: ₹${upiAmt}`);
+      lines.push('If paid, please reply with UPI ref no.');
+      return lines.join('\\n');
+    }
+
+    function burstConfetti(){
+      const host = document.getElementById('confetti'); const emojis = ['🎉','✨','🥳','🍘','💚'];
+      for(let i=0;i<40;i++){ const s = document.createElement('div'); s.className='piece';
+        s.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+        s.style.left = Math.random()*100+'vw'; s.style.top = '-10vh';
+        s.style.animationDelay = (Math.random()*0.6)+'s'; s.style.transform = `translateY(0) rotate(${Math.random()*180}deg)`;
+        host.appendChild(s); setTimeout(()=> s.remove(), 1700); }
+    }
+    function showSuccess(){ burstConfetti(); document.getElementById('successModal').classList.add('show'); }
+
+    async function copyUPI(){
+      const upi = (el('#upiId').value||DEFAULT_UPI).trim();
+      try{ await navigator.clipboard.writeText(upi); showToast('UPI ID copied: '+upi); }
+      catch(e){ prompt('Copy UPI ID manually:', upi); }
+    }
+
+    function genOrderId(){ const d=new Date(); const pad=n=>String(n).padStart(2,'0'); return `PS-${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}-${Math.floor(Math.random()*900+100)}`; }
+
+    function placeWhatsAppOrders(){
+      if(cart.size===0){ alert('Please add at least 1 item.'); return; }
+      const name = el('#custName').value.trim(); const phone = el('#custPhone').value.trim(); const pin = el('#custPin').value.trim();
+      if(!name){ alert('Please enter your name.'); return; }
+      if(!validatePhone(phone)){ alert('Please enter a valid 10-digit WhatsApp number.'); return; }
+      if(pin && pin.length!==6){ alert('Please enter a valid 6-digit pincode or leave blank.'); return; }
+      const text = makeOrderText(); const orderId = text.match(/#(PS-[^)]*)/)? RegExp.$1 : 'PS-Order';
+      const uBiz = `https://wa.me/${BUSINESS_WA}?text=${encodeURIComponent(text)}`; window.open(uBiz,'_blank');
+      const confirmText = `Thank you! Your order has been received by PapadSale.\\nOrder ID: ${orderId}\\n\\n${text}`;
+      const uCust = `https://wa.me/91${phone}?text=${encodeURIComponent(confirmText)}`; window.open(uCust,'_blank');
+      showSuccess(); cart.clear(); renderCart(); saveCart();
+    }
+
+    const openBtn = document.getElementById('openUpiBtn');
+    function toggleUpiOpen(){ const amt = el('#upiAmt').value; openBtn.setAttribute('aria-disabled', (!amt?'true':'false')); openBtn.style.opacity = amt? '1' : '0.6'; }
+    openBtn.addEventListener('click', (e)=>{
+      e.preventDefault(); const upiId = (document.querySelector('#upiId').value||DEFAULT_UPI).trim(); const amt = document.querySelector('#upiAmt').value; const note = 'PapadSale Order';
+      if(!amt){ showToast('Add items to cart first'); return; }
+      const link = upiDeepLink(upiId, amt, note); e.currentTarget.href = link; location.href = link;
+    });
+    document.getElementById('copyUpiBtn').addEventListener('click', copyUPI);
+
+    // persistence
+    const formIds=['custName','custPhone','addrLine1','addrLine2','custCity','custPin','upiId'];
+    function saveCart(){ const obj={}; cart.forEach(({prod,qty},id)=> obj[id]={q:qty}); localStorage.setItem('ps_cart', JSON.stringify(obj)); }
+    function loadCart(){ try{ const raw=localStorage.getItem('ps_cart'); if(!raw) return; const obj=JSON.parse(raw); Object.entries(obj).forEach(([id,v])=>{ const p=PRODUCTS.find(x=>x.id===id); if(p&&v&&v.q>0){ cart.set(id,{prod:p,qty:v.q}); }}); }catch(e){} }
+    function saveForm(){ const data={}; formIds.forEach(id=> data[id]=el('#'+id)?.value||''); localStorage.setItem('ps_form', JSON.stringify(data)); }
+    function loadForm(){ try{ const obj=JSON.parse(localStorage.getItem('ps_form')||'{}'); Object.entries(obj).forEach(([k,v])=>{ const node=el('#'+k); if(node) node.value=v; }); }catch(e){} }
+    formIds.forEach(id=>{ const node=el('#'+id); if(node) node.addEventListener('input', saveForm); });
+
+    // Init
+    loadForm();
+    loadCart();
+    renderProductCarousel();
+    renderProducts();
+    renderCart();
+    toggleUpiOpen();
+    window.addEventListener('load',()=>{ document.getElementById('menu')?.scrollIntoView({behavior:'smooth'}); });
+
+    // Instagram embeds hydrate after load
+    window.addEventListener('load',()=>{
+      const row = document.getElementById('igRow');
+      row.innerHTML = `
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DPdr8PxEitV/" data-instgrm-version="14" style="background:#FFF;border:0;margin:0;max-width:360px;min-width:300px;width:100%"></blockquote>
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DPB4EUagAJ-/" data-instgrm-version="14" style="background:#FFF;border:0;margin:0;max-width:360px;min-width:300px;width:100%"></blockquote>
+        <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/DO_Wsr7lD3Y/" data-instgrm-version="14" style="background:#FFF;border:0;margin:0;max-width:360px;min-width:300px;width:100%"></blockquote>`;
+      row.setAttribute('aria-busy','false');
+      if(window.instgrm && window.instgrm.Embeds) window.instgrm.Embeds.process();
+    });
+  </script>
+  <script async defer src="https://www.instagram.com/embed.js"></script>
+</body>
+</html>
