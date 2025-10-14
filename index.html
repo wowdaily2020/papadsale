@@ -48,7 +48,12 @@
         .weight-toggle.active {
             background: #FF6A00;
             color: white;
+            border-color: #FF6A00;
             transform: scale(1.02);
+        }
+        
+        .weight-toggle.active span {
+            color: white !important;
         }
         
         .counter-animation {
@@ -196,25 +201,23 @@
                         </div>
                     </div>
                     
-                    <div class="flex gap-2 mb-4">
+                    <div class="flex gap-3 mb-4">
                         <button onclick="selectWeight(this, 'papad-classic', '500g', 180)" 
-                                class="weight-toggle active flex-1 py-2 px-3 rounded-full border-2 border-saffron text-sm font-medium">
-                            500g - ₹180
+                                class="weight-toggle active flex-1 py-3 px-4 rounded-lg border border-gray-300 text-sm font-medium bg-white hover:bg-gray-50 transition-colors">
+                            500g<br><span class="text-saffron font-bold">₹180</span>
                         </button>
                         <button onclick="selectWeight(this, 'papad-classic', '1kg', 340)" 
-                                class="weight-toggle flex-1 py-2 px-3 rounded-full border-2 border-saffron text-sm font-medium">
-                            1kg - ₹340
+                                class="weight-toggle flex-1 py-3 px-4 rounded-lg border border-gray-300 text-sm font-medium bg-white hover:bg-gray-50 transition-colors">
+                            1kg<br><span class="text-saffron font-bold">₹340</span>
                         </button>
                     </div>
                     
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-3">
-                            <button onclick="updateQuantity('papad-classic', -1)" 
-                                    class="quantity-btn w-8 h-8 bg-orange-100 text-saffron rounded-full flex items-center justify-center font-bold">-</button>
-                            <span id="qty-papad-classic" class="font-medium">0</span>
-                            <button onclick="updateQuantity('papad-classic', 1)" 
-                                    class="quantity-btn w-8 h-8 bg-orange-100 text-saffron rounded-full flex items-center justify-center font-bold">+</button>
-                        </div>
+                    <div class="flex items-center justify-center gap-3 mb-4">
+                        <button onclick="updateQuantity('papad-classic', -1)" 
+                                class="quantity-btn w-10 h-10 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg flex items-center justify-center font-bold text-lg transition-colors">−</button>
+                        <span id="qty-papad-classic" class="font-semibold text-lg min-w-[30px] text-center">0</span>
+                        <button onclick="updateQuantity('papad-classic', 1)" 
+                                class="quantity-btn w-10 h-10 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg flex items-center justify-center font-bold text-lg transition-colors">+</button>
                     </div>
                     
                     <button onclick="addToCart('papad-classic')" 
@@ -245,25 +248,23 @@
                         </div>
                     </div>
                     
-                    <div class="flex gap-2 mb-4">
+                    <div class="flex gap-3 mb-4">
                         <button onclick="selectWeight(this, 'aaswad-mathiya', '500g', 220)" 
-                                class="weight-toggle active flex-1 py-2 px-3 rounded-full border-2 border-saffron text-sm font-medium">
-                            500g - ₹220
+                                class="weight-toggle active flex-1 py-3 px-4 rounded-lg border border-gray-300 text-sm font-medium bg-white hover:bg-gray-50 transition-colors">
+                            500g<br><span class="text-saffron font-bold">₹220</span>
                         </button>
                         <button onclick="selectWeight(this, 'aaswad-mathiya', '1kg', 420)" 
-                                class="weight-toggle flex-1 py-2 px-3 rounded-full border-2 border-saffron text-sm font-medium">
-                            1kg - ₹420
+                                class="weight-toggle flex-1 py-3 px-4 rounded-lg border border-gray-300 text-sm font-medium bg-white hover:bg-gray-50 transition-colors">
+                            1kg<br><span class="text-saffron font-bold">₹420</span>
                         </button>
                     </div>
                     
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-3">
-                            <button onclick="updateQuantity('aaswad-mathiya', -1)" 
-                                    class="quantity-btn w-8 h-8 bg-orange-100 text-saffron rounded-full flex items-center justify-center font-bold">-</button>
-                            <span id="qty-aaswad-mathiya" class="font-medium">0</span>
-                            <button onclick="updateQuantity('aaswad-mathiya', 1)" 
-                                    class="quantity-btn w-8 h-8 bg-orange-100 text-saffron rounded-full flex items-center justify-center font-bold">+</button>
-                        </div>
+                    <div class="flex items-center justify-center gap-3 mb-4">
+                        <button onclick="updateQuantity('aaswad-mathiya', -1)" 
+                                class="quantity-btn w-10 h-10 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg flex items-center justify-center font-bold text-lg transition-colors">−</button>
+                        <span id="qty-aaswad-mathiya" class="font-semibold text-lg min-w-[30px] text-center">0</span>
+                        <button onclick="updateQuantity('aaswad-mathiya', 1)" 
+                                class="quantity-btn w-10 h-10 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg flex items-center justify-center font-bold text-lg transition-colors">+</button>
                     </div>
                     
                     <button onclick="addToCart('aaswad-mathiya')" 
@@ -294,25 +295,23 @@
                         </div>
                     </div>
                     
-                    <div class="flex gap-2 mb-4">
+                    <div class="flex gap-3 mb-4">
                         <button onclick="selectWeight(this, 'aaswad-chorafali', '500g', 240)" 
-                                class="weight-toggle active flex-1 py-2 px-3 rounded-full border-2 border-saffron text-sm font-medium">
-                            500g - ₹240
+                                class="weight-toggle active flex-1 py-3 px-4 rounded-lg border border-gray-300 text-sm font-medium bg-white hover:bg-gray-50 transition-colors">
+                            500g<br><span class="text-saffron font-bold">₹240</span>
                         </button>
                         <button onclick="selectWeight(this, 'aaswad-chorafali', '1kg', 460)" 
-                                class="weight-toggle flex-1 py-2 px-3 rounded-full border-2 border-saffron text-sm font-medium">
-                            1kg - ₹460
+                                class="weight-toggle flex-1 py-3 px-4 rounded-lg border border-gray-300 text-sm font-medium bg-white hover:bg-gray-50 transition-colors">
+                            1kg<br><span class="text-saffron font-bold">₹460</span>
                         </button>
                     </div>
                     
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-3">
-                            <button onclick="updateQuantity('aaswad-chorafali', -1)" 
-                                    class="quantity-btn w-8 h-8 bg-orange-100 text-saffron rounded-full flex items-center justify-center font-bold">-</button>
-                            <span id="qty-aaswad-chorafali" class="font-medium">0</span>
-                            <button onclick="updateQuantity('aaswad-chorafali', 1)" 
-                                    class="quantity-btn w-8 h-8 bg-orange-100 text-saffron rounded-full flex items-center justify-center font-bold">+</button>
-                        </div>
+                    <div class="flex items-center justify-center gap-3 mb-4">
+                        <button onclick="updateQuantity('aaswad-chorafali', -1)" 
+                                class="quantity-btn w-10 h-10 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg flex items-center justify-center font-bold text-lg transition-colors">−</button>
+                        <span id="qty-aaswad-chorafali" class="font-semibold text-lg min-w-[30px] text-center">0</span>
+                        <button onclick="updateQuantity('aaswad-chorafali', 1)" 
+                                class="quantity-btn w-10 h-10 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg flex items-center justify-center font-bold text-lg transition-colors">+</button>
                     </div>
                     
                     <button onclick="addToCart('aaswad-chorafali')" 
@@ -343,25 +342,23 @@
                         </div>
                     </div>
                     
-                    <div class="flex gap-2 mb-4">
+                    <div class="flex gap-3 mb-4">
                         <button onclick="selectWeight(this, 'yash-mathiya', '500g', 210)" 
-                                class="weight-toggle active flex-1 py-2 px-3 rounded-full border-2 border-saffron text-sm font-medium">
-                            500g - ₹210
+                                class="weight-toggle active flex-1 py-3 px-4 rounded-lg border border-gray-300 text-sm font-medium bg-white hover:bg-gray-50 transition-colors">
+                            500g<br><span class="text-saffron font-bold">₹210</span>
                         </button>
                         <button onclick="selectWeight(this, 'yash-mathiya', '1kg', 400)" 
-                                class="weight-toggle flex-1 py-2 px-3 rounded-full border-2 border-saffron text-sm font-medium">
-                            1kg - ₹400
+                                class="weight-toggle flex-1 py-3 px-4 rounded-lg border border-gray-300 text-sm font-medium bg-white hover:bg-gray-50 transition-colors">
+                            1kg<br><span class="text-saffron font-bold">₹400</span>
                         </button>
                     </div>
                     
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-3">
-                            <button onclick="updateQuantity('yash-mathiya', -1)" 
-                                    class="quantity-btn w-8 h-8 bg-orange-100 text-saffron rounded-full flex items-center justify-center font-bold">-</button>
-                            <span id="qty-yash-mathiya" class="font-medium">0</span>
-                            <button onclick="updateQuantity('yash-mathiya', 1)" 
-                                    class="quantity-btn w-8 h-8 bg-orange-100 text-saffron rounded-full flex items-center justify-center font-bold">+</button>
-                        </div>
+                    <div class="flex items-center justify-center gap-3 mb-4">
+                        <button onclick="updateQuantity('yash-mathiya', -1)" 
+                                class="quantity-btn w-10 h-10 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg flex items-center justify-center font-bold text-lg transition-colors">−</button>
+                        <span id="qty-yash-mathiya" class="font-semibold text-lg min-w-[30px] text-center">0</span>
+                        <button onclick="updateQuantity('yash-mathiya', 1)" 
+                                class="quantity-btn w-10 h-10 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg flex items-center justify-center font-bold text-lg transition-colors">+</button>
                     </div>
                     
                     <button onclick="addToCart('yash-mathiya')" 
@@ -392,25 +389,23 @@
                         </div>
                     </div>
                     
-                    <div class="flex gap-2 mb-4">
+                    <div class="flex gap-3 mb-4">
                         <button onclick="selectWeight(this, 'yash-chorafali', '500g', 230)" 
-                                class="weight-toggle active flex-1 py-2 px-3 rounded-full border-2 border-saffron text-sm font-medium">
-                            500g - ₹230
+                                class="weight-toggle active flex-1 py-3 px-4 rounded-lg border border-gray-300 text-sm font-medium bg-white hover:bg-gray-50 transition-colors">
+                            500g<br><span class="text-saffron font-bold">₹230</span>
                         </button>
                         <button onclick="selectWeight(this, 'yash-chorafali', '1kg', 440)" 
-                                class="weight-toggle flex-1 py-2 px-3 rounded-full border-2 border-saffron text-sm font-medium">
-                            1kg - ₹440
+                                class="weight-toggle flex-1 py-3 px-4 rounded-lg border border-gray-300 text-sm font-medium bg-white hover:bg-gray-50 transition-colors">
+                            1kg<br><span class="text-saffron font-bold">₹440</span>
                         </button>
                     </div>
                     
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-3">
-                            <button onclick="updateQuantity('yash-chorafali', -1)" 
-                                    class="quantity-btn w-8 h-8 bg-orange-100 text-saffron rounded-full flex items-center justify-center font-bold">-</button>
-                            <span id="qty-yash-chorafali" class="font-medium">0</span>
-                            <button onclick="updateQuantity('yash-chorafali', 1)" 
-                                    class="quantity-btn w-8 h-8 bg-orange-100 text-saffron rounded-full flex items-center justify-center font-bold">+</button>
-                        </div>
+                    <div class="flex items-center justify-center gap-3 mb-4">
+                        <button onclick="updateQuantity('yash-chorafali', -1)" 
+                                class="quantity-btn w-10 h-10 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg flex items-center justify-center font-bold text-lg transition-colors">−</button>
+                        <span id="qty-yash-chorafali" class="font-semibold text-lg min-w-[30px] text-center">0</span>
+                        <button onclick="updateQuantity('yash-chorafali', 1)" 
+                                class="quantity-btn w-10 h-10 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg flex items-center justify-center font-bold text-lg transition-colors">+</button>
                     </div>
                     
                     <button onclick="addToCart('yash-chorafali')" 
@@ -441,25 +436,23 @@
                         </div>
                     </div>
                     
-                    <div class="flex gap-2 mb-4">
+                    <div class="flex gap-3 mb-4">
                         <button onclick="selectWeight(this, 'combo-pack', '500g', 440)" 
-                                class="weight-toggle active flex-1 py-2 px-3 rounded-full border-2 border-saffron text-sm font-medium">
-                            500g - ₹440
+                                class="weight-toggle active flex-1 py-3 px-4 rounded-lg border border-gray-300 text-sm font-medium bg-white hover:bg-gray-50 transition-colors">
+                            500g<br><span class="text-saffron font-bold">₹440</span>
                         </button>
                         <button onclick="selectWeight(this, 'combo-pack', '1kg', 860)" 
-                                class="weight-toggle flex-1 py-2 px-3 rounded-full border-2 border-saffron text-sm font-medium">
-                            1kg - ₹860
+                                class="weight-toggle flex-1 py-3 px-4 rounded-lg border border-gray-300 text-sm font-medium bg-white hover:bg-gray-50 transition-colors">
+                            1kg<br><span class="text-saffron font-bold">₹860</span>
                         </button>
                     </div>
                     
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex items-center gap-3">
-                            <button onclick="updateQuantity('combo-pack', -1)" 
-                                    class="quantity-btn w-8 h-8 bg-orange-100 text-saffron rounded-full flex items-center justify-center font-bold">-</button>
-                            <span id="qty-combo-pack" class="font-medium">0</span>
-                            <button onclick="updateQuantity('combo-pack', 1)" 
-                                    class="quantity-btn w-8 h-8 bg-orange-100 text-saffron rounded-full flex items-center justify-center font-bold">+</button>
-                        </div>
+                    <div class="flex items-center justify-center gap-3 mb-4">
+                        <button onclick="updateQuantity('combo-pack', -1)" 
+                                class="quantity-btn w-10 h-10 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg flex items-center justify-center font-bold text-lg transition-colors">−</button>
+                        <span id="qty-combo-pack" class="font-semibold text-lg min-w-[30px] text-center">0</span>
+                        <button onclick="updateQuantity('combo-pack', 1)" 
+                                class="quantity-btn w-10 h-10 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg flex items-center justify-center font-bold text-lg transition-colors">+</button>
                     </div>
                     
                     <button onclick="addToCart('combo-pack')" 
@@ -1230,37 +1223,68 @@
         function showPaymentSuccess(total, method) {
             const name = document.getElementById('customer-name').value.trim();
             const mobile = document.getElementById('customer-mobile').value.trim();
+            const address = document.getElementById('customer-address').value.trim();
+            const pincode = document.getElementById('customer-pincode').value.trim();
+            const landmark = document.getElementById('customer-landmark').value.trim();
+            const deliveryTime = document.getElementById('delivery-time').value;
+            const notes = document.getElementById('order-notes').value.trim();
+            const orderId = `PS${Date.now().toString().slice(-6)}`;
             
             const successModal = document.createElement('div');
             successModal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
             successModal.innerHTML = `
-                <div class="bg-white rounded-3xl p-8 text-center max-w-md w-full">
-                    <div class="text-6xl mb-4">✅</div>
-                    <h3 class="text-2xl font-bold text-green-600 mb-4">Order Confirmed!</h3>
-                    <div class="space-y-2 text-gray-700 mb-6">
-                        <p><strong>Order ID:</strong> PS${Date.now().toString().slice(-6)}</p>
-                        <p><strong>Total:</strong> ₹${total}</p>
-                        <p><strong>Payment:</strong> ${method}</p>
-                        <p><strong>Customer:</strong> ${name}</p>
-                    </div>
+                <div class="bg-white rounded-3xl p-6 text-center max-w-lg w-full max-h-[90vh] overflow-y-auto">
+                    <div class="text-5xl mb-4">✅</div>
+                    <h3 class="text-xl font-bold text-green-600 mb-4">Order Confirmed!</h3>
                     
-                    <div class="bg-green-50 p-4 rounded-lg mb-6">
-                        <p class="text-sm text-green-700">
-                            📱 Order details sent to ${mobile}<br>
-                            🚚 Expected delivery: ${method === 'COD' ? 'Next day' : 'Same day'}<br>
-                            📞 We'll call you for confirmation
+                    <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+                        <h4 class="font-bold text-gray-800 mb-3">📱 Complete Your Payment</h4>
+                        <div class="text-center mb-3">
+                            <img src="assets/qr.png" alt="UPI QR Code" class="w-24 h-24 mx-auto rounded-lg"
+                                 onerror="this.src=''; this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="w-24 h-24 bg-gray-200 rounded-lg mx-auto flex items-center justify-center text-gray-500 text-xs" style="display: none;">
+                                UPI QR
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-700 mb-3">
+                            💳 <strong>Pay ₹${total}</strong> using UPI QR code above<br>
+                            📸 Take screenshot of payment confirmation
                         </p>
                     </div>
                     
+                    <div class="space-y-3 mb-6">
+                        <button onclick="sendOrderToWhatsApp('${orderId}', ${total}, '${method}')" 
+                                class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-medium transition-colors">
+                            📱 Send Order + Payment Screenshot
+                        </button>
+                        
+                        <button onclick="sendReceiptToCustomer('${orderId}', ${total})" 
+                                class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-medium transition-colors">
+                            📧 Send Receipt to My WhatsApp
+                        </button>
+                    </div>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg text-left text-sm">
+                        <p class="font-bold mb-2">Order Summary:</p>
+                        <p><strong>Order ID:</strong> ${orderId}</p>
+                        <p><strong>Customer:</strong> ${name}</p>
+                        <p><strong>Mobile:</strong> ${mobile}</p>
+                        <p><strong>Total:</strong> ₹${total}</p>
+                        <p><strong>Payment:</strong> ${method}</p>
+                    </div>
+                    
                     <button onclick="closeSuccessModal()" 
-                            class="w-full bg-saffron hover:bg-orange-600 text-white py-3 rounded-lg font-medium transition-colors">
-                        Continue Shopping
+                            class="w-full bg-gray-300 hover:bg-gray-400 text-gray-700 py-2 rounded-lg font-medium transition-colors mt-4">
+                        Close
                     </button>
                 </div>
             `;
             
             document.body.appendChild(successModal);
             window.currentSuccessModal = successModal;
+            window.currentOrderData = {
+                orderId, name, mobile, address, pincode, landmark, deliveryTime, notes, total, method
+            };
             
             // Clear cart after successful order
             cart = [];
@@ -1280,6 +1304,67 @@
                 window.currentSuccessModal.remove();
                 window.currentSuccessModal = null;
             }
+        }
+
+        function sendOrderToWhatsApp(orderId, total, method) {
+            const orderData = window.currentOrderData;
+            
+            let message = `🛒 *NEW ORDER - PAPADSALE*\n\n`;
+            message += `📋 *Order Details:*\n`;
+            message += `Order ID: ${orderId}\n`;
+            message += `Customer: ${orderData.name}\n`;
+            message += `Mobile: ${orderData.mobile}\n`;
+            message += `Address: ${orderData.address}\n`;
+            message += `Pincode: ${orderData.pincode}\n`;
+            if (orderData.landmark) message += `Landmark: ${orderData.landmark}\n`;
+            message += `Delivery Time: ${orderData.deliveryTime}\n`;
+            if (orderData.notes) message += `Notes: ${orderData.notes}\n`;
+            message += `Payment Mode: ${method}\n\n`;
+            
+            message += `📦 *Items Ordered:*\n`;
+            cart.forEach(item => {
+                const subtotal = item.price * item.quantity;
+                message += `• ${item.name} - ${item.size} × ${item.quantity} = ₹${subtotal}\n`;
+            });
+            
+            message += `\n💰 *Total Amount: ₹${total}*\n\n`;
+            message += `📸 *Payment Screenshot:*\n`;
+            message += `Please attach payment screenshot with this message\n\n`;
+            message += `🙏 Thank you for choosing PapadSale!`;
+            
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/919978113276?text=${encodedMessage}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function sendReceiptToCustomer(orderId, total) {
+            const orderData = window.currentOrderData;
+            
+            let receiptMessage = `🧾 *PAPADSALE - ORDER RECEIPT*\n\n`;
+            receiptMessage += `✅ Order Confirmed!\n`;
+            receiptMessage += `Order ID: ${orderId}\n`;
+            receiptMessage += `Date: ${new Date().toLocaleDateString('en-IN')}\n\n`;
+            
+            receiptMessage += `👤 *Customer Details:*\n`;
+            receiptMessage += `Name: ${orderData.name}\n`;
+            receiptMessage += `Mobile: ${orderData.mobile}\n`;
+            receiptMessage += `Address: ${orderData.address}, ${orderData.pincode}\n\n`;
+            
+            receiptMessage += `📦 *Items Ordered:*\n`;
+            cart.forEach(item => {
+                const subtotal = item.price * item.quantity;
+                receiptMessage += `• ${item.name} (${item.size}) × ${item.quantity} = ₹${subtotal}\n`;
+            });
+            
+            receiptMessage += `\n💰 *Total: ₹${total}*\n`;
+            receiptMessage += `💳 Payment: ${orderData.method}\n\n`;
+            receiptMessage += `🚚 *Delivery:* We'll contact you soon for delivery confirmation\n\n`;
+            receiptMessage += `📞 *Support:* Reply to this message for any queries\n\n`;
+            receiptMessage += `Thank you for choosing PapadSale! 🙏`;
+            
+            const encodedReceipt = encodeURIComponent(receiptMessage);
+            const customerWhatsApp = `https://wa.me/${orderData.mobile}?text=${encodedReceipt}`;
+            window.open(customerWhatsApp, '_blank');
         }
 
         function sendConfirmation() {
@@ -1364,5 +1449,5 @@
             // Cart will only close when clicking the X button, not when clicking outside
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98e7e7409029ff6c',t:'MTc2MDQ1MzU3Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98e7f4bad3dfff6c',t:'MTc2MDQ1NDEyOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
