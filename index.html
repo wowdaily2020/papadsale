@@ -573,6 +573,11 @@
                 </div>
                 
                 <div class="space-y-3 mt-6">
+                    <button onclick="updateCart()" 
+                            class="w-full bg-gray-500 hover:bg-gray-600 text-white py-2 rounded-lg font-medium transition-colors">
+                        🛒 Update Cart (Add More Items)
+                    </button>
+                    
                     <button onclick="processPayment()" 
                             class="w-full bg-saffron hover:bg-orange-600 text-white py-4 rounded-lg font-bold text-lg transition-colors">
                         💳 Pay Now & Place Order
@@ -1253,9 +1258,14 @@
                     </div>
                     
                     <div class="space-y-3 mb-6">
+                        <button onclick="uploadPaymentScreenshot('${orderId}', ${total}, '${method}')" 
+                                class="w-full bg-saffron hover:bg-orange-600 text-white py-3 rounded-lg font-medium transition-colors">
+                            📸 Upload Payment Screenshot
+                        </button>
+                        
                         <button onclick="sendOrderToWhatsApp('${orderId}', ${total}, '${method}')" 
                                 class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-medium transition-colors">
-                            📱 Send Order + Payment Screenshot
+                            📱 Send Order Details to WhatsApp
                         </button>
                         
                         <button onclick="sendReceiptToCustomer('${orderId}', ${total})" 
@@ -1367,6 +1377,88 @@
             window.open(customerWhatsApp, '_blank');
         }
 
+        function updateCart() {
+            // Close cart drawer to allow adding more items
+            toggleCart();
+            
+            // Scroll to menu section
+            document.getElementById('menu').scrollIntoView({behavior: 'smooth'});
+            
+            // Show message to user
+            showSuccessMessage('Cart is ready for updates! Add more items from the menu below.');
+        }
+
+        function uploadPaymentScreenshot(orderId, total, method) {
+            // Create file input for screenshot upload
+            const fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.accept = 'image/*';
+            fileInput.style.display = 'none';
+            
+            fileInput.onchange = function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    // Show processing message
+                    showSuccessMessage('Screenshot selected! Opening WhatsApp to send order details...');
+                    
+                    // Automatically send order details to WhatsApp after screenshot selection
+                    setTimeout(() => {
+                        sendOrderWithScreenshotToWhatsApp(orderId, total, method, file.name);
+                    }, 1000);
+                }
+            };
+            
+            document.body.appendChild(fileInput);
+            fileInput.click();
+            document.body.removeChild(fileInput);
+        }
+
+        function sendOrderWithScreenshotToWhatsApp(orderId, total, method, fileName) {
+            const orderData = window.currentOrderData;
+            
+            let message = `🛒 *NEW ORDER WITH PAYMENT - PAPADSALE*\n\n`;
+            message += `📋 *Order Details:*\n`;
+            message += `Order ID: ${orderId}\n`;
+            message += `Customer: ${orderData.name}\n`;
+            message += `Mobile: ${orderData.mobile}\n`;
+            message += `Address: ${orderData.address}\n`;
+            message += `Pincode: ${orderData.pincode}\n`;
+            if (orderData.landmark) message += `Landmark: ${orderData.landmark}\n`;
+            message += `Delivery Time: ${orderData.deliveryTime}\n`;
+            if (orderData.notes) message += `Notes: ${orderData.notes}\n`;
+            message += `Payment Mode: ${method}\n\n`;
+            
+            message += `📦 *Items Ordered:*\n`;
+            cart.forEach(item => {
+                const subtotal = item.price * item.quantity;
+                message += `• ${item.name} - ${item.size} × ${item.quantity} = ₹${subtotal}\n`;
+            });
+            
+            message += `\n💰 *Total Amount: ₹${total}*\n\n`;
+            message += `📸 *Payment Screenshot:* ${fileName}\n`;
+            message += `(Please attach the payment screenshot with this message)\n\n`;
+            message += `✅ *Ready for Processing!*\n`;
+            message += `🙏 Thank you for choosing PapadSale!`;
+            
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/919978113276?text=${encodedMessage}`;
+            window.open(whatsappUrl, '_blank');
+            
+            // Show success message
+            showSuccessMessage('WhatsApp opened! Please attach your payment screenshot and send the message.');
+        }
+
+        function showSuccessMessage(text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg z-50 max-w-sm';
+            messageDiv.textContent = text;
+            document.body.appendChild(messageDiv);
+            
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 4000);
+        }
+
         function sendConfirmation() {
             const name = document.getElementById('customer-name').value.trim();
             const mobile = document.getElementById('customer-mobile').value.trim();
@@ -1449,5 +1541,5 @@
             // Cart will only close when clicking the X button, not when clicking outside
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98e7f4bad3dfff6c',t:'MTc2MDQ1NDEyOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98e7fe71b380ff6c',t:'MTc2MDQ1NDUyNi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
