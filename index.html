@@ -579,10 +579,17 @@
                     </select>
                 </div>
                 
-                <button onclick="placeOrder()" 
-                        class="w-full bg-green-500 hover:bg-green-600 text-white py-4 rounded-lg font-bold text-lg transition-colors mt-6">
-                    📱 Place Order on WhatsApp
-                </button>
+                <div class="space-y-3 mt-6">
+                    <button onclick="processPayment()" 
+                            class="w-full bg-saffron hover:bg-orange-600 text-white py-4 rounded-lg font-bold text-lg transition-colors">
+                        💳 Pay Now & Place Order
+                    </button>
+                    
+                    <button onclick="placeOrder()" 
+                            class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-medium transition-colors">
+                        📱 Order via WhatsApp
+                    </button>
+                </div>
                 
                 <button id="confirm-btn" onclick="sendConfirmation()" 
                         class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-medium transition-colors mt-3 hidden">
@@ -1125,6 +1132,156 @@
             document.getElementById('confirm-btn').classList.remove('hidden');
         }
 
+        function processPayment() {
+            const name = document.getElementById('customer-name').value.trim();
+            const mobile = document.getElementById('customer-mobile').value.trim();
+            const address = document.getElementById('customer-address').value.trim();
+            const pincode = document.getElementById('customer-pincode').value.trim();
+            
+            if (!name || !mobile || !address || !pincode) {
+                showMessage('Please fill in all required fields');
+                return;
+            }
+            
+            if (!/^[0-9]{10}$/.test(mobile)) {
+                showMessage('Please enter a valid 10-digit mobile number');
+                return;
+            }
+            
+            if (!/^[0-9]{6}$/.test(pincode)) {
+                showMessage('Please enter a valid 6-digit pincode');
+                return;
+            }
+            
+            let total = 0;
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+            });
+            
+            // Show payment processing modal
+            showPaymentModal(total);
+        }
+
+        function showPaymentModal(total) {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+            modal.innerHTML = `
+                <div class="bg-white rounded-3xl p-6 max-w-md w-full">
+                    <div class="text-center mb-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Complete Payment</h3>
+                        <p class="text-2xl font-bold text-saffron">₹${total}</p>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <button onclick="simulateUPIPayment(${total})" 
+                                class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-medium transition-colors">
+                            💳 Pay with UPI
+                        </button>
+                        
+                        <button onclick="selectCOD()" 
+                                class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-medium transition-colors">
+                            💵 Cash on Delivery
+                        </button>
+                        
+                        <button onclick="closePaymentModal()" 
+                                class="w-full bg-gray-300 hover:bg-gray-400 text-gray-700 py-3 rounded-lg font-medium transition-colors">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            window.currentPaymentModal = modal;
+        }
+
+        function simulateUPIPayment(total) {
+            closePaymentModal();
+            
+            // Simulate payment processing
+            const processingModal = document.createElement('div');
+            processingModal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+            processingModal.innerHTML = `
+                <div class="bg-white rounded-3xl p-8 text-center">
+                    <div class="animate-spin w-12 h-12 border-4 border-saffron border-t-transparent rounded-full mx-auto mb-4"></div>
+                    <p class="text-lg font-medium">Processing payment...</p>
+                </div>
+            `;
+            
+            document.body.appendChild(processingModal);
+            
+            setTimeout(() => {
+                processingModal.remove();
+                showPaymentSuccess(total, 'UPI');
+            }, 2000);
+        }
+
+        function selectCOD() {
+            closePaymentModal();
+            
+            let total = 0;
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+            });
+            
+            showPaymentSuccess(total, 'COD');
+        }
+
+        function showPaymentSuccess(total, method) {
+            const name = document.getElementById('customer-name').value.trim();
+            const mobile = document.getElementById('customer-mobile').value.trim();
+            
+            const successModal = document.createElement('div');
+            successModal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+            successModal.innerHTML = `
+                <div class="bg-white rounded-3xl p-8 text-center max-w-md w-full">
+                    <div class="text-6xl mb-4">✅</div>
+                    <h3 class="text-2xl font-bold text-green-600 mb-4">Order Confirmed!</h3>
+                    <div class="space-y-2 text-gray-700 mb-6">
+                        <p><strong>Order ID:</strong> PS${Date.now().toString().slice(-6)}</p>
+                        <p><strong>Total:</strong> ₹${total}</p>
+                        <p><strong>Payment:</strong> ${method}</p>
+                        <p><strong>Customer:</strong> ${name}</p>
+                    </div>
+                    
+                    <div class="bg-green-50 p-4 rounded-lg mb-6">
+                        <p class="text-sm text-green-700">
+                            📱 Order details sent to ${mobile}<br>
+                            🚚 Expected delivery: ${method === 'COD' ? 'Next day' : 'Same day'}<br>
+                            📞 We'll call you for confirmation
+                        </p>
+                    </div>
+                    
+                    <button onclick="closeSuccessModal()" 
+                            class="w-full bg-saffron hover:bg-orange-600 text-white py-3 rounded-lg font-medium transition-colors">
+                        Continue Shopping
+                    </button>
+                </div>
+            `;
+            
+            document.body.appendChild(successModal);
+            window.currentSuccessModal = successModal;
+            
+            // Clear cart after successful order
+            cart = [];
+            updateCartDisplay();
+            toggleCart();
+        }
+
+        function closePaymentModal() {
+            if (window.currentPaymentModal) {
+                window.currentPaymentModal.remove();
+                window.currentPaymentModal = null;
+            }
+        }
+
+        function closeSuccessModal() {
+            if (window.currentSuccessModal) {
+                window.currentSuccessModal.remove();
+                window.currentSuccessModal = null;
+            }
+        }
+
         function sendConfirmation() {
             const name = document.getElementById('customer-name').value.trim();
             const mobile = document.getElementById('customer-mobile').value.trim();
@@ -1202,16 +1359,10 @@
             animateCounters();
         });
 
-        // Close cart when clicking outside
+        // Prevent cart from closing accidentally - only close on explicit close button
         document.addEventListener('click', function(event) {
-            const drawer = document.getElementById('cart-drawer');
-            if (!drawer.contains(event.target) && 
-                !event.target.closest('button[onclick*="addToCart"]') && 
-                !event.target.closest('button[onclick="toggleCart()"]') && 
-                drawer.classList.contains('open')) {
-                drawer.classList.remove('open');
-            }
+            // Cart will only close when clicking the X button, not when clicking outside
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98e7e1fad4783e57',t:'MTc2MDQ1MzM2MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98e7e7409029ff6c',t:'MTc2MDQ1MzU3Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
