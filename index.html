@@ -132,6 +132,11 @@
                             class="bg-saffron hover:bg-orange-600 text-white px-4 py-2 rounded-full font-medium text-sm transition-colors">
                         View Menu
                     </button>
+                    <button onclick="toggleCart()" 
+                            class="relative bg-orange-100 hover:bg-orange-200 text-saffron px-4 py-2 rounded-full font-medium text-sm transition-colors flex items-center gap-2">
+                        🛒 Cart
+                        <span id="header-cart-count" class="bg-saffron text-white text-xs rounded-full px-2 py-1 min-w-[20px] text-center">0</span>
+                    </button>
                     <a href="https://wa.me/919978113276" target="_blank" rel="noopener noreferrer"
                        class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-medium text-sm transition-colors">
                         Order on WhatsApp
@@ -1010,12 +1015,14 @@
             const cartTotal = document.getElementById('cart-total');
             const checkoutForm = document.getElementById('checkout-form');
             const mobileCartCount = document.getElementById('mobile-cart-count');
+            const headerCartCount = document.getElementById('header-cart-count');
             
             if (cart.length === 0) {
                 cartItems.innerHTML = '<p class="text-gray-500 text-center py-8">Your cart is empty</p>';
                 cartTotal.classList.add('hidden');
                 checkoutForm.classList.add('hidden');
                 mobileCartCount.textContent = '0';
+                headerCartCount.textContent = '0';
                 return;
             }
             
@@ -1045,6 +1052,7 @@
             cartTotal.classList.remove('hidden');
             checkoutForm.classList.remove('hidden');
             mobileCartCount.textContent = itemCount.toString();
+            headerCartCount.textContent = itemCount.toString();
         }
 
         function removeFromCart(index) {
@@ -1205,5 +1213,5 @@
             }
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98e7cf8645f546b4',t:'MTc2MDQ1MjYwNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98e7e1fad4783e57',t:'MTc2MDQ1MzM2MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
