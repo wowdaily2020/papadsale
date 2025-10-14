@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PapadSale - Gujarati Swad, Ghar-ghar Tak!</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         body {
             box-sizing: border-box;
@@ -13,21 +13,23 @@
         
         .font-baloo { font-family: 'Baloo 2', cursive; }
         .font-poppins { font-family: 'Poppins', sans-serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+        .font-lato { font-family: 'Lato', sans-serif; }
         
         .bg-cream { background-color: #FEF7ED; }
-        .bg-saffron { background-color: #FF8C00; }
-        .text-saffron { color: #FF8C00; }
-        .border-saffron { border-color: #FF8C00; }
+        .bg-saffron { background-color: #FF6A00; }
+        .text-saffron { color: #FF6A00; }
+        .border-saffron { border-color: #FF6A00; }
         
-        .bandhani-pattern {
+        .gujarati-pattern {
             background-image: 
-                radial-gradient(circle at 20px 20px, rgba(255, 140, 0, 0.1) 2px, transparent 2px),
-                radial-gradient(circle at 60px 60px, rgba(255, 140, 0, 0.08) 2px, transparent 2px);
-            background-size: 80px 80px, 120px 120px;
+                radial-gradient(circle at 25px 25px, rgba(255, 106, 0, 0.08) 2px, transparent 2px),
+                radial-gradient(circle at 75px 75px, rgba(255, 140, 0, 0.06) 2px, transparent 2px);
+            background-size: 100px 100px, 150px 150px;
         }
         
-        .glow-shadow {
-            box-shadow: 0 8px 32px rgba(255, 140, 0, 0.15);
+        .soft-shadow {
+            box-shadow: 0 8px 32px rgba(255, 106, 0, 0.12);
         }
         
         .product-card {
@@ -35,8 +37,8 @@
         }
         
         .product-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(255, 140, 0, 0.2);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(255, 106, 0, 0.2);
         }
         
         .weight-toggle {
@@ -44,15 +46,15 @@
         }
         
         .weight-toggle.active {
-            background: linear-gradient(135deg, #FF8C00, #FFA500);
+            background: #FF6A00;
             color: white;
-            transform: scale(1.05);
+            transform: scale(1.02);
         }
         
         .counter-animation {
             opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.6s ease;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
         }
         
         .counter-animation.animate {
@@ -65,12 +67,13 @@
             bottom: 20px;
             right: 20px;
             z-index: 1000;
-            animation: pulse 2s infinite;
+            animation: bounce 2s infinite;
         }
         
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
         }
         
         .cart-drawer {
@@ -82,35 +85,55 @@
             transform: translateX(0);
         }
         
-        .badge {
+        .badge-container {
             position: fixed;
             top: 50%;
-            left: 10px;
+            left: 0;
             transform: translateY(-50%);
             z-index: 100;
         }
+        
+        .saffron-gradient {
+            background: linear-gradient(135deg, #FF6A00, #FF8C00);
+        }
+        
+        .quantity-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .quantity-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        @media (max-width: 768px) {
+            .badge-container {
+                position: static;
+                transform: none;
+                padding: 1rem;
+            }
+        }
     </style>
 </head>
-<body class="bg-cream font-poppins">
+<body class="bg-cream font-inter">
     <!-- Header -->
     <header class="bg-white shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-4">
+        <div class="container mx-auto px-4 py-3">
             <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-4">
-                    <img src="assets/logo.png" alt="PapadSale Logo" class="w-12 h-12 rounded-full" 
-                         onerror="this.src=''; this.alt='🫓'; this.className='text-4xl';">
+                <div class="flex items-center space-x-3">
+                    <img src="assets/logo.png" alt="PapadSale Logo" class="w-10 h-10 rounded-full" 
+                         onerror="this.src=''; this.alt='🫓'; this.className='text-3xl';">
                     <div>
-                        <h1 class="text-2xl font-baloo font-bold text-saffron">PapadSale</h1>
-                        <p class="text-xs text-gray-600">Authentic Gujarati Snacks</p>
+                        <h1 class="text-xl md:text-2xl font-baloo font-bold text-saffron">PapadSale</h1>
+                        <p class="text-xs text-gray-600 hidden md:block">Authentic Gujarati Snacks</p>
                     </div>
                 </div>
-                <div class="flex gap-3">
+                <div class="flex gap-2">
                     <button onclick="document.getElementById('menu').scrollIntoView({behavior: 'smooth'})" 
-                            class="bg-saffron hover:bg-orange-600 text-white px-6 py-2 rounded-full font-medium transition-colors">
+                            class="bg-saffron hover:bg-orange-600 text-white px-4 py-2 rounded-full font-medium text-sm transition-colors">
                         View Menu
                     </button>
                     <a href="https://wa.me/919978113276" target="_blank" rel="noopener noreferrer"
-                       class="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-full font-medium transition-colors">
+                       class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full font-medium text-sm transition-colors">
                         Order on WhatsApp
                     </a>
                 </div>
@@ -119,21 +142,21 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="bandhani-pattern py-16 px-4">
+    <section class="gujarati-pattern py-12 md:py-16 px-4">
         <div class="container mx-auto text-center">
-            <h2 class="text-4xl md:text-5xl font-baloo font-bold text-gray-800 mb-4">
+            <h2 class="text-3xl md:text-5xl font-baloo font-bold text-gray-800 mb-4">
                 Gujarati Swad, <span class="text-saffron">Ghar-ghar Tak!</span>
             </h2>
-            <p class="text-lg text-gray-700 mb-8 max-w-2xl mx-auto">
-                Papad, Mathiya, Chorafali – fresh & crunchy. Order on WhatsApp in a tap.
+            <p class="text-base md:text-lg text-gray-700 mb-8 max-w-2xl mx-auto font-lato">
+                Papad, Mathiya, Chorafali — fresh & crunchy. Order on WhatsApp in a tap.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
                 <button onclick="document.getElementById('menu').scrollIntoView({behavior: 'smooth'})" 
-                        class="bg-saffron hover:bg-orange-600 text-white px-8 py-4 rounded-full font-semibold text-lg transition-colors glow-shadow">
-                    🛒 Browse Menu
+                        class="saffron-gradient text-white px-8 py-4 rounded-full font-semibold text-lg transition-all hover:shadow-lg">
+                        🛒 Browse Menu
                 </button>
                 <a href="https://wa.me/919978113276" target="_blank" rel="noopener noreferrer"
-                   class="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-full font-semibold text-lg transition-colors">
+                   class="bg-green-500 hover:bg-green-600 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all">
                     📱 WhatsApp Order
                 </a>
             </div>
@@ -141,265 +164,327 @@
     </section>
 
     <!-- Menu Section -->
-    <section id="menu" class="py-16 px-4 bg-white">
+    <section id="menu" class="py-12 md:py-16 px-4 bg-white">
         <div class="container mx-auto">
-            <h3 class="text-3xl font-baloo font-bold text-center text-gray-800 mb-12">Our Delicious Menu</h3>
+            <h3 class="text-2xl md:text-3xl font-baloo font-bold text-center text-gray-800 mb-8 md:mb-12">Our Delicious Menu</h3>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Papad -->
-                <div class="product-card bg-cream rounded-3xl p-6 glow-shadow">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                <!-- Papad Classic -->
+                <div class="product-card bg-cream rounded-3xl p-6 soft-shadow">
                     <div class="relative mb-4">
-                        <img src="assets/papad1.jpg" alt="Fresh Papad" class="w-full h-48 object-cover rounded-2xl"
+                        <img src="assets/papad1.jpg" alt="Papad Classic" class="w-full h-48 object-cover rounded-2xl"
                              onerror="this.src=''; this.style.display='none'; this.nextElementSibling.style.display='flex';">
                         <div class="w-full h-48 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-2xl flex items-center justify-center text-6xl" style="display: none;">🫓</div>
-                        <span class="absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-medium">Classic</span>
+                        <span class="absolute top-3 right-3 bg-blue-500 text-white px-3 py-1 rounded-full text-xs font-medium">Classic</span>
                     </div>
-                    <h4 class="text-xl font-baloo font-bold text-gray-800 mb-2">Traditional Papad</h4>
-                    <p class="text-sm text-gray-600 mb-4">
-                        Crispy, thin & perfectly seasoned.<br>
-                        Made with traditional recipes.<br>
-                        Perfect companion for every meal.
+                    <h4 class="text-lg md:text-xl font-poppins font-bold text-gray-800 mb-2">Papad (Classic)</h4>
+                    <p class="text-sm text-gray-600 mb-4 font-lato leading-relaxed">
+                        Crispy handcrafted papad with authentic spices.<br>
+                        Perfect for roasting or frying.<br>
+                        Taste of Gujarat in every bite.
                     </p>
                     
                     <div class="flex gap-2 mb-4">
-                        <button onclick="selectWeight(this, 'papad', '500g', 180)" 
-                                class="weight-toggle active flex-1 py-2 px-4 rounded-full border-2 border-saffron text-sm font-medium">
+                        <button onclick="selectWeight(this, 'papad-classic', '500g', 180)" 
+                                class="weight-toggle active flex-1 py-2 px-3 rounded-full border-2 border-saffron text-sm font-medium">
                             500g - ₹180
                         </button>
-                        <button onclick="selectWeight(this, 'papad', '1kg', 340)" 
-                                class="weight-toggle flex-1 py-2 px-4 rounded-full border-2 border-saffron text-sm font-medium">
+                        <button onclick="selectWeight(this, 'papad-classic', '1kg', 340)" 
+                                class="weight-toggle flex-1 py-2 px-3 rounded-full border-2 border-saffron text-sm font-medium">
                             1kg - ₹340
                         </button>
                     </div>
                     
-                    <button onclick="addToCart('papad')" 
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <button onclick="updateQuantity('papad-classic', -1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-saffron rounded-full flex items-center justify-center font-bold">-</button>
+                            <span id="qty-papad-classic" class="font-medium">0</span>
+                            <button onclick="updateQuantity('papad-classic', 1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-saffron rounded-full flex items-center justify-center font-bold">+</button>
+                        </div>
+                    </div>
+                    
+                    <button onclick="addToCart('papad-classic')" 
                             class="w-full bg-saffron hover:bg-orange-600 text-white py-3 rounded-full font-semibold transition-colors">
                         Add to Cart
                     </button>
                 </div>
 
                 <!-- Aaswad Mathiya -->
-                <div class="product-card bg-cream rounded-3xl p-6 glow-shadow">
+                <div class="product-card bg-cream rounded-3xl p-6 soft-shadow">
                     <div class="relative mb-4">
                         <img src="assets/mathiya1.jpg" alt="Aaswad Mathiya" class="w-full h-48 object-cover rounded-2xl"
                              onerror="this.src=''; this.style.display='none'; this.nextElementSibling.style.display='flex';">
                         <div class="w-full h-48 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-2xl flex items-center justify-center text-6xl" style="display: none;">🥨</div>
-                        <span class="absolute top-3 right-3 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium">Popular</span>
+                        <span class="absolute top-3 right-3 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium">Popular</span>
                     </div>
-                    <h4 class="text-xl font-baloo font-bold text-gray-800 mb-2">Aaswad Mathiya - Sada</h4>
-                    <p class="text-sm text-gray-600 mb-4">
+                    <h4 class="text-lg md:text-xl font-poppins font-bold text-gray-800 mb-2">Aaswad Mathiya</h4>
+                    <p class="text-sm text-gray-600 mb-4 font-lato leading-relaxed">
                         Delicate layers, light & airy crunch.<br>
                         Handcrafted the traditional way.<br>
-                        Perfect for daily snacking.
+                        Ideal for daily snacking.
                     </p>
                     
                     <div class="flex gap-2 mb-4">
-                        <button onclick="selectWeight(this, 'mathiya', '500g', 220)" 
-                                class="weight-toggle active flex-1 py-2 px-4 rounded-full border-2 border-saffron text-sm font-medium">
+                        <button onclick="selectWeight(this, 'aaswad-mathiya', '500g', 220)" 
+                                class="weight-toggle active flex-1 py-2 px-3 rounded-full border-2 border-saffron text-sm font-medium">
                             500g - ₹220
                         </button>
-                        <button onclick="selectWeight(this, 'mathiya', '1kg', 420)" 
-                                class="weight-toggle flex-1 py-2 px-4 rounded-full border-2 border-saffron text-sm font-medium">
+                        <button onclick="selectWeight(this, 'aaswad-mathiya', '1kg', 420)" 
+                                class="weight-toggle flex-1 py-2 px-3 rounded-full border-2 border-saffron text-sm font-medium">
                             1kg - ₹420
                         </button>
                     </div>
                     
-                    <button onclick="addToCart('mathiya')" 
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <button onclick="updateQuantity('aaswad-mathiya', -1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-saffron rounded-full flex items-center justify-center font-bold">-</button>
+                            <span id="qty-aaswad-mathiya" class="font-medium">0</span>
+                            <button onclick="updateQuantity('aaswad-mathiya', 1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-saffron rounded-full flex items-center justify-center font-bold">+</button>
+                        </div>
+                    </div>
+                    
+                    <button onclick="addToCart('aaswad-mathiya')" 
                             class="w-full bg-saffron hover:bg-orange-600 text-white py-3 rounded-full font-semibold transition-colors">
                         Add to Cart
                     </button>
                 </div>
 
-                <!-- Chorafali -->
-                <div class="product-card bg-cream rounded-3xl p-6 glow-shadow">
+                <!-- Aaswad Chorafali -->
+                <div class="product-card bg-cream rounded-3xl p-6 soft-shadow">
                     <div class="relative mb-4">
-                        <img src="assets/chorafali1.jpg" alt="Fresh Chorafali" class="w-full h-48 object-cover rounded-2xl"
+                        <img src="assets/chorafali1.jpg" alt="Aaswad Chorafali" class="w-full h-48 object-cover rounded-2xl"
                              onerror="this.src=''; this.style.display='none'; this.nextElementSibling.style.display='flex';">
                         <div class="w-full h-48 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-2xl flex items-center justify-center text-6xl" style="display: none;">🍪</div>
-                        <span class="absolute top-3 right-3 bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-medium">Spicy</span>
+                        <span class="absolute top-3 right-3 bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-medium">Zesty</span>
                     </div>
-                    <h4 class="text-xl font-baloo font-bold text-gray-800 mb-2">Crispy Chorafali</h4>
-                    <p class="text-sm text-gray-600 mb-4">
-                        Crunchy spirals with perfect spice.<br>
-                        Made with premium ingredients.<br>
-                        Irresistible teatime companion.
+                    <h4 class="text-lg md:text-xl font-poppins font-bold text-gray-800 mb-2">Aaswad Chorafali</h4>
+                    <p class="text-sm text-gray-600 mb-4 font-lato leading-relaxed">
+                        Tangy, airy crunch with Gujarati spices.<br>
+                        Melt-in-mouth festive favorite.<br>
+                        Irresistibly moreish!
                     </p>
                     
                     <div class="flex gap-2 mb-4">
-                        <button onclick="selectWeight(this, 'chorafali', '500g', 240)" 
-                                class="weight-toggle active flex-1 py-2 px-4 rounded-full border-2 border-saffron text-sm font-medium">
+                        <button onclick="selectWeight(this, 'aaswad-chorafali', '500g', 240)" 
+                                class="weight-toggle active flex-1 py-2 px-3 rounded-full border-2 border-saffron text-sm font-medium">
                             500g - ₹240
                         </button>
-                        <button onclick="selectWeight(this, 'chorafali', '1kg', 460)" 
-                                class="weight-toggle flex-1 py-2 px-4 rounded-full border-2 border-saffron text-sm font-medium">
+                        <button onclick="selectWeight(this, 'aaswad-chorafali', '1kg', 460)" 
+                                class="weight-toggle flex-1 py-2 px-3 rounded-full border-2 border-saffron text-sm font-medium">
                             1kg - ₹460
                         </button>
                     </div>
                     
-                    <button onclick="addToCart('chorafali')" 
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <button onclick="updateQuantity('aaswad-chorafali', -1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-saffron rounded-full flex items-center justify-center font-bold">-</button>
+                            <span id="qty-aaswad-chorafali" class="font-medium">0</span>
+                            <button onclick="updateQuantity('aaswad-chorafali', 1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-saffron rounded-full flex items-center justify-center font-bold">+</button>
+                        </div>
+                    </div>
+                    
+                    <button onclick="addToCart('aaswad-chorafali')" 
                             class="w-full bg-saffron hover:bg-orange-600 text-white py-3 rounded-full font-semibold transition-colors">
                         Add to Cart
                     </button>
                 </div>
 
-                <!-- Combo Pack -->
-                <div class="product-card bg-cream rounded-3xl p-6 glow-shadow border-2 border-saffron">
+                <!-- Yash Mathiya -->
+                <div class="product-card bg-cream rounded-3xl p-6 soft-shadow">
+                    <div class="relative mb-4">
+                        <img src="assets/mathiya1.jpg" alt="Yash Mathiya" class="w-full h-48 object-cover rounded-2xl"
+                             onerror="this.src=''; this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="w-full h-48 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-2xl flex items-center justify-center text-6xl" style="display: none;">🥨</div>
+                        <span class="absolute top-3 right-3 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-medium">Popular</span>
+                    </div>
+                    <h4 class="text-lg md:text-xl font-poppins font-bold text-gray-800 mb-2">Yash Mathiya</h4>
+                    <p class="text-sm text-gray-600 mb-4 font-lato leading-relaxed">
+                        Light layers, classic savoriness.<br>
+                        Crisp with every bite.<br>
+                        Perfect tea-time partner.
+                    </p>
+                    
+                    <div class="flex gap-2 mb-4">
+                        <button onclick="selectWeight(this, 'yash-mathiya', '500g', 210)" 
+                                class="weight-toggle active flex-1 py-2 px-3 rounded-full border-2 border-saffron text-sm font-medium">
+                            500g - ₹210
+                        </button>
+                        <button onclick="selectWeight(this, 'yash-mathiya', '1kg', 400)" 
+                                class="weight-toggle flex-1 py-2 px-3 rounded-full border-2 border-saffron text-sm font-medium">
+                            1kg - ₹400
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <button onclick="updateQuantity('yash-mathiya', -1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-saffron rounded-full flex items-center justify-center font-bold">-</button>
+                            <span id="qty-yash-mathiya" class="font-medium">0</span>
+                            <button onclick="updateQuantity('yash-mathiya', 1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-saffron rounded-full flex items-center justify-center font-bold">+</button>
+                        </div>
+                    </div>
+                    
+                    <button onclick="addToCart('yash-mathiya')" 
+                            class="w-full bg-saffron hover:bg-orange-600 text-white py-3 rounded-full font-semibold transition-colors">
+                        Add to Cart
+                    </button>
+                </div>
+
+                <!-- Yash Chorafali -->
+                <div class="product-card bg-cream rounded-3xl p-6 soft-shadow">
+                    <div class="relative mb-4">
+                        <img src="assets/chorafali1.jpg" alt="Yash Chorafali" class="w-full h-48 object-cover rounded-2xl"
+                             onerror="this.src=''; this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="w-full h-48 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-2xl flex items-center justify-center text-6xl" style="display: none;">🍪</div>
+                        <span class="absolute top-3 right-3 bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-medium">Zesty</span>
+                    </div>
+                    <h4 class="text-lg md:text-xl font-poppins font-bold text-gray-800 mb-2">Yash Chorafali</h4>
+                    <p class="text-sm text-gray-600 mb-4 font-lato leading-relaxed">
+                        Crisp, zingy chorafali goodness.<br>
+                        Balanced spice, joyful crunch.<br>
+                        Made for snacking lovers.
+                    </p>
+                    
+                    <div class="flex gap-2 mb-4">
+                        <button onclick="selectWeight(this, 'yash-chorafali', '500g', 230)" 
+                                class="weight-toggle active flex-1 py-2 px-3 rounded-full border-2 border-saffron text-sm font-medium">
+                            500g - ₹230
+                        </button>
+                        <button onclick="selectWeight(this, 'yash-chorafali', '1kg', 440)" 
+                                class="weight-toggle flex-1 py-2 px-3 rounded-full border-2 border-saffron text-sm font-medium">
+                            1kg - ₹440
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <button onclick="updateQuantity('yash-chorafali', -1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-saffron rounded-full flex items-center justify-center font-bold">-</button>
+                            <span id="qty-yash-chorafali" class="font-medium">0</span>
+                            <button onclick="updateQuantity('yash-chorafali', 1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-saffron rounded-full flex items-center justify-center font-bold">+</button>
+                        </div>
+                    </div>
+                    
+                    <button onclick="addToCart('yash-chorafali')" 
+                            class="w-full bg-saffron hover:bg-orange-600 text-white py-3 rounded-full font-semibold transition-colors">
+                        Add to Cart
+                    </button>
+                </div>
+
+                <!-- Combo Packs -->
+                <div class="product-card bg-cream rounded-3xl p-6 soft-shadow border-2 border-saffron">
                     <div class="relative mb-4">
                         <img src="assets/combomathiyachorafali.png" alt="Combo Pack" class="w-full h-48 object-cover rounded-2xl"
                              onerror="this.src=''; this.style.display='none'; this.nextElementSibling.style.display='flex';">
                         <div class="w-full h-48 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-2xl flex items-center justify-center text-5xl" style="display: none;">🥨🍪</div>
-                        <span class="absolute top-3 right-3 bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-medium">Value</span>
+                        <span class="absolute top-3 right-3 bg-purple-500 text-white px-3 py-1 rounded-full text-xs font-medium">Value</span>
                     </div>
-                    <h4 class="text-xl font-baloo font-bold text-gray-800 mb-2">Mathiya + Chorafali Combo</h4>
-                    <p class="text-sm text-gray-600 mb-4">
-                        Best of both worlds together.<br>
-                        Perfect variety pack for families.<br>
-                        Great savings on combo purchase.
+                    <h4 class="text-lg md:text-xl font-poppins font-bold text-gray-800 mb-2">Combo Aaswad/Yash</h4>
+                    <p class="text-sm text-gray-600 mb-4 font-lato leading-relaxed">
+                        Two favorites in one box.<br>
+                        Shareable & celebration-ready.<br>
+                        Best value for families.
                     </p>
                     
                     <div class="flex gap-2 mb-4">
-                        <button onclick="selectWeight(this, 'combo', '500g', 440)" 
-                                class="weight-toggle active flex-1 py-2 px-4 rounded-full border-2 border-saffron text-sm font-medium">
+                        <button onclick="selectWeight(this, 'combo-pack', '500g', 440)" 
+                                class="weight-toggle active flex-1 py-2 px-3 rounded-full border-2 border-saffron text-sm font-medium">
                             500g - ₹440
                         </button>
-                        <button onclick="selectWeight(this, 'combo', '1kg', 860)" 
-                                class="weight-toggle flex-1 py-2 px-4 rounded-full border-2 border-saffron text-sm font-medium">
+                        <button onclick="selectWeight(this, 'combo-pack', '1kg', 860)" 
+                                class="weight-toggle flex-1 py-2 px-3 rounded-full border-2 border-saffron text-sm font-medium">
                             1kg - ₹860
                         </button>
                     </div>
                     
-                    <button onclick="addToCart('combo')" 
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <button onclick="updateQuantity('combo-pack', -1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-saffron rounded-full flex items-center justify-center font-bold">-</button>
+                            <span id="qty-combo-pack" class="font-medium">0</span>
+                            <button onclick="updateQuantity('combo-pack', 1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-saffron rounded-full flex items-center justify-center font-bold">+</button>
+                        </div>
+                    </div>
+                    
+                    <button onclick="addToCart('combo-pack')" 
                             class="w-full bg-saffron hover:bg-orange-600 text-white py-3 rounded-full font-semibold transition-colors">
                         Add to Cart
                     </button>
                 </div>
 
-                <!-- Khakhra -->
-                <div class="product-card bg-cream rounded-3xl p-6 glow-shadow">
+                <!-- Khakhra Coming Soon -->
+                <div class="product-card bg-gray-100 rounded-3xl p-6 soft-shadow opacity-75">
                     <div class="relative mb-4">
-                        <img src="assets/khakhra1.jpg" alt="Gujarati Khakhra" class="w-full h-48 object-cover rounded-2xl"
+                        <img src="assets/khakhra1.jpg" alt="Khakhra Coming Soon" class="w-full h-48 object-cover rounded-2xl"
                              onerror="this.src=''; this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                        <div class="w-full h-48 bg-gradient-to-br from-yellow-100 to-orange-100 rounded-2xl flex items-center justify-center text-6xl" style="display: none;">🫓</div>
-                        <span class="absolute top-3 right-3 bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-medium">Zesty</span>
+                        <div class="w-full h-48 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center text-6xl" style="display: none;">🫓</div>
+                        <span class="absolute top-3 right-3 bg-gray-500 text-white px-3 py-1 rounded-full text-xs font-medium">Coming Soon</span>
                     </div>
-                    <h4 class="text-xl font-baloo font-bold text-gray-800 mb-2">Gujarati Khakhra</h4>
-                    <p class="text-sm text-gray-600 mb-4">
-                        Ultra-thin, crispy & flavorful.<br>
-                        Available in multiple flavors.<br>
-                        Healthy snacking option.
+                    <h4 class="text-lg md:text-xl font-poppins font-bold text-gray-600 mb-2">Khakhra (Coming Soon)</h4>
+                    <p class="text-sm text-gray-500 mb-4 font-lato leading-relaxed">
+                        Thin, roasted crunch.<br>
+                        Classic Gujarati breakfast.<br>
+                        Flavours coming soon!
                     </p>
                     
-                    <div class="flex gap-2 mb-4">
-                        <button onclick="selectWeight(this, 'khakhra', '500g', 200)" 
-                                class="weight-toggle active flex-1 py-2 px-4 rounded-full border-2 border-saffron text-sm font-medium">
-                            500g - ₹200
-                        </button>
-                        <button onclick="selectWeight(this, 'khakhra', '1kg', 380)" 
-                                class="weight-toggle flex-1 py-2 px-4 rounded-full border-2 border-saffron text-sm font-medium">
-                            1kg - ₹380
-                        </button>
+                    <div class="text-center">
+                        <a href="https://wa.me/919978113276?text=Hi%2C%20please%20notify%20me%20when%20Khakhra%20is%20available!" 
+                           target="_blank" rel="noopener noreferrer"
+                           class="text-saffron hover:text-orange-700 text-sm font-medium underline">
+                            Notify me on WhatsApp
+                        </a>
                     </div>
-                    
-                    <button onclick="addToCart('khakhra')" 
-                            class="w-full bg-saffron hover:bg-orange-600 text-white py-3 rounded-full font-semibold transition-colors">
-                        Add to Cart
-                    </button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Auto-Count Strip -->
+    <!-- Feature Strip -->
     <section class="py-12 bg-gradient-to-r from-saffron to-orange-500 text-white">
         <div class="container mx-auto px-4">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                <div class="counter-animation">
-                    <div class="text-3xl mb-2">1️⃣</div>
-                    <div class="text-2xl font-bold counter" data-target="700">0</div>
-                    <p class="text-sm">Fulfilled Orders</p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                <div class="counter-animation bg-cream text-gray-800 rounded-2xl p-4 md:p-6 text-center soft-shadow">
+                    <div class="text-2xl md:text-3xl mb-2 text-saffron">1️⃣</div>
+                    <div class="text-xl md:text-2xl font-bold counter" data-target="700">0</div>
+                    <p class="text-xs md:text-sm font-medium">Fulfilled Orders</p>
+                    <p class="text-xs text-gray-600 mt-1">સફળ ઓર્ડર</p>
                 </div>
-                <div class="counter-animation">
-                    <div class="text-3xl mb-2">2️⃣</div>
-                    <div class="text-2xl font-bold counter" data-target="120">0</div>
-                    <p class="text-sm">Happy Customers</p>
+                <div class="counter-animation bg-cream text-gray-800 rounded-2xl p-4 md:p-6 text-center soft-shadow">
+                    <div class="text-2xl md:text-3xl mb-2 text-saffron">2️⃣</div>
+                    <div class="text-xl md:text-2xl font-bold counter" data-target="120">0</div>
+                    <p class="text-xs md:text-sm font-medium">Happy Customers</p>
+                    <p class="text-xs text-gray-600 mt-1">ખુશ ગ્રાહકો</p>
                 </div>
-                <div class="counter-animation">
-                    <div class="text-3xl mb-2">3️⃣</div>
-                    <div class="text-2xl font-bold counter" data-target="5">0</div>
-                    <p class="text-sm">Years of Taste</p>
+                <div class="counter-animation bg-cream text-gray-800 rounded-2xl p-4 md:p-6 text-center soft-shadow">
+                    <div class="text-2xl md:text-3xl mb-2 text-saffron">3️⃣</div>
+                    <div class="text-xl md:text-2xl font-bold counter" data-target="5">0</div>
+                    <p class="text-xs md:text-sm font-medium">Years of Taste</p>
+                    <p class="text-xs text-gray-600 mt-1">વર્ષોનો સ્વાદ</p>
                 </div>
-                <div class="counter-animation">
-                    <div class="text-3xl mb-2">4️⃣</div>
-                    <div class="text-2xl font-bold counter" data-target="50">0</div>
-                    <p class="text-sm">Snacks Delivered Daily</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Us Section -->
-    <section class="py-16 px-4 bg-white">
-        <div class="container mx-auto">
-            <h3 class="text-3xl font-baloo font-bold text-center text-gray-800 mb-12">About PapadSale</h3>
-            
-            <div class="grid md:grid-cols-2 gap-12">
-                <!-- Our Story -->
-                <div>
-                    <h4 class="text-2xl font-baloo font-bold text-saffron mb-6">Our Story</h4>
-                    <p class="text-gray-700 leading-relaxed mb-4">
-                        Born from a passion to share authentic Gujarati flavors, PapadSale brings you the taste of home-cooked snacks made with love and traditional recipes passed down through generations.
-                    </p>
-                    <p class="text-gray-700 leading-relaxed mb-4">
-                        Every papad, mathiya, and chorafali is handcrafted using premium ingredients, ensuring that each bite delivers the perfect crunch and authentic taste that reminds you of home.
-                    </p>
-                    <p class="text-gray-700 leading-relaxed">
-                        Our mission is simple: to bring the joy of traditional Gujarati snacks to every household, maintaining the same quality and taste that has made us a trusted name in the community.
-                    </p>
-                </div>
-                
-                <!-- Why Choose Us -->
-                <div class="bg-cream rounded-3xl p-8 glow-shadow">
-                    <h4 class="text-2xl font-baloo font-bold text-saffron mb-6">Why Choose Us?</h4>
-                    <div class="space-y-4">
-                        <div class="flex items-start gap-3">
-                            <div class="text-2xl">👨‍🍳</div>
-                            <div>
-                                <h5 class="font-semibold text-gray-800">Family Recipes</h5>
-                                <p class="text-sm text-gray-600">Traditional methods passed down through generations</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-3">
-                            <div class="text-2xl">🌟</div>
-                            <div>
-                                <h5 class="font-semibold text-gray-800">Premium Ingredients</h5>
-                                <p class="text-sm text-gray-600">Only the finest quality ingredients sourced locally</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-3">
-                            <div class="text-2xl">🤲</div>
-                            <div>
-                                <h5 class="font-semibold text-gray-800">Handcrafted with Care</h5>
-                                <p class="text-sm text-gray-600">Every piece made with attention to detail and love</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-3">
-                            <div class="text-2xl">🚚</div>
-                            <div>
-                                <h5 class="font-semibold text-gray-800">Fresh Delivery Guarantee</h5>
-                                <p class="text-sm text-gray-600">Same-day dispatch for nearby areas, always fresh</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="counter-animation bg-cream text-gray-800 rounded-2xl p-4 md:p-6 text-center soft-shadow">
+                    <div class="text-2xl md:text-3xl mb-2 text-saffron">4️⃣</div>
+                    <div class="text-xl md:text-2xl font-bold counter" data-target="50">0</div>
+                    <p class="text-xs md:text-sm font-medium">Snacks Delivered Daily</p>
+                    <p class="text-xs text-gray-600 mt-1">દૈનિક ડિલિવરી</p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Cart Drawer -->
-    <div id="cart-drawer" class="cart-drawer fixed top-0 right-0 h-full w-96 bg-white shadow-2xl z-50 overflow-y-auto">
-        <div class="p-6">
+    <div id="cart-drawer" class="cart-drawer fixed top-0 right-0 h-full w-full md:w-96 bg-white shadow-2xl z-50 overflow-y-auto">
+        <div class="p-4 md:p-6">
             <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-baloo font-bold text-gray-800">Your Cart</h3>
+                <h3 class="text-xl md:text-2xl font-baloo font-bold text-gray-800">Your Cart</h3>
                 <button onclick="toggleCart()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
             </div>
             
@@ -432,11 +517,22 @@
                         <option value="Morning">Morning (9 AM - 12 PM)</option>
                         <option value="Evening">Evening (4 PM - 7 PM)</option>
                     </select>
+                    <textarea id="order-notes" placeholder="Notes (Optional)" rows="2"
+                              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent"></textarea>
+                    <select id="payment-mode" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent">
+                        <option value="UPI">UPI Payment</option>
+                        <option value="COD">Cash on Delivery</option>
+                    </select>
                 </div>
                 
                 <button onclick="placeOrder()" 
                         class="w-full bg-green-500 hover:bg-green-600 text-white py-4 rounded-lg font-bold text-lg transition-colors mt-6">
                     📱 Place Order on WhatsApp
+                </button>
+                
+                <button id="confirm-btn" onclick="sendConfirmation()" 
+                        class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-medium transition-colors mt-3 hidden">
+                    📲 Send Confirmation to My WhatsApp
                 </button>
                 
                 <!-- Payment Info -->
@@ -449,17 +545,72 @@
                             UPI QR Code
                         </div>
                     </div>
-                    <p class="text-sm text-gray-600 text-center">Share screenshot on WhatsApp for faster dispatch</p>
+                    <p class="text-sm text-gray-600 text-center">Share payment screenshot on WhatsApp for faster dispatch</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-12 px-4">
+    <!-- About Us Section -->
+    <section class="py-12 md:py-16 px-4 bg-white">
         <div class="container mx-auto">
-            <div class="grid md:grid-cols-4 gap-8">
+            <h3 class="text-2xl md:text-3xl font-baloo font-bold text-center text-gray-800 mb-8 md:mb-12">About PapadSale</h3>
+            
+            <div class="grid md:grid-cols-2 gap-8 md:gap-12">
+                <!-- Our Story -->
                 <div>
+                    <h4 class="text-xl md:text-2xl font-poppins font-bold text-saffron mb-4 md:mb-6">Our Story</h4>
+                    <p class="text-gray-700 leading-relaxed mb-4 font-lato">
+                        We bring authentic Gujarati taste handcrafted with love. Family recipes passed down for generations ensure every bite delivers the perfect crunch and authentic flavor.
+                    </p>
+                    <p class="text-gray-700 leading-relaxed font-lato">
+                        Our mission is to share the joy of traditional Gujarati snacks with every household, maintaining the same quality and taste that has made us a trusted name in the community.
+                    </p>
+                </div>
+                
+                <!-- Why Choose Us -->
+                <div class="bg-cream rounded-3xl p-6 md:p-8 soft-shadow">
+                    <h4 class="text-xl md:text-2xl font-poppins font-bold text-saffron mb-4 md:mb-6">Why Choose Us?</h4>
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-3">
+                            <div class="text-2xl">👨‍🍳</div>
+                            <div>
+                                <h5 class="font-semibold text-gray-800">Traditional Recipes</h5>
+                                <p class="text-sm text-gray-600">Family methods passed down through generations</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="text-2xl">🌟</div>
+                            <div>
+                                <h5 class="font-semibold text-gray-800">Premium Ingredients</h5>
+                                <p class="text-sm text-gray-600">Only the finest quality ingredients sourced locally</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="text-2xl">🤲</div>
+                            <div>
+                                <h5 class="font-semibold text-gray-800">Handcrafted with Care</h5>
+                                <p class="text-sm text-gray-600">Every piece made with attention to detail and love</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <div class="text-2xl">🚚</div>
+                            <div>
+                                <h5 class="font-semibold text-gray-800">Fresh Delivery</h5>
+                                <p class="text-sm text-gray-600">Same-day dispatch for nearby areas, always fresh</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 md:py-12 px-4">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+                <div class="col-span-2 md:col-span-1">
                     <div class="flex items-center gap-3 mb-4">
                         <img src="assets/logo.png" alt="PapadSale Logo" class="w-10 h-10 rounded-full"
                              onerror="this.src=''; this.alt='🫓'; this.className='text-3xl';">
@@ -487,7 +638,7 @@
                 <div>
                     <h4 class="font-semibold mb-4">Contact Info</h4>
                     <p class="text-gray-300 text-sm mb-2">📍 Randheja, Gandhinagar</p>
-                    <p class="text-gray-300 text-sm mb-2">Gujarat 382620</p>
+                    <p class="text-gray-300 text-sm mb-2">Gujarat – 382620</p>
                     <p class="text-gray-300 text-sm">📱 +91 99781 13276</p>
                 </div>
             </div>
@@ -500,30 +651,41 @@
 
     <!-- Floating WhatsApp -->
     <a href="https://wa.me/919978113276" target="_blank" rel="noopener noreferrer" 
-       class="floating-whatsapp bg-green-500 text-white p-4 rounded-full shadow-lg">
-        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+       class="floating-whatsapp bg-green-500 text-white p-3 md:p-4 rounded-full shadow-lg">
+        <svg class="w-5 h-5 md:w-6 md:h-6" fill="currentColor" viewBox="0 0 24 24">
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.106"/>
         </svg>
     </a>
 
     <!-- Badges -->
-    <div class="badge">
-        <div class="bg-green-500 text-white px-3 py-2 rounded-r-full text-xs font-medium mb-2">
-            💳 UPI/COD Available
-        </div>
-        <div class="bg-blue-500 text-white px-3 py-2 rounded-r-full text-xs font-medium">
-            🚚 Same-day dispatch nearby
+    <div class="badge-container">
+        <div class="space-y-2">
+            <div class="bg-green-500 text-white px-3 py-2 rounded-r-full text-xs font-medium">
+                💳 UPI/COD Available
+            </div>
+            <div class="bg-blue-500 text-white px-3 py-2 rounded-r-full text-xs font-medium">
+                🚚 Same-day dispatch nearby
+            </div>
+            <div class="bg-purple-500 text-white px-3 py-2 rounded-r-full text-xs font-medium">
+                ⚡ 5-min WhatsApp Support
+            </div>
         </div>
     </div>
+
+    <!-- Cart Button (Mobile) -->
+    <button onclick="toggleCart()" class="md:hidden fixed bottom-20 left-4 bg-saffron text-white p-3 rounded-full shadow-lg z-40">
+        🛒 <span id="mobile-cart-count" class="ml-1">0</span>
+    </button>
 
     <script>
         // Product data and cart
         const products = {
-            'papad': { name: 'Traditional Papad', sizes: { '500g': 180, '1kg': 340 } },
-            'mathiya': { name: 'Aaswad Mathiya - Sada', sizes: { '500g': 220, '1kg': 420 } },
-            'chorafali': { name: 'Crispy Chorafali', sizes: { '500g': 240, '1kg': 460 } },
-            'combo': { name: 'Mathiya + Chorafali Combo', sizes: { '500g': 440, '1kg': 860 } },
-            'khakhra': { name: 'Gujarati Khakhra', sizes: { '500g': 200, '1kg': 380 } }
+            'papad-classic': { name: 'Papad (Classic)', brand: '', sizes: { '500g': 180, '1kg': 340 } },
+            'aaswad-mathiya': { name: 'Aaswad Mathiya', brand: 'Aaswad', sizes: { '500g': 220, '1kg': 420 } },
+            'aaswad-chorafali': { name: 'Aaswad Chorafali', brand: 'Aaswad', sizes: { '500g': 240, '1kg': 460 } },
+            'yash-mathiya': { name: 'Yash Mathiya', brand: 'Yash', sizes: { '500g': 210, '1kg': 400 } },
+            'yash-chorafali': { name: 'Yash Chorafali', brand: 'Yash', sizes: { '500g': 230, '1kg': 440 } },
+            'combo-pack': { name: 'Combo Aaswad/Yash', brand: 'Combo', sizes: { '500g': 440, '1kg': 860 } }
         };
 
         let cart = [];
@@ -531,7 +693,7 @@
 
         // Initialize product states
         Object.keys(products).forEach(id => {
-            productStates[id] = { size: '500g' };
+            productStates[id] = { size: '500g', quantity: 0 };
         });
 
         function selectWeight(button, productId, size, price) {
@@ -542,8 +704,18 @@
             productStates[productId].size = size;
         }
 
+        function updateQuantity(productId, change) {
+            const currentQty = productStates[productId].quantity;
+            const newQty = Math.max(0, currentQty + change);
+            productStates[productId].quantity = newQty;
+            
+            document.getElementById(`qty-${productId}`).textContent = newQty;
+        }
+
         function addToCart(productId) {
             const state = productStates[productId];
+            if (state.quantity === 0) return;
+            
             const product = products[productId];
             const price = product.sizes[state.size];
             
@@ -552,16 +724,21 @@
             );
             
             if (existingIndex >= 0) {
-                cart[existingIndex].quantity += 1;
+                cart[existingIndex].quantity += state.quantity;
             } else {
                 cart.push({
                     id: productId,
                     name: product.name,
+                    brand: product.brand,
                     size: state.size,
                     price: price,
-                    quantity: 1
+                    quantity: state.quantity
                 });
             }
+            
+            // Reset quantity
+            productStates[productId].quantity = 0;
+            document.getElementById(`qty-${productId}`).textContent = 0;
             
             updateCartDisplay();
             toggleCart();
@@ -571,25 +748,29 @@
             const cartItems = document.getElementById('cart-items');
             const cartTotal = document.getElementById('cart-total');
             const checkoutForm = document.getElementById('checkout-form');
+            const mobileCartCount = document.getElementById('mobile-cart-count');
             
             if (cart.length === 0) {
                 cartItems.innerHTML = '<p class="text-gray-500 text-center py-8">Your cart is empty</p>';
                 cartTotal.classList.add('hidden');
                 checkoutForm.classList.add('hidden');
+                mobileCartCount.textContent = '0';
                 return;
             }
             
             let total = 0;
+            let itemCount = 0;
             
             cartItems.innerHTML = cart.map((item, index) => {
                 const subtotal = item.price * item.quantity;
                 total += subtotal;
+                itemCount += item.quantity;
                 
                 return `
                     <div class="flex justify-between items-center p-4 bg-cream rounded-lg">
                         <div class="flex-1">
                             <h5 class="font-medium">${item.name}</h5>
-                            <p class="text-sm text-gray-600">${item.size} × ${item.quantity}</p>
+                            <p class="text-sm text-gray-600">${item.brand ? item.brand + ' - ' : ''}${item.size} × ${item.quantity}</p>
                         </div>
                         <div class="text-right">
                             <p class="font-bold">₹${subtotal}</p>
@@ -602,6 +783,7 @@
             document.getElementById('total-amount').textContent = `₹${total}`;
             cartTotal.classList.remove('hidden');
             checkoutForm.classList.remove('hidden');
+            mobileCartCount.textContent = itemCount.toString();
         }
 
         function removeFromCart(index) {
@@ -648,6 +830,12 @@
             const deliveryTime = document.getElementById('delivery-time').value;
             message += `Delivery Time: ${deliveryTime}\n`;
             
+            const paymentMode = document.getElementById('payment-mode').value;
+            message += `Payment Mode: ${paymentMode}\n`;
+            
+            const notes = document.getElementById('order-notes').value.trim();
+            if (notes) message += `Notes: ${notes}\n`;
+            
             message += `\n📦 *Order Items:*\n`;
             let total = 0;
             
@@ -663,6 +851,24 @@
             const encodedMessage = encodeURIComponent(message);
             const whatsappUrl = `https://wa.me/919978113276?text=${encodedMessage}`;
             window.open(whatsappUrl, '_blank');
+            
+            // Show confirmation button
+            document.getElementById('confirm-btn').classList.remove('hidden');
+        }
+
+        function sendConfirmation() {
+            const name = document.getElementById('customer-name').value.trim();
+            const mobile = document.getElementById('customer-mobile').value.trim();
+            
+            let total = 0;
+            cart.forEach(item => {
+                total += item.price * item.quantity;
+            });
+            
+            const confirmMessage = `PAPADSALE – ORDER CONFIRMATION ✅\nThanks ${name}! Total: ₹${total}\nWe'll confirm delivery soon on WhatsApp.`;
+            const encodedConfirmMessage = encodeURIComponent(confirmMessage);
+            const confirmUrl = `https://wa.me/${mobile}?text=${encodedConfirmMessage}`;
+            window.open(confirmUrl, '_blank');
         }
 
         function showMessage(text) {
@@ -714,10 +920,13 @@
         // Close cart when clicking outside
         document.addEventListener('click', function(event) {
             const drawer = document.getElementById('cart-drawer');
-            if (!drawer.contains(event.target) && !event.target.closest('button[onclick*="addToCart"]') && drawer.classList.contains('open')) {
+            if (!drawer.contains(event.target) && 
+                !event.target.closest('button[onclick*="addToCart"]') && 
+                !event.target.closest('button[onclick="toggleCart()"]') && 
+                drawer.classList.contains('open')) {
                 drawer.classList.remove('open');
             }
         });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98e7ab1855762e83',t:'MTc2MDQ1MTExMi4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98e7c0c0301e3e57',t:'MTc2MDQ1MTk5OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
