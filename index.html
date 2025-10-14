@@ -1,127 +1,690 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PapadSale – Premium Gujarati Papads & Snacks</title>
-  <meta name="description" content="Authentic homemade papads and Gujarati snacks. Fresh, handcrafted Mathiya & Chorafali delivered across India via WhatsApp ordering." />
-  <link rel="canonical" href="https://papadsale.example.com/" />
-  <meta property="og:title" content="PapadSale – Premium Gujarati Papads & Snacks" />
-  <meta property="og:description" content="Homemade papads & snacks crafted with traditional recipes. Order on WhatsApp." />
-  <meta property="og:type" content="website" />
-  <meta property="og:locale" content="en_IN" />
-  <meta name="theme-color" content="#ff7a00" />
-  <link rel="icon" href="assets/logo.png" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    :root{--brand-1:#ff7a00;--brand-2:#ff9933;--brand-3:#ffb366}
-    *{box-sizing:border-box}
-    body{font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
-    .gradient-bg{background:linear-gradient(135deg,var(--brand-1),var(--brand-2) 50%,var(--brand-3))}
-    .professional-bg{background:linear-gradient(135deg,#f8fafc 0%,#e2e8f0 100%)}
-    .btn-primary{background:linear-gradient(135deg,var(--brand-1),var(--brand-2));color:#fff;font-weight:600;border-radius:.5rem;padding:.75rem 1.5rem;transition:.3s}
-    .btn-primary:hover{background:linear-gradient(135deg,var(--brand-2),var(--brand-3));transform:translateY(-1px)}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PapadSale - Ghar-jaisi Gujarati Swad</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        .font-baloo { font-family: 'Baloo 2', cursive; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+        
+        .bg-pattern {
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(255, 166, 43, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 106, 0, 0.1) 0%, transparent 50%);
+        }
+        
+        .rangoli-dots::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 10px 10px, rgba(255, 166, 43, 0.3) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        
+        .cart-drawer {
+            transform: translateY(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .cart-drawer.open {
+            transform: translateY(0);
+        }
+        
+        .quantity-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .quantity-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .product-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 166, 43, 0.2);
+        }
+        
+        .size-toggle {
+            transition: all 0.2s ease;
+        }
+        
+        .size-toggle.active {
+            background: linear-gradient(135deg, #FF6A00, #FFA62B);
+            color: white;
+            transform: scale(1.05);
+        }
+    </style>
 </head>
-<body class="bg-gray-50 text-gray-900">
-  <header class="gradient-bg text-white shadow-xl p-6 flex justify-between items-center">
-    <div class="flex items-center gap-3">
-      <img src="assets/logo.png" alt="PapadSale Logo" class="w-12 h-12 rounded-lg" />
-      <h1 class="text-3xl font-bold">PapadSale</h1>
-    </div>
-    <a href="#products" class="btn-primary">Shop Now</a>
-  </header>
-
-  <main>
-    <section id="products" class="py-16 bg-white">
-      <div class="container mx-auto px-4">
-        <h2 class="text-4xl font-bold text-center mb-12">Our Products</h2>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="productGrid">
-          <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-            <img src="assets/mathiya1.jpg" alt="Aaswad Mathiya" class="w-full h-56 object-cover">
-            <div class="p-6">
-              <h3 class="text-xl font-bold mb-2">Aaswad Mathiya</h3>
-              <p class="text-gray-600 mb-4">Crispy and flavorful traditional Mathiya made with authentic spices.</p>
-              <select id="mathiyaQty" class="border rounded px-3 py-2 mb-4 w-full">
-                <option value="500">500g - ₹60</option>
-                <option value="1000">1kg - ₹120</option>
-              </select>
-              <button onclick="addToCart('Aaswad Mathiya', document.getElementById('mathiyaQty').value)" class="btn-primary w-full">Add to Cart</button>
+<body class="bg-gradient-to-br from-yellow-50 to-orange-50 font-inter">
+    <!-- Header -->
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="text-4xl">🫓</div>
+                    <div>
+                        <h1 class="text-2xl font-baloo font-bold text-orange-600">PapadSale</h1>
+                        <p class="text-xs text-gray-600">Crispy | Organic | Handmade</p>
+                    </div>
+                </div>
+                <button onclick="toggleCart()" class="relative bg-orange-500 text-white px-4 py-2 rounded-full font-medium">
+                    🛒 Cart (<span id="cart-count">0</span>)
+                </button>
             </div>
-          </div>
-
-          <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-            <img src="assets/chorafali1.jpg" alt="Aaswad Chorafali" class="w-full h-56 object-cover">
-            <div class="p-6">
-              <h3 class="text-xl font-bold mb-2">Aaswad Chorafali</h3>
-              <p class="text-gray-600 mb-4">Spicy and crunchy Chorafali with the perfect blend of masalas.</p>
-              <select id="chorafaliQty" class="border rounded px-3 py-2 mb-4 w-full">
-                <option value="500">500g - ₹70</option>
-                <option value="1000">1kg - ₹140</option>
-              </select>
-              <button onclick="addToCart('Aaswad Chorafali', document.getElementById('chorafaliQty').value)" class="btn-primary w-full">Add to Cart</button>
-            </div>
-          </div>
-
-          <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-            <img src="assets/papad1.jpg" alt="Papad" class="w-full h-56 object-cover">
-            <div class="p-6">
-              <h3 class="text-xl font-bold mb-2">Papad</h3>
-              <p class="text-gray-600 mb-4">Authentic Gujarati papads made from the finest ingredients.</p>
-              <select id="papadQty" class="border rounded px-3 py-2 mb-4 w-full">
-                <option value="500">500g - ₹65</option>
-                <option value="1000">1kg - ₹130</option>
-              </select>
-              <button onclick="addToCart('Papad', document.getElementById('papadQty').value)" class="btn-primary w-full">Add to Cart</button>
-            </div>
-          </div>
         </div>
-      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="bg-pattern py-12 px-4">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-baloo font-bold text-gray-800 mb-4">
+                Papad, Mathiya, Chorafali<br>
+                <span class="text-orange-600">Asli Swad, Asli Gujarat!</span>
+            </h2>
+            <p class="text-gray-600 mb-8 max-w-md mx-auto">Fresh & crunchy daily delivery. Made for authentic Gujarati taste buds.</p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button onclick="document.getElementById('menu').scrollIntoView({behavior: 'smooth'})" 
+                        class="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-full font-medium transition-colors">
+                    View Menu
+                </button>
+                <a href="https://wa.me/919978113276" target="_blank" rel="noopener noreferrer"
+                   class="bg-green-500 hover:bg-green-600 text-white px-8 py-3 rounded-full font-medium transition-colors">
+                    WhatsApp Us
+                </a>
+            </div>
+        </div>
     </section>
 
-    <section id="combo" class="py-16 bg-gray-50">
-      <div class="container mx-auto px-4 text-center">
-        <h2 class="text-3xl font-bold mb-6">Combo Offer</h2>
-        <img src="assets/combomathiyachorafali.png" alt="Combo Mathiya Chorafali" class="w-full max-w-md mx-auto rounded-lg shadow mb-6">
-        <p class="text-gray-700 mb-4">Get Aaswad Mathiya 500g + Aaswad Chorafali 500g at just ₹130!</p>
-        <button onclick="addToCart('Combo Mathiya + Chorafali', 130)" class="btn-primary">Add Combo</button>
-      </div>
+    <!-- Highlights -->
+    <section class="py-8 px-4 bg-white">
+        <div class="container mx-auto">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="text-center">
+                    <div class="text-3xl mb-2">🌟</div>
+                    <p class="text-sm font-medium text-gray-700">Fresh & Crunchy Daily</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl mb-2">💳</div>
+                    <p class="text-sm font-medium text-gray-700">Cash on Delivery</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl mb-2">🚚</div>
+                    <p class="text-sm font-medium text-gray-700">Fast Local Delivery</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl mb-2">❤️</div>
+                    <p class="text-sm font-medium text-gray-700">Gujarati Taste</p>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <section id="payment" class="py-16 text-center">
-      <h2 class="text-3xl font-bold mb-4">Payment Options</h2>
-      <p class="text-gray-700 mb-4">Scan the QR code or copy the UPI ID to complete your payment.</p>
-      <img src="assets/qr.png" alt="QR Payment" class="w-48 h-48 mx-auto mb-4">
-      <div class="flex justify-center items-center space-x-3">
-        <input id="upiId" type="text" value="9978113276@okbizaxis" readonly class="border px-3 py-2 rounded w-64 text-center">
-        <button onclick="copyUPI()" class="btn-primary px-4 py-2 rounded">Copy</button>
-      </div>
+    <!-- Menu Section -->
+    <section id="menu" class="py-12 px-4 bg-gradient-to-br from-yellow-50 to-orange-50">
+        <div class="container mx-auto">
+            <h3 class="text-3xl font-baloo font-bold text-center text-gray-800 mb-8">Our Menu</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Papad Classic -->
+                <div class="product-card bg-white rounded-2xl p-6 shadow-lg">
+                    <div class="text-6xl text-center mb-4">🫓</div>
+                    <h4 class="text-xl font-baloo font-bold text-gray-800 mb-2">Papad (Classic)</h4>
+                    <p class="text-sm text-gray-600 mb-4">રસદાર ક્રંચ પણ ઘર જેવી!</p>
+                    
+                    <div class="flex gap-2 mb-4">
+                        <button onclick="selectSize(this, 'papad-classic', '500g', 180)" 
+                                class="size-toggle active flex-1 py-2 px-4 rounded-lg border-2 border-orange-200 text-sm font-medium">
+                            500g - ₹180
+                        </button>
+                        <button onclick="selectSize(this, 'papad-classic', '1kg', 340)" 
+                                class="size-toggle flex-1 py-2 px-4 rounded-lg border-2 border-orange-200 text-sm font-medium">
+                            1kg - ₹340
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <button onclick="updateQuantity('papad-classic', -1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold">-</button>
+                            <span id="qty-papad-classic" class="font-medium">0</span>
+                            <button onclick="updateQuantity('papad-classic', 1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold">+</button>
+                        </div>
+                        <button onclick="addToCart('papad-classic')" 
+                                class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Aaswad Mathiya -->
+                <div class="product-card bg-white rounded-2xl p-6 shadow-lg">
+                    <div class="text-6xl text-center mb-4">🥨</div>
+                    <h4 class="text-xl font-baloo font-bold text-gray-800 mb-2">Aaswad Mathiya</h4>
+                    <p class="text-sm text-gray-600 mb-4">પરંપરાગત સ્વાદ, આસ્વાદ બ્રાન્ડ!</p>
+                    
+                    <div class="flex gap-2 mb-4">
+                        <button onclick="selectSize(this, 'aaswad-mathiya', '500g', 220)" 
+                                class="size-toggle active flex-1 py-2 px-4 rounded-lg border-2 border-orange-200 text-sm font-medium">
+                            500g - ₹220
+                        </button>
+                        <button onclick="selectSize(this, 'aaswad-mathiya', '1kg', 420)" 
+                                class="size-toggle flex-1 py-2 px-4 rounded-lg border-2 border-orange-200 text-sm font-medium">
+                            1kg - ₹420
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <button onclick="updateQuantity('aaswad-mathiya', -1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold">-</button>
+                            <span id="qty-aaswad-mathiya" class="font-medium">0</span>
+                            <button onclick="updateQuantity('aaswad-mathiya', 1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold">+</button>
+                        </div>
+                        <button onclick="addToCart('aaswad-mathiya')" 
+                                class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Aaswad Chorafali -->
+                <div class="product-card bg-white rounded-2xl p-6 shadow-lg">
+                    <div class="text-6xl text-center mb-4">🍪</div>
+                    <h4 class="text-xl font-baloo font-bold text-gray-800 mb-2">Aaswad Chorafali</h4>
+                    <p class="text-sm text-gray-600 mb-4">ક્રિસ્પી અને સ્વાદિષ્ટ!</p>
+                    
+                    <div class="flex gap-2 mb-4">
+                        <button onclick="selectSize(this, 'aaswad-chorafali', '500g', 240)" 
+                                class="size-toggle active flex-1 py-2 px-4 rounded-lg border-2 border-orange-200 text-sm font-medium">
+                            500g - ₹240
+                        </button>
+                        <button onclick="selectSize(this, 'aaswad-chorafali', '1kg', 460)" 
+                                class="size-toggle flex-1 py-2 px-4 rounded-lg border-2 border-orange-200 text-sm font-medium">
+                            1kg - ₹460
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <button onclick="updateQuantity('aaswad-chorafali', -1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold">-</button>
+                            <span id="qty-aaswad-chorafali" class="font-medium">0</span>
+                            <button onclick="updateQuantity('aaswad-chorafali', 1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold">+</button>
+                        </div>
+                        <button onclick="addToCart('aaswad-chorafali')" 
+                                class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Yash Mathiya -->
+                <div class="product-card bg-white rounded-2xl p-6 shadow-lg">
+                    <div class="text-6xl text-center mb-4">🥨</div>
+                    <h4 class="text-xl font-baloo font-bold text-gray-800 mb-2">Yash Mathiya</h4>
+                    <p class="text-sm text-gray-600 mb-4">યશ બ્રાન્ડની ગુણવત્તા!</p>
+                    
+                    <div class="flex gap-2 mb-4">
+                        <button onclick="selectSize(this, 'yash-mathiya', '500g', 210)" 
+                                class="size-toggle active flex-1 py-2 px-4 rounded-lg border-2 border-orange-200 text-sm font-medium">
+                            500g - ₹210
+                        </button>
+                        <button onclick="selectSize(this, 'yash-mathiya', '1kg', 400)" 
+                                class="size-toggle flex-1 py-2 px-4 rounded-lg border-2 border-orange-200 text-sm font-medium">
+                            1kg - ₹400
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <button onclick="updateQuantity('yash-mathiya', -1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold">-</button>
+                            <span id="qty-yash-mathiya" class="font-medium">0</span>
+                            <button onclick="updateQuantity('yash-mathiya', 1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold">+</button>
+                        </div>
+                        <button onclick="addToCart('yash-mathiya')" 
+                                class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Yash Chorafali -->
+                <div class="product-card bg-white rounded-2xl p-6 shadow-lg">
+                    <div class="text-6xl text-center mb-4">🍪</div>
+                    <h4 class="text-xl font-baloo font-bold text-gray-800 mb-2">Yash Chorafali</h4>
+                    <p class="text-sm text-gray-600 mb-4">તાજી અને કુરકુરી!</p>
+                    
+                    <div class="flex gap-2 mb-4">
+                        <button onclick="selectSize(this, 'yash-chorafali', '500g', 230)" 
+                                class="size-toggle active flex-1 py-2 px-4 rounded-lg border-2 border-orange-200 text-sm font-medium">
+                            500g - ₹230
+                        </button>
+                        <button onclick="selectSize(this, 'yash-chorafali', '1kg', 440)" 
+                                class="size-toggle flex-1 py-2 px-4 rounded-lg border-2 border-orange-200 text-sm font-medium">
+                            1kg - ₹440
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <button onclick="updateQuantity('yash-chorafali', -1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold">-</button>
+                            <span id="qty-yash-chorafali" class="font-medium">0</span>
+                            <button onclick="updateQuantity('yash-chorafali', 1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold">+</button>
+                        </div>
+                        <button onclick="addToCart('yash-chorafali')" 
+                                class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Aaswad Combo -->
+                <div class="product-card bg-white rounded-2xl p-6 shadow-lg border-2 border-orange-200">
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="text-5xl">🥨🍪</div>
+                        <span class="bg-orange-500 text-white text-xs px-2 py-1 rounded-full font-medium">COMBO</span>
+                    </div>
+                    <h4 class="text-xl font-baloo font-bold text-gray-800 mb-2">Aaswad Combo</h4>
+                    <p class="text-sm text-gray-600 mb-4">Mathiya + Chorafali સાથે!</p>
+                    
+                    <div class="flex gap-2 mb-4">
+                        <button onclick="selectSize(this, 'aaswad-combo', '500g', 440)" 
+                                class="size-toggle active flex-1 py-2 px-4 rounded-lg border-2 border-orange-200 text-sm font-medium">
+                            500g - ₹440
+                        </button>
+                        <button onclick="selectSize(this, 'aaswad-combo', '1kg', 860)" 
+                                class="size-toggle flex-1 py-2 px-4 rounded-lg border-2 border-orange-200 text-sm font-medium">
+                            1kg - ₹860
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <button onclick="updateQuantity('aaswad-combo', -1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold">-</button>
+                            <span id="qty-aaswad-combo" class="font-medium">0</span>
+                            <button onclick="updateQuantity('aaswad-combo', 1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold">+</button>
+                        </div>
+                        <button onclick="addToCart('aaswad-combo')" 
+                                class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Yash Combo -->
+                <div class="product-card bg-white rounded-2xl p-6 shadow-lg border-2 border-orange-200">
+                    <div class="flex justify-between items-start mb-2">
+                        <div class="text-5xl">🥨🍪</div>
+                        <span class="bg-orange-500 text-white text-xs px-2 py-1 rounded-full font-medium">COMBO</span>
+                    </div>
+                    <h4 class="text-xl font-baloo font-bold text-gray-800 mb-2">Yash Combo</h4>
+                    <p class="text-sm text-gray-600 mb-4">Mathiya + Chorafali સાથે!</p>
+                    
+                    <div class="flex gap-2 mb-4">
+                        <button onclick="selectSize(this, 'yash-combo', '500g', 430)" 
+                                class="size-toggle active flex-1 py-2 px-4 rounded-lg border-2 border-orange-200 text-sm font-medium">
+                            500g - ₹430
+                        </button>
+                        <button onclick="selectSize(this, 'yash-combo', '1kg', 840)" 
+                                class="size-toggle flex-1 py-2 px-4 rounded-lg border-2 border-orange-200 text-sm font-medium">
+                            1kg - ₹840
+                        </button>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <button onclick="updateQuantity('yash-combo', -1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold">-</button>
+                            <span id="qty-yash-combo" class="font-medium">0</span>
+                            <button onclick="updateQuantity('yash-combo', 1)" 
+                                    class="quantity-btn w-8 h-8 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center font-bold">+</button>
+                        </div>
+                        <button onclick="addToCart('yash-combo')" 
+                                class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Khakhra Coming Soon -->
+                <div class="product-card bg-gray-100 rounded-2xl p-6 shadow-lg opacity-75">
+                    <div class="text-6xl text-center mb-4">🫓</div>
+                    <h4 class="text-xl font-baloo font-bold text-gray-600 mb-2">Khakhra</h4>
+                    <p class="text-sm text-gray-500 mb-4">Soon in many flavors!</p>
+                    
+                    <div class="text-center">
+                        <span class="bg-yellow-500 text-white px-4 py-2 rounded-full text-sm font-medium">Coming Soon</span>
+                        <div class="mt-4">
+                            <a href="https://wa.me/919978113276?text=Hi%2C%20please%20notify%20me%20when%20Khakhra%20is%20available!" 
+                               target="_blank" rel="noopener noreferrer"
+                               class="text-orange-600 hover:text-orange-700 text-sm font-medium underline">
+                                Notify me on WhatsApp
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
-  </main>
 
-  <footer class="bg-gray-900 text-white text-center py-6">
-    <p>© <span id="year"></span> PapadSale. All Rights Reserved.</p>
-  </footer>
+    <!-- Cart Drawer -->
+    <div id="cart-drawer" class="cart-drawer fixed bottom-0 left-0 right-0 bg-white shadow-2xl z-50 max-h-full overflow-y-auto">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-baloo font-bold text-gray-800">Your Cart</h3>
+                <button onclick="toggleCart()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+            
+            <div id="cart-items" class="space-y-4 mb-6">
+                <p class="text-gray-500 text-center py-8">Your cart is empty</p>
+            </div>
+            
+            <div id="cart-total" class="border-t pt-4 mb-6 hidden">
+                <div class="flex justify-between items-center text-lg font-bold">
+                    <span>Total:</span>
+                    <span id="total-amount">₹0</span>
+                </div>
+            </div>
+            
+            <div id="checkout-form" class="hidden">
+                <h4 class="text-lg font-baloo font-bold mb-4">Delivery Details</h4>
+                <div class="space-y-4">
+                    <input type="text" id="customer-name" placeholder="Full Name *" required 
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                    <input type="tel" id="customer-mobile" placeholder="Mobile Number *" required pattern="[0-9]{10}"
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                    <textarea id="customer-address" placeholder="Full Address *" required rows="3"
+                              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"></textarea>
+                    <input type="text" id="customer-pincode" placeholder="Pincode *" required pattern="[0-9]{6}"
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                    <input type="text" id="customer-landmark" placeholder="Landmark (Optional)"
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                    <select id="delivery-time" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                        <option value="ASAP">ASAP</option>
+                        <option value="Morning">Morning (9 AM - 12 PM)</option>
+                        <option value="Evening">Evening (4 PM - 7 PM)</option>
+                    </select>
+                    <textarea id="order-notes" placeholder="Special Notes (Optional)" rows="2"
+                              class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"></textarea>
+                </div>
+                
+                <div class="mt-6 space-y-3">
+                    <button onclick="placeOrder()" 
+                            class="w-full bg-green-500 hover:bg-green-600 text-white py-4 rounded-lg font-bold text-lg transition-colors">
+                        📱 Place Order on WhatsApp
+                    </button>
+                    <button id="confirm-btn" onclick="sendConfirmation()" 
+                            class="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-medium transition-colors hidden">
+                        📲 Send Confirmation to My WhatsApp
+                    </button>
+                </div>
+                
+                <!-- Payment Info -->
+                <div class="mt-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+                    <h5 class="font-bold text-gray-800 mb-2">💳 Payment</h5>
+                    <div class="text-center mb-3">
+                        <div class="w-32 h-32 bg-gray-200 rounded-lg mx-auto flex items-center justify-center text-gray-500">
+                            UPI QR Code
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600 text-center">Pay by UPI on delivery. Share payment screenshot on WhatsApp.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <script>
-    let cart = [];
-    function addToCart(product, qty){
-      let price = 0;
-      if(product.includes('Mathiya')) price = qty==500?60:120;
-      else if(product.includes('Chorafali')) price = qty==500?70:140;
-      else if(product.includes('Papad')) price = qty==500?65:130;
-      else if(product.includes('Combo')) price = 130;
-      cart.push({product, qty, price});
-      alert(`${product} (${qty}g) added to cart!`);
-    }
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8 px-4">
+        <div class="container mx-auto text-center">
+            <div class="text-4xl mb-4">🫓</div>
+            <h3 class="text-2xl font-baloo font-bold mb-2">PapadSale</h3>
+            <p class="text-gray-300 mb-4">Crispy | Organic | Handmade, seedha aap tak</p>
+            <a href="https://wa.me/919978113276" target="_blank" rel="noopener noreferrer"
+               class="inline-block bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full font-medium transition-colors">
+                📱 WhatsApp: +91 99781 13276
+            </a>
+        </div>
+    </footer>
 
-    function copyUPI(){
-      const upi=document.getElementById('upiId');
-      navigator.clipboard.writeText(upi.value);
-      alert('UPI ID copied: '+upi.value);
-    }
+    <script>
+        // Product data
+        const products = {
+            'papad-classic': { name: 'Papad (Classic)', brand: '', sizes: { '500g': 180, '1kg': 340 } },
+            'aaswad-mathiya': { name: 'Aaswad Mathiya', brand: 'Aaswad', sizes: { '500g': 220, '1kg': 420 } },
+            'aaswad-chorafali': { name: 'Aaswad Chorafali', brand: 'Aaswad', sizes: { '500g': 240, '1kg': 460 } },
+            'yash-mathiya': { name: 'Yash Mathiya', brand: 'Yash', sizes: { '500g': 210, '1kg': 400 } },
+            'yash-chorafali': { name: 'Yash Chorafali', brand: 'Yash', sizes: { '500g': 230, '1kg': 440 } },
+            'aaswad-combo': { name: 'Aaswad Combo: Mathiya + Chorafali', brand: 'Aaswad', sizes: { '500g': 440, '1kg': 860 } },
+            'yash-combo': { name: 'Yash Combo: Mathiya + Chorafali', brand: 'Yash', sizes: { '500g': 430, '1kg': 840 } }
+        };
 
-    document.getElementById('year').textContent=new Date().getFullYear();
-  </script>
-</body>
+        // Cart state
+        let cart = [];
+        let productStates = {};
+
+        // Initialize product states
+        Object.keys(products).forEach(id => {
+            productStates[id] = { size: '500g', quantity: 0 };
+        });
+
+        function selectSize(button, productId, size, price) {
+            // Update button states
+            const buttons = button.parentElement.querySelectorAll('.size-toggle');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            
+            // Update product state
+            productStates[productId].size = size;
+        }
+
+        function updateQuantity(productId, change) {
+            const currentQty = productStates[productId].quantity;
+            const newQty = Math.max(0, currentQty + change);
+            productStates[productId].quantity = newQty;
+            
+            document.getElementById(`qty-${productId}`).textContent = newQty;
+        }
+
+        function addToCart(productId) {
+            const state = productStates[productId];
+            if (state.quantity === 0) return;
+            
+            const product = products[productId];
+            const price = product.sizes[state.size];
+            
+            // Check if item already exists in cart
+            const existingIndex = cart.findIndex(item => 
+                item.id === productId && item.size === state.size
+            );
+            
+            if (existingIndex >= 0) {
+                cart[existingIndex].quantity += state.quantity;
+            } else {
+                cart.push({
+                    id: productId,
+                    name: product.name,
+                    brand: product.brand,
+                    size: state.size,
+                    price: price,
+                    quantity: state.quantity
+                });
+            }
+            
+            // Reset quantity
+            productStates[productId].quantity = 0;
+            document.getElementById(`qty-${productId}`).textContent = 0;
+            
+            updateCartDisplay();
+        }
+
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            const checkoutForm = document.getElementById('checkout-form');
+            const cartCount = document.getElementById('cart-count');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p class="text-gray-500 text-center py-8">Your cart is empty</p>';
+                cartTotal.classList.add('hidden');
+                checkoutForm.classList.add('hidden');
+                cartCount.textContent = '0';
+                return;
+            }
+            
+            let total = 0;
+            let itemCount = 0;
+            
+            cartItems.innerHTML = cart.map((item, index) => {
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+                itemCount += item.quantity;
+                
+                return `
+                    <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                        <div class="flex-1">
+                            <h5 class="font-medium">${item.name}</h5>
+                            <p class="text-sm text-gray-600">${item.size} × ${item.quantity}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-bold">₹${subtotal}</p>
+                            <button onclick="removeFromCart(${index})" class="text-red-500 text-sm hover:text-red-700">Remove</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            document.getElementById('total-amount').textContent = `₹${total}`;
+            cartTotal.classList.remove('hidden');
+            checkoutForm.classList.remove('hidden');
+            cartCount.textContent = itemCount.toString();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartDisplay();
+        }
+
+        function toggleCart() {
+            const drawer = document.getElementById('cart-drawer');
+            drawer.classList.toggle('open');
+        }
+
+        function placeOrder() {
+            // Validate form
+            const name = document.getElementById('customer-name').value.trim();
+            const mobile = document.getElementById('customer-mobile').value.trim();
+            const address = document.getElementById('customer-address').value.trim();
+            const pincode = document.getElementById('customer-pincode').value.trim();
+            
+            if (!name || !mobile || !address || !pincode) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            if (!/^[0-9]{10}$/.test(mobile)) {
+                alert('Please enter a valid 10-digit mobile number');
+                return;
+            }
+            
+            if (!/^[0-9]{6}$/.test(pincode)) {
+                alert('Please enter a valid 6-digit pincode');
+                return;
+            }
+            
+            // Generate order message
+            let message = `🛒 *New Order from PapadSale*\n\n`;
+            message += `👤 *Customer Details:*\n`;
+            message += `Name: ${name}\n`;
+            message += `Mobile: ${mobile}\n`;
+            message += `Address: ${address}\n`;
+            message += `Pincode: ${pincode}\n`;
+            
+            const landmark = document.getElementById('customer-landmark').value.trim();
+            if (landmark) message += `Landmark: ${landmark}\n`;
+            
+            const deliveryTime = document.getElementById('delivery-time').value;
+            message += `Delivery Time: ${deliveryTime}\n`;
+            
+            const notes = document.getElementById('order-notes').value.trim();
+            if (notes) message += `Notes: ${notes}\n`;
+            
+            message += `\n📦 *Order Items:*\n`;
+            let total = 0;
+            
+            cart.forEach(item => {
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+                message += `• ${item.name} - ${item.size} × ${item.quantity} = ₹${subtotal}\n`;
+            });
+            
+            message += `\n💰 *Total: ₹${total}*\n\n`;
+            message += `Thank you for your order! 🙏`;
+            
+            // Open WhatsApp
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/919978113276?text=${encodedMessage}`;
+            window.open(whatsappUrl, '_blank');
+            
+            // Show confirmation button
+            document.getElementById('confirm-btn').classList.remove('hidden');
+        }
+
+        function sendConfirmation() {
+            const mobile = document.getElementById('customer-mobile').value.trim();
+            
+            let confirmMessage = `✅ *Order Confirmation - PapadSale*\n\n`;
+            confirmMessage += `Your order has been placed successfully!\n\n`;
+            confirmMessage += `📦 *Items Ordered:*\n`;
+            
+            let total = 0;
+            cart.forEach(item => {
+                const subtotal = item.price * item.quantity;
+                total += subtotal;
+                confirmMessage += `• ${item.name} - ${item.size} × ${item.quantity} = ₹${subtotal}\n`;
+            });
+            
+            confirmMessage += `\n💰 *Total: ₹${total}*\n\n`;
+            confirmMessage += `We'll contact you shortly for delivery confirmation. Thank you! 🙏`;
+            
+            const encodedConfirmMessage = encodeURIComponent(confirmMessage);
+            const confirmUrl = `https://wa.me/${mobile}?text=${encodedConfirmMessage}`;
+            window.open(confirmUrl, '_blank');
+        }
+
+        // Close cart when clicking outside
+        document.addEventListener('click', function(event) {
+            const drawer = document.getElementById('cart-drawer');
+            const cartButton = event.target.closest('button[onclick="toggleCart()"]');
+            
+            if (!drawer.contains(event.target) && !cartButton && drawer.classList.contains('open')) {
+                drawer.classList.remove('open');
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98e77c689167ff6c',t:'MTc2MDQ0OTE5OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
