@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PapadSale - Gujarati Swad, Ghar-ghar Tak!</title>
+  <meta name="description" content="Fresh homemade Gujarati snacks delivered to your doorstep. Order authentic papad, mathiya, khakhra and more with free delivery."/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    body{box-sizing:border-box}
+    .font-baloo{font-family:"Baloo 2",cursive}
+    .font-inter{font-family:"Inter",sans-serif}
+    .bg-cream{background:#FEF7ED}
+    .bg-saffron{background:#FF6A00}
+    .text-saffron{color:#FF6A00}
+    .soft-shadow{box-shadow:0 8px 32px rgba(255,106,0,.12)}
+    .product-card{transition:.3s}
+    .product-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(255,106,0,.2)}
+    .weight-toggle{transition:.2s; border-width: 2px;} /* Ensure border is visible */
+    .weight-toggle.active{background:#FF6A00;color:#fff;border-color:#FF6A00;transform:scale(1.02)}
+    .cart-drawer{transform:translateX(100%);transition:transform .3s ease-in-out}
+    .cart-drawer.open{transform:translateX(0)}
+    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000}
+    .modal.show{display:flex;align-items:center;justify-content:center}
+  </style>
+</head>
+<body class="bg-cream font-inter">
+
+  <header class="bg-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-6xl mx-auto px-4 py-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden">
+            <img src="assets/logo.png" alt="PapadSale Logo" class="w-8 h-8 object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
+            <span class="text-saffron font-bold text-lg hidden">P</span>
+          </div>
+          <div>
+            <h1 class="font-baloo font-bold text-xl text-saffron">PapadSale</h1>
+            <p class="text-xs text-gray-600">Gujarati Swad, Ghar-ghar Tak!</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-4">
+          <button onclick="toggleCart()" class="relative bg-saffron text-white px-4 py-2 rounded-lg font-semibold hover:bg-orange-600">
+            🛒 કાર્ટ
+            <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
+          </button>
+          <div class="text-right">
+            <p class="text-sm text-gray-600">કુલ</p>
+            <p id="cart-total-header" class="font-bold text-saffron">₹0</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="py-12 text-center">
+    <h2 class="font-baloo text-4xl text-saffron">સ્વાદિષ્ટ ગુજરાતી નાસ્તો</h2>
+    <p class="max-w-2xl mx-auto mt-3 text-gray-700">**Fresh homemade & Hygienic** Gujarati snacks delivered to your doorstep. Experience authentic flavors with every bite!</p>
+    <div class="mt-4 max-w-lg mx-auto p-3 bg-green-50 text-green-700 rounded-lg border border-green-200 font-semibold">
+      🚚 Free Delivery only in **Ahmedabad** Area. Expected Delivery: 2-3 Business Days.
+    </div>
+  </section>
+
+  <section class="py-6 bg-white">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="flex flex-wrap justify-center gap-3">
+        <button onclick="filterProducts('all', event)" class="filter-btn bg-saffron text-white px-4 py-2 rounded-full">બધું</button>
+        <button onclick="filterProducts('papad', event)" class="filter-btn bg-white text-gray-700 px-4 py-2 rounded-full border">પાપડ</button>
+        <button onclick="filterProducts('mathiya', event)" class="filter-btn bg-white text-gray-700 px-4 py-2 rounded-full border">મઠિયા</button>
+        <button onclick="filterProducts('khakhra', event)" class="filter-btn bg-white text-gray-700 px-4 py-2 rounded-full border">ખાખરા</button>
+        <button onclick="filterProducts('snacks', event)" class="filter-btn bg-white text-gray-700 px-4 py-2 rounded-full border">નાસ્તો</button>
+        <button onclick="filterProducts('sweets', event)" class="filter-btn bg-white text-gray-700 px-4 py-2 rounded-full border">મિઠાઈ</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-10">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="products-grid"></div>
+    </div>
+  </section>
+  
+  <section class="py-10 bg-white">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+        <h3 class="font-baloo text-3xl text-saffron mb-8">Customer Love</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="p-6 bg-cream rounded-xl shadow">
+                <p class="text-lg italic text-gray-700">"The Mathiya flavor is just like home. Absolutely fresh and hygienic!"</p>
+                <p class="mt-4 font-semibold text-saffron">- Meena P. (Ahmedabad)</p>
+            </div>
+            <div class="p-6 bg-cream rounded-xl shadow">
+                <p class="text-lg italic text-gray-700">"Super easy WhatsApp order process and the delivery was quick. Highly recommend!"</p>
+                <p class="mt-4 font-semibold text-saffron">- Ritesh S. (Vastrapur)</p>
+            </div>
+            <div class="p-6 bg-cream rounded-xl shadow">
+                <p class="text-lg italic text-gray-700">"Dry Kachori was crunchy and perfect for my kids. Great homemade quality."</p>
+                <p class="mt-4 font-semibold text-saffron">- Jignasa K. (Bodakdev)</p>
+            </div>
+        </div>
+    </div>
+  </section>
+
+
+  <div id="cart-drawer" class="cart-drawer fixed top-0 right-0 h-full w-full md:w-96 bg-white shadow-2xl z-50 overflow-y-auto">
+    <div class="p-5">
+      <div class="flex justify-between items-center mb-5">
+        <h3 class="text-xl font-baloo font-bold">Your Cart</h3>
+        <button onclick="toggleCart()" class="text-2xl text-gray-500">&times;</button>
+      </div>
+
+      <div id="cart-items" class="space-y-4 mb-6">
+        <p class="text-gray-500 text-center py-8">Your cart is empty</p>
+      </div>
+
+      <div id="cart-total-block" class="border-t pt-4 mb-6 hidden">
+        <div class="flex justify-between items-center text-lg font-bold">
+          <span>Total:</span><span id="total-amount">₹0</span>
+        </div>
+      </div>
+
+      <div id="checkout-form" class="hidden">
+        <h4 class="text-lg font-baloo font-bold mb-3">Delivery Details</h4>
+        <div class="space-y-3">
+          <input id="customer-name" class="w-full p-3 border rounded-lg" placeholder="Full Name *" required/>
+          <input id="customer-mobile" class="w-full p-3 border rounded-lg" placeholder="Mobile Number (WhatsApp) *" pattern="[0-9]{10}" required/>
+          <textarea id="customer-address" class="w-full p-3 border rounded-lg" rows="3" placeholder="Full Address *" required></textarea>
+          <input id="customer-pincode" class="w-full p-3 border rounded-lg" placeholder="Pincode *" pattern="[0-9]{6}" required/>
+          <input id="customer-landmark" class="w-full p-3 border rounded-lg" placeholder="Landmark (Optional)"/>
+          <textarea id="order-notes" class="w-full p-3 border rounded-lg" rows="2" placeholder="Notes (Optional)"></textarea>
+          <div class="p-3 rounded-lg bg-yellow-50 border border-yellow-200 text-sm">
+            <strong>Payment Method: <span class="text-saffron">UPI Only</span></strong><br/>
+            Scan and pay the **exact amount**, then upload the payment screenshot for verification.
+          </div>
+        </div>
+
+        <div class="space-y-3 mt-4">
+          <button onclick="toggleCart()" class="w-full bg-gray-500 hover:bg-gray-600 text-white py-2 rounded-lg">🛒 Update Cart</button>
+          <button id="payUPI" onclick="payWithUpi()" class="block text-center w-full bg-saffron hover:bg-orange-600 text-white py-3 rounded-lg font-semibold">💳 Pay via UPI (opens your app)</button>
+        </div>
+
+        <div class="mt-5 p-4 bg-yellow-50 rounded-lg border border-yellow-200 text-center">
+          <h5 class="font-bold text-gray-800 mb-3">💳 Pay Papadsale via UPI</h5>
+          <p class="text-xs text-gray-600 mb-1">Payee: **PAPADSALE** | UPI ID: **9978113276@okbizaxis**</p>
+          <img src="assets/qr.png" alt="UPI QR Code" class="w-36 h-36 mx-auto rounded-lg border mb-3"/>
+          <p class="text-sm text-gray-600 mb-2">After payment, upload the screenshot. We’ll verify the paid amount equals your total.</p>
+
+          <div class="grid grid-cols-1 gap-3">
+            <input id="payment-screenshot" type="file" accept="image/*" class="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-saffron file:text-white hover:file:bg-orange-600 mx-auto"/>
+            <div id="ocr-status" class="text-xs text-gray-600"></div>
+            <label class="inline-flex items-center gap-2 text-sm justify-center">
+              <input id="send-summary-to-self" type="checkbox" class="rounded text-saffron" checked/>
+              <span>Send order summary to my WhatsApp</span>
+            </label>
+            <button id="confirmPaymentBtn" onclick="confirmPaymentAndSend()" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold disabled:opacity-60" disabled>
+              ✅ Confirm Payment & Send on WhatsApp
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="success-modal" class="modal">
+    <div class="bg-white p-8 rounded-2xl max-w-md mx-4 text-center">
+      <div class="text-6xl mb-4">✅</div>
+      <h3 class="font-bold text-xl mb-2">Order Placed Successfully!</h3>
+      <p class="text-gray-600 mb-6">We'll contact you shortly on WhatsApp to confirm your order details and delivery time.</p>
+      <button onclick="closeModal()" class="bg-saffron text-white px-6 py-2 rounded-lg hover:bg-orange-600">Continue Shopping</button>
+    </div>
+  </div>
+
+  <footer class="bg-gray-800 text-white py-10 mt-16">
+    <div class="max-w-6xl mx-auto px-4 text-center">
+      <p class="text-gray-300">© 2024 PapadSale. All rights reserved. | Homemade & Hygienic Gujarati Snacks</p>
+    </div>
+  </footer>
+
+  <script>
+  /********** CONFIG **********/
+  const ADMIN_WHATSAPP = '919978113276';      // your WhatsApp (no +)
+  const ADMIN_UPI_ID = '9978113276@okbizaxis';// your UPI ID
+  const OCR_TOLERANCE = 2;                    // ₹ tolerance for matching amount
+  const ADMIN_UPLOAD_ENDPOINT = '';           // optional backend to host screenshot; set to URL to enable
+  const SHOP_NAME = 'Papadsale';
+
+  /********** DATA **********/
+  const products = [
+    // Corrected price for the first product
+    { id:1, name:"ગ્રીન ચીલી ખીચિયા પાપડ", nameEn:"Green Chili Khichiya Papad", description: "Spicy and crispy, best enjoyed roasted or fried.", price250:110, price500:220, image:"papad1.jpg", category:"papad", allergens: "Rice flour, Green Chili" },
+    { id:2, name:"આસ્વાદ સાદા મઠિયા", nameEn:"Aswad Plain Mathiya", description: "Traditional, mild-flavored Gujarati Mathiya.", price250:100, price500:200, image:"mathiya1.jpg", category:"mathiya", allergens: "Urad Flour, Spices" },
+    { id:3, name:"આસ્વાદ લીલા મરચા મઠિયા", nameEn:"Aswad Green Chili Mathiya", description: "Tangy and spicy Mathiya with fresh chili flakes.", price250:110, price500:220, image:"mathiya1.jpg", category:"mathiya", allergens: "Urad Flour, Chili" },
+    { id:4, name:"આસ્વાદ ચોળાફળી", nameEn:"Aswad Cholafali", description: "Light and crunchy snack, perfect with chutney.", price250:100, price500:200, image:"chorafali1.jpg", category:"snacks", allergens: "Gram Flour" },
+    { id:5, name:"યશ લીલા મરચા મઠિયા", nameEn:"Yash Green Chili Mathiya", description: "Premium, extra-crispy green chili mathiya.", price250:150, price500:300, image:"combomathiyachorafali.png", category:"mathiya", allergens: "Urad Flour, Chili" },
+    { id:6, name:"યશ સાદા મઠિયા", nameEn:"Yash Plain Mathiya", description: "Signature mild-spice, melt-in-your-mouth mathiya.", price250:140, price500:280, image:"combomathiyachorafali.png", category:"mathiya", allergens: "Urad Flour" },
+    { id:7, name:"યશ ચોળાફળી", nameEn:"Yash Cholafali", description: "A special blend for extra fluffiness and crispiness.", price250:140, price500:280, image:"chorafali1.jpg", category:"snacks", allergens: "Gram Flour" },
+    { id:8, name:"મેથી / મસાલા ખાખરા", nameEn:"Methi / Masala Khakhra", description: "Thin, healthy crackers available in Methi or mixed Masala.", price250:100, price500:200, image:"khakhra1.jpg", category:"khakhra", allergens: "Wheat Flour" },
+    { id:9, name:"મઠ / જુવાર / રાગી ખાખરા", nameEn:"Math / Juwar / Ragi Khakhra", description: "High-fiber, gluten-free options for a healthy diet.", price250:135, price500:270, image:"khakhra1.jpg", category:"khakhra", allergens: "Specific Grains" },
+    { id:10, name:"બિસ્કિટ/નાનખટાઈ", nameEn:"Biscuit/Nankhatai", description: "Mouthwatering homemade Nankhatai or shortbread biscuits.", price250:70, price500:140, image:"combomathiyachorafali.png", category:"sweets", allergens: "Wheat, Dairy" },
+    { id:11, name:"ડ્રાય કચોરી", nameEn:"Dry Kachori", description: "Crispy, dry kachori with a tangy filling, ideal for travel.", price250:70, price500:140, image:"chorafali1.jpg", category:"snacks", allergens: "Maida, Spices" }
+  ];
+
+  /********** STATE **********/
+  let cart = [];
+  let currentFilter = 'all';
+  let uploadedScreenshotFile = null;
+  let uploadedScreenshotURL = ''; 
+  let ocrDetectedAmount = null;
+
+  /********** HELPERS **********/
+  const $ = (id)=>document.getElementById(id);
+  const money = (n)=>`₹${n}`;
+  const cartTotal = ()=>cart.reduce((s,i)=>s+i.price*i.quantity,0);
+  function toast(msg){
+    const t=document.createElement('div');
+    t.className='fixed top-4 right-4 bg-green-600 text-white px-4 py-2 rounded shadow z-50';
+    t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2200);
+  }
+
+  /********** PRODUCTS **********/
+  function renderProducts(){
+    const grid = $('products-grid');
+    const items = currentFilter==='all' ? products : products.filter(p=>p.category===currentFilter);
+    grid.innerHTML = items.map(p=>`
+      <div class="product-card bg-white rounded-2xl p-6 soft-shadow">
+        <div class="text-center mb-4">
+          <div class="w-32 h-32 mx-auto mb-3 rounded-lg overflow-hidden bg-gray-100">
+            <img src="assets/${p.image}" alt="${p.nameEn}" class="w-full h-full object-cover"/>
+          </div>
+          <h3 class="font-baloo font-semibold text-xl text-gray-800 mb-1">${p.name}</h3>
+          <p class="text-sm text-gray-600 mb-2">${p.description}</p>
+          <p class="text-xs text-red-500">Allergens: ${p.allergens}</p>
+        </div>
+        <div class="space-y-3">
+          <div class="flex justify-center gap-2">
+            <button class="weight-toggle px-4 py-2 border-2 border-gray-300 rounded-lg text-sm" id="weight-250-${p.id}" onclick="selectWeight(${p.id},250)">250g - ${money(p.price250)}</button>
+            <button class="weight-toggle active px-4 py-2 border-2 border-gray-300 rounded-lg text-sm" id="weight-500-${p.id}" onclick="selectWeight(${p.id},500)">500g - ${money(p.price500)}</button>
+          </div>
+          <div class="flex items-center justify-center gap-3">
+            <button class="w-8 h-8 bg-gray-200 rounded-full text-lg font-bold" onclick="qtyCh(${p.id},-1)">-</button>
+            <span class="font-semibold text-lg w-8 text-center" id="qty-${p.id}">1</span>
+            <button class="w-8 h-8 bg-gray-200 rounded-full text-lg font-bold" onclick="qtyCh(${p.id},1)">+</button>
+          </div>
+          <button class="w-full bg-saffron text-white py-3 rounded-xl font-semibold hover:bg-orange-600" onclick="addToCart(${p.id})">કાર્ટમાં ઉમેરો</button>
+        </div>
+      </div>
+    `).join('');
+    // Ensure 500g is active visually on initial render
+    items.forEach(p=>{ selectWeight(p.id, 500, false); });
+  }
+  function filterProducts(cat, event){
+    currentFilter=cat; renderProducts();
+    document.querySelectorAll('.filter-btn').forEach(b=>{
+        b.classList.remove('bg-saffron','text-white');
+        b.classList.add('bg-white','text-gray-700','border');
+    });
+    if (event && event.target){
+        event.target.classList.add('bg-saffron','text-white');
+        event.target.classList.remove('bg-white','text-gray-700','border');
+    }
+  }
+  function selectWeight(id,w, update=true){
+    // Toggle active classes
+    const btn250 = $('weight-250-'+id);
+    const btn500 = $('weight-500-'+id);
+    if(btn250) btn250.classList.toggle('active',w===250);
+    if(btn500) btn500.classList.toggle('active',w===500);
+  }
+  function qtyCh(id,d){ const el=$('qty-'+id); el.textContent=Math.max(1,(parseInt(el.textContent)||1)+d); }
+
+  /********** CART **********/
+  function addToCart(id){
+    const p=products.find(x=>x.id===id);
+    const qty=parseInt($('qty-'+id).textContent)||1;
+    // Check which weight button is active based on class
+    const w=$('weight-500-'+id).classList.contains('active')?500:250;
+    const price = w===500?p.price500:p.price250;
+    const existing = cart.find(i=>i.id===id && i.weight===w);
+    if (existing) existing.quantity+=qty; else cart.push({id:p.id,name:p.name,nameEn:p.nameEn,weight:w,price,quantity:qty,image:p.image});
+    $('qty-'+id).textContent='1';
+    updateCartUI(); toast('પ્રોડક્ટ કાર્ટમાં ઉમેરાઈ!');
+  }
+  function changeCartQuantity(id,weight,delta){
+    const it=cart.find(i=>i.id===id && i.weight===weight); if(!it) return;
+    it.quantity=Math.max(1, it.quantity+delta); updateCartUI();
+  }
+  function removeFromCart(index){ cart.splice(index,1); updateCartUI(); }
+  function toggleCart(){ $('cart-drawer').classList.toggle('open'); }
+  
+  function updateCartUI(){
+    const count=cart.reduce((s,i)=>s+i.quantity,0);
+    const total=cartTotal();
+    $('cart-count').textContent=count; $('cart-total-header').textContent=money(total);
+    const list=$('cart-items');
+    
+    // Reset Verification on cart change
+    $('confirmPaymentBtn').disabled = true;
+    $('ocr-status').textContent = '';
+    
+    if(!cart.length){
+      list.innerHTML='<p class="text-gray-500 text-center py-8">Your cart is empty</p>';
+      $('cart-total-block').classList.add('hidden');
+      $('checkout-form').classList.add('hidden');
+      return;
+    }
+    list.innerHTML = cart.map((item,idx)=>`
+      <div class="flex items-center justify-between p-4 border-b">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-lg overflow-hidden bg-gray-100">
+            <img src="assets/${item.image}" alt="${item.nameEn}" class="w-full h-full object-cover"/>
+          </div>
+          <div>
+            <h4 class="font-semibold text-sm">${item.name}</h4>
+            <p class="text-xs text-gray-600">${item.weight}g - ${money(item.price)}</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="changeCartQuantity(${item.id},${item.weight},-1)" class="w-6 h-6 bg-gray-200 rounded-full text-sm">-</button>
+          <span class="w-8 text-center text-sm">${item.quantity}</span>
+          <button onclick="changeCartQuantity(${item.id},${item.weight},1)" class="w-6 h-6 bg-gray-200 rounded-full text-sm">+</button>
+          <button onclick="removeFromCart(${idx})" class="text-red-500 ml-2">🗑️</button>
+        </div>
+      </div>
+    `).join('');
+    $('total-amount').textContent=money(total);
+    $('cart-total-block').classList.remove('hidden');
+    $('checkout-form').classList.remove('hidden');
+
+  }
+
+  /********** UPI **********/
+  function buildUpiLink(amount){
+    const pa = encodeURIComponent(ADMIN_UPI_ID); 
+    const pn = encodeURIComponent(SHOP_NAME);
+    const tn = encodeURIComponent('Papadsale Order');
+    const am = encodeURIComponent(amount.toFixed(2));
+    return `upi://pay?pa=${pa}&pn=${pn}&tn=${tn}&am=${am}&cu=INR`;
+  }
+  
+  function payWithUpi(){
+    const total = cartTotal();
+    const upiUrl = buildUpiLink(total);
+    const start = Date.now();
+    window.location.href = upiUrl;
+    // Fallback for desktop or non-deep-link compatible browsers
+    setTimeout(()=>{
+      if ((Date.now()-start) < 1400) {
+        alert('If your UPI app did not open, please scan the QR code shown below and then upload your screenshot.');
+      }
+    }, 1200);
+  }
+
+  /********** PAYMENT VERIFICATION (OCR) **********/
+  $('payment-screenshot')?.addEventListener('change', async (e)=>{
+    uploadedScreenshotFile = e.target.files && e.target.files[0] ? e.target.files[0] : null;
+    $('confirmPaymentBtn').disabled = true;
+    $('ocr-status').textContent = '';
+    ocrDetectedAmount = null;
+
+    if (!uploadedScreenshotFile) return;
+
+    $('ocr-status').textContent = 'Reading screenshot to detect paid amount... This may take a moment.';
+    try {
+      const { data:{ text } } = await Tesseract.recognize(uploadedScreenshotFile, 'eng', { logger:m=>{
+          if (m.status === 'recognizing text') $('ocr-status').textContent = `Recognizing... ${Math.round(m.progress*100)}%`;
+      } });
+      const detected = extractAmount(text);
+      const total = cartTotal();
+
+      if (detected != null){
+        ocrDetectedAmount = detected;
+        const diff = Math.abs(detected - total);
+        if (diff <= OCR_TOLERANCE){
+          $('ocr-status').innerHTML = `✅ **SUCCESS!** Paid amount is **₹${detected.toFixed(2)}** (matches your total ₹${total.toFixed(2)}).`;
+          $('confirmPaymentBtn').disabled = false;
+        } else {
+          $('ocr-status').innerHTML = `❌ Detected amount **₹${detected.toFixed(2)}** does not match your total **₹${total.toFixed(2)}** (Tolerance: ₹${OCR_TOLERANCE}). Please ensure you paid the exact amount, re-upload a clearer screenshot, or contact us.`;
+        }
+      } else {
+        $('ocr-status').innerHTML = '⚠️ Could not read an amount from the image. Please ensure the amount is clearly visible on the screenshot or re-upload.';
+      }
+    } catch(err){
+      console.warn(err);
+      $('ocr-status').textContent = '⚠️ Unable to process the image. Please try again or upload a clearer screenshot.';
+    }
+  });
+
+  // Heuristic: try to find numbers that look like rupee amounts
+  function extractAmount(text){
+    if (!text) return null;
+    // Normalize and clean
+    const t = text.replace(/[,]/g,'').replace(/₹/g,' INR ').replace(/(\d)\s+(\d)/g, '$1$2').replace(/\s+/g,' ');
+    // Search for explicit payment terms and amounts
+    const re1 = /(INR|Rs\.?|Amount|Paid|UPI)\s*[:\-]?\s*([0-9]+(?:\.[0-9]{1,2})?)/ig;
+    let m, candidates=[];
+    while ((m = re1.exec(t)) !== null){ candidates.push(parseFloat(m[2])); }
+    // Fallback: any standalone number that looks like a price (up to 6 digits)
+    if (candidates.length === 0){
+      const re2 = /([0-9]{2,6}(?:\.[0-9]{1,2})?)/g;
+      while ((m = re2.exec(t)) !== null){ 
+        const v = parseFloat(m[1]);
+        if (v >= 10) candidates.push(v);
+      }
+    }
+    if (candidates.length === 0) return null;
+    // Heuristic: the largest amount is most likely the total paid.
+    return Math.max(...candidates);
+  }
+
+  /********** WHATSAPP **********/
+  function buildWhatsAppText(includeScreenshotURL, isCustomerCopy){
+    let total = cartTotal();
+    let lines = '';
+    cart.forEach(it=>{ 
+      const s=it.price*it.quantity; 
+      lines += `• ${it.nameEn} (${it.weight}g) × ${it.quantity} = ₹${s}\\n`; 
+    });
+    const name=$('customer-name')?.value||'';
+    const mobile=$('customer-mobile')?.value||'';
+    const address=$('customer-address')?.value||'';
+    const pincode=$('customer-pincode')?.value||'';
+    const landmark=$('customer-landmark')?.value||'';
+    const notes=$('order-notes')?.value||'';
+
+    let msg = isCustomerCopy ? 
+      `🙏 *Thank you for your order with ${SHOP_NAME}!* Here is your summary:%0A%0A` : 
+      `🛒 *NEW ORDER - ${SHOP_NAME.toUpperCase()}*%0A%0A`;
+      
+    msg += `📦 *Items:*%0A${encodeURIComponent(lines).replace(/%250A/g,'%0A')}`;
+    msg += `%0A💰 *Total:* ₹${total.toFixed(2)}%0A`;
+    if (ocrDetectedAmount!=null) msg += `✅ *Paid:* ₹${ocrDetectedAmount.toFixed(2)}%0A`;
+    
+    msg += `%0A👤 *Delivery Details*%0A`;
+    if (name) msg += `Name: ${encodeURIComponent(name)}%0A`;
+    if (mobile) msg += `Mobile: ${encodeURIComponent(mobile)}%0A`;
+    if (address) msg += `Address: ${encodeURIComponent(address)}%0A`;
+    if (pincode) msg += `Pincode: ${encodeURIComponent(pincode)}%0A`;
+    if (landmark) msg += `Landmark: ${encodeURIComponent(landmark)}%0A`;
+    if (notes) msg += `%0A📝 Notes: ${encodeURIComponent(notes)}%0A`;
+
+    if (includeScreenshotURL && uploadedScreenshotURL) {
+      msg += `%0A📸 Payment screenshot URL: ${encodeURIComponent(uploadedScreenshotURL)}%0A`;
+    } else if (!isCustomerCopy) {
+      msg += `%0A📸 Payment screenshot uploaded on the website (file needs manual retrieval).%0A`;
+    }
+
+    if(isCustomerCopy) msg += `%0AWe will contact you shortly to confirm and share the delivery timeline.`;
+    else msg += `%0A*Please verify payment details using the uploaded screenshot.*`;
+
+    return msg;
+  }
+
+  async function confirmPaymentAndSend(){
+    // basic required fields
+    const req=['customer-name','customer-mobile','customer-address','customer-pincode'];
+    for (const id of req){ 
+      const el=$(id); 
+      if (!el || !el.value.trim()){ 
+        alert('Please fill in all required fields (Name, Mobile, Address, Pincode).'); 
+        return; 
+      }
+      if (id === 'customer-mobile' && !/^\d{10}$/.test(el.value.trim())) {
+        alert('Please enter a valid 10-digit mobile number.'); 
+        return;
+      }
+      if (id === 'customer-pincode' && !/^\d{6}$/.test(el.value.trim())) {
+        alert('Please enter a valid 6-digit Pincode.'); 
+        return;
+      }
+    }
+    if (!uploadedScreenshotFile){ alert('Please upload the payment screenshot.'); return; }
+    if ($('confirmPaymentBtn').disabled){ alert('Payment amount not verified yet. Please ensure a clear screenshot with the paid amount visible.'); return; }
+
+    $('confirmPaymentBtn').textContent = "Opening WhatsApp chats...";
+    $('confirmPaymentBtn').disabled = true;
+
+    // Optional: upload to your server to get a public URL
+    if (ADMIN_UPLOAD_ENDPOINT){
+      // (Upload logic remains here if a user provides an endpoint)
+    }
+
+    // 1) Send to Admin (your WhatsApp)
+    const adminText = buildWhatsAppText(true, false);
+    const adminURL  = `https://wa.me/${ADMIN_WHATSAPP}?text=${adminText}`;
+    window.open(adminURL,'_blank');
+
+    // 2) Optional: send to customer summary
+    if ($('send-summary-to-self')?.checked){
+      const customerNum = ($('customer-mobile')?.value||'').replace(/\D/g,'');
+      if (customerNum.length===10){
+        const summary = buildWhatsAppText(false, true);
+        const customerURL = `https://wa.me/91${customerNum}?text=${summary}`;
+        // Delay to prevent the browser from blocking the second pop-up
+        setTimeout(()=>window.open(customerURL,'_blank'), 800);
+      }
+    }
+
+    // 3) Clear cart & success modal
+    // A slight delay to ensure chats open before modal is shown
+    setTimeout(()=>{
+        cart = [];
+        updateCartUI();
+        $('cart-drawer').classList.remove('open');
+        $('success-modal').classList.add('show');
+        $('confirmPaymentBtn').textContent = "✅ Confirm Payment & Send on WhatsApp"; // Reset button text
+        // Clear file input/status for next order
+        $('payment-screenshot').value = ''; 
+        $('ocr-status').textContent = '';
+        uploadedScreenshotFile = null;
+        ocrDetectedAmount = null;
+        
+    }, 1200);
+  }
+
+  function closeModal(){ $('success-modal').classList.remove('show'); }
+
+  /********** INIT **********/
+  document.addEventListener('DOMContentLoaded', ()=>{
+    renderProducts();
+    updateCartUI();
+  });
+
+  // click outside to close drawer / modal
+  document.addEventListener('click', (e)=>{
+    const drawer=$('cart-drawer'); 
+    const cartBtn=e.target.closest('button[onclick="toggleCart()"]');
+    if (drawer && drawer.classList.contains('open') && !drawer.contains(e.target) && !cartBtn) drawer.classList.remove('open');
+    const modal=$('success-modal'); 
+    if (e.target===modal) modal.classList.remove('show');
+  });
+  </script>
+</body>
+</html>
