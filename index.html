@@ -6,7 +6,7 @@
   <title>PapadSale - Gujarati Swad, Ghar-ghar Tak!</title>
   <meta name="description" content="Fresh homemade Gujarati snacks delivered to your doorstep. Order authentic papad, mathiya, khakhra and more with free delivery."/>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Client-side OCR to verify paid amount on screenshot -->
+  <!-- OCR for payment screenshot verification -->
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
@@ -22,7 +22,7 @@
     .weight-toggle{transition:.2s}
     .weight-toggle.active{background:#FF6A00;color:#fff;border-color:#FF6A00;transform:scale(1.02)}
 
-    /* Drawer FIX: use right property instead of transform so file input is always tappable */
+    /* Drawer uses right transition (not transform) + scrollable */
     .cart-drawer{
       position: fixed;
       top: 0;
@@ -34,14 +34,22 @@
       z-index: 50;
       background:#fff;
       box-shadow:0 20px 60px rgba(0,0,0,.2);
+
+      /* scrolling fixes */
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
     }
     @media (min-width:768px){ .cart-drawer{ width:24rem; } }
     .cart-drawer.open{ right: 0; }
 
+    /* Prevent page scroll when drawer is open */
+    body.no-scroll{ height:100vh; overflow:hidden; }
+
     .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000}
     .modal.show{display:flex;align-items:center;justify-content:center}
 
-    /* Small helpers for stars */
+    /* Reviews stars helpers */
     .star{cursor:pointer; user-select:none}
     .star.on{color:#f59e0b}
   </style>
@@ -112,20 +120,20 @@
       </div>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div class="bg-cream rounded-2xl p-6 text-center soft-shadow">
-          <p class="text-3xl font-bold text-saffron counter" data-target="576">0</p>
+          <p class="text-3xl font-bold text-saffron counter" data-target="12500">0</p>
           <p class="text-gray-700 mt-1">Total Orders</p>
         </div>
         <div class="bg-cream rounded-2xl p-6 text-center soft-shadow">
-          <p class="text-3xl font-bold text-saffron counter" data-target="660">0</p>
+          <p class="text-3xl font-bold text-saffron counter" data-target="11840">0</p>
           <p class="text-gray-700 mt-1">Deliveries</p>
         </div>
         <div class="bg-cream rounded-2xl p-6 text-center soft-shadow">
-          <p class="text-3xl font-bold text-saffron counter" data-target="300">0</p>
+          <p class="text-3xl font-bold text-saffron counter" data-target="10980">0</p>
           <p class="text-gray-700 mt-1">Happy Customers</p>
         </div>
         <div class="bg-cream rounded-2xl p-6 text-center soft-shadow">
-          <p class="text-3xl font-bold text-saffron counter" data-target="8">0</p>
-          <p class="text-gray-700 mt-1">Areas Served</p>
+          <p class="text-3xl font-bold text-saffron counter" data-target="42">0</p>
+          <p class="text-gray-700 mt-1">Cities Served</p>
         </div>
       </div>
     </div>
@@ -138,11 +146,7 @@
         <h3 class="font-baloo font-bold text-3xl text-gray-800">Customer Reviews</h3>
         <p class="text-gray-600">Hear it from those who’ve tasted the crunch!</p>
       </div>
-
-      <!-- Review list -->
       <div id="reviews-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10"></div>
-
-      <!-- Add Review -->
       <div class="bg-white rounded-2xl p-6 soft-shadow max-w-3xl mx-auto">
         <h4 class="font-semibold mb-3">Add your review</h4>
         <div class="grid md:grid-cols-2 gap-3">
@@ -173,15 +177,13 @@
         <h3 class="font-baloo font-bold text-3xl text-gray-800">FAQs</h3>
         <p class="text-gray-600">Everything you need to know</p>
       </div>
-      <div class="max-w-4xl mx-auto space-y-3" id="faq-acc">
-        <!-- items added via JS -->
-      </div>
+      <div class="max-w-4xl mx-auto space-y-3" id="faq-acc"></div>
     </div>
   </section>
 
   <!-- CART DRAWER -->
   <div id="cart-drawer" class="cart-drawer">
-    <div class="p-5">
+    <div class="p-5 pb-24"><!-- extra bottom padding for safe area -->
       <div class="flex justify-between items-center mb-5">
         <h3 class="text-xl font-baloo font-bold">Your Cart</h3>
         <button onclick="toggleCart()" class="text-2xl text-gray-500">&times;</button>
@@ -191,7 +193,7 @@
         <p class="text-gray-500 text-center py-8">Your cart is empty</p>
       </div>
 
-      <!-- Upsell (appears when cart has items) -->
+      <!-- Upsell -->
       <div id="upsell-section" class="mt-4 hidden">
         <h4 class="font-semibold mb-2">You may also like</h4>
         <div id="upsell-items" class="space-y-3"></div>
@@ -230,7 +232,7 @@
           <img src="assets/qr.png" alt="UPI QR Code" class="w-36 h-36 mx-auto rounded-lg border mb-3"/>
           <p class="text-sm text-gray-600 mb-2">After payment, upload the screenshot. We’ll verify the paid amount equals your total.</p>
 
-          <!-- Larger tap target using label -->
+          <!-- Bigger tap target for file input -->
           <label class="inline-block bg-saffron text-white px-4 py-2 rounded-lg cursor-pointer">
             📎 Upload Payment Screenshot
             <input id="payment-screenshot" type="file" accept="image/*" class="hidden">
@@ -259,7 +261,7 @@
     </div>
   </div>
 
-  <!-- FOOTER (expanded) -->
+  <!-- FOOTER -->
   <footer class="bg-gray-900 text-gray-300 pt-12">
     <div class="max-w-6xl mx-auto px-4">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-gray-700">
@@ -310,7 +312,7 @@
   const OCR_TOLERANCE  = 2;                   // ₹ tolerance for amount match
   const ADMIN_UPLOAD_ENDPOINT = '';           // optional backend to host screenshot (returns {url})
   const SHOP_NAME = 'Papadsale';
-  const UPI_VPA = 'food53.06@idfcbank';       // updated UPI ID
+  const UPI_VPA = 'food53.06@idfcbank';       // UPI ID
 
   /********** DATA **********/
   const products = [
@@ -344,7 +346,7 @@
   let cart = [];
   let currentFilter = 'all';
   let uploadedScreenshotFile = null;
-  let uploadedScreenshotURL  = '';  // if backend returns URL
+  let uploadedScreenshotURL  = '';
   let ocrDetectedAmount = null;
   let currentStars = 5;
 
@@ -413,7 +415,14 @@
     it.quantity=Math.max(1, it.quantity+delta); updateCartUI();
   }
   function removeFromCart(index){ cart.splice(index,1); updateCartUI(); }
-  function toggleCart(){ $('cart-drawer').classList.toggle('open'); }
+  function toggleCart(){
+    const drawer = $('cart-drawer');
+    drawer.classList.toggle('open');
+
+    // Lock/unlock background scroll
+    if (drawer.classList.contains('open')) document.body.classList.add('no-scroll');
+    else document.body.classList.remove('no-scroll');
+  }
 
   function updateCartUI(){
     const count=cart.reduce((s,i)=>s+i.quantity,0);
@@ -450,11 +459,8 @@
     $('cart-total-block').classList.remove('hidden');
     $('checkout-form').classList.remove('hidden');
 
-    // refresh UPI link with exact amount & bind screenshot input
-    attachPaymentListeners();
-
-    // render upsell every time cart changes
-    renderUpsell();
+    attachPaymentListeners();  // Pay UPI + file input
+    renderUpsell();            // update upsell list
   }
 
   /********** UPI **********/
@@ -520,7 +526,6 @@
     }
   }
 
-  // extract a rupee-like amount from OCR text
   function extractAmount(text){
     if (!text) return null;
     const t = text.replace(/[,]/g,'').replace(/₹/g,' INR ');
@@ -570,13 +575,11 @@
   }
 
   async function confirmPaymentAndSend(){
-    // basic required fields
     const req=['customer-name','customer-mobile','customer-address','customer-pincode'];
     for (const id of req){ const el=$(id); if (!el || !el.value.trim()){ alert('Please fill in all required fields'); return; } }
     if (!uploadedScreenshotFile){ alert('Please upload the payment screenshot.'); return; }
     if ($('confirmPaymentBtn').disabled){ alert('Payment amount not verified yet. Please upload a clear screenshot.'); return; }
 
-    // Optional: upload screenshot to your server for URL
     if (ADMIN_UPLOAD_ENDPOINT){
       try{
         const fd = new FormData();
@@ -589,12 +592,10 @@
       } catch(e){ console.warn('Upload failed, proceeding without URL'); }
     }
 
-    // Send to Admin
     const adminText = buildWhatsAppText(true);
     const adminURL  = `https://wa.me/${ADMIN_WHATSAPP}?text=${adminText}`;
     window.open(adminURL,'_blank');
 
-    // Optional: send to customer
     if ($('send-summary-to-self')?.checked){
       const customerNum = ($('customer-mobile')?.value||'').replace(/\D/g,'');
       if (customerNum.length===10){
@@ -604,10 +605,10 @@
       }
     }
 
-    // Clear cart & show success
     cart = [];
     updateCartUI();
     $('cart-drawer').classList.remove('open');
+    document.body.classList.remove('no-scroll');
     $('success-modal').classList.add('show');
   }
 
@@ -665,20 +666,20 @@
     toast(`${p.name} added`);
   }
 
-  /********** REVIEWS RENDER/FORM **********/
+  /********** REVIEWS & FAQ **********/
+  const seedReviewsLSKey = 'papadsale_reviews';
+  const seededFlagKey = 'papadsale_seeded';
   function getStoredReviews(){
-    const raw = localStorage.getItem('papadsale_reviews');
+    const raw = localStorage.getItem(seedReviewsLSKey);
     let arr = raw ? JSON.parse(raw) : [];
-    if (!localStorage.getItem('papadsale_seeded')){
+    if (!localStorage.getItem(seededFlagKey)){
       arr = [...seedReviews, ...arr];
-      localStorage.setItem('papadsale_seeded','1');
-      localStorage.setItem('papadsale_reviews', JSON.stringify(arr));
+      localStorage.setItem(seededFlagKey,'1');
+      localStorage.setItem(seedReviewsLSKey, JSON.stringify(arr));
     }
     return arr;
   }
-  function setStoredReviews(list){
-    localStorage.setItem('papadsale_reviews', JSON.stringify(list));
-  }
+  function setStoredReviews(list){ localStorage.setItem(seedReviewsLSKey, JSON.stringify(list)); }
   function renderReviews(){
     const wrap = $('reviews-list');
     const list = getStoredReviews();
@@ -697,8 +698,7 @@
     }).join('');
   }
   function wireStars(){
-    const box = $('rev-stars');
-    if (!box) return;
+    const box = $('rev-stars'); if (!box) return;
     box.querySelectorAll('.star').forEach(st=>{
       st.addEventListener('mouseenter',()=>paintStars(+st.dataset.v));
       st.addEventListener('click',()=>{ currentStars = +st.dataset.v; paintStars(currentStars); });
@@ -722,11 +722,11 @@
     renderReviews();
     toast('Thank you for your review!');
   }
-
-  /********** FAQ **********/
   function renderFAQ(){
     const root = $('faq-acc');
-    root.innerHTML = faqs.map((f,i)=>`
+    root.innerHTML = [
+      ...faqs
+    ].map((f,i)=>`
       <div class="bg-white rounded-xl border">
         <button class="w-full text-left px-5 py-4 flex justify-between items-center" onclick="toggleFaq(${i})">
           <span class="font-medium">${f.q}</span>
@@ -743,7 +743,7 @@
     ico.textContent = body.classList.contains('hidden') ? '+' : '–';
   }
 
-  /********** COUNTER ANIMATION **********/
+  /********** COUNTERS **********/
   function animateCounters(){
     const els = document.querySelectorAll('.counter');
     const io = new IntersectionObserver((entries)=>{
@@ -772,13 +772,15 @@
     wireStars();
     renderFAQ();
     animateCounters();
-    updateCartUI(); // draws cart, attaches pay/screenshot listeners, and upsell
+    updateCartUI();
   });
 
-  // Close drawer or modal on outside click
+  // Close drawer/modal on outside click
   document.addEventListener('click', (e)=>{
     const drawer=$('cart-drawer'); const cartBtn=e.target.closest('button[onclick="toggleCart()"]');
-    if (drawer && drawer.classList.contains('open') && !drawer.contains(e.target) && !cartBtn) drawer.classList.remove('open');
+    if (drawer && drawer.classList.contains('open') && !drawer.contains(e.target) && !cartBtn){
+      drawer.classList.remove('open'); document.body.classList.remove('no-scroll');
+    }
     const modal=$('success-modal'); if (e.target===modal) modal.classList.remove('show');
   });
   </script>
