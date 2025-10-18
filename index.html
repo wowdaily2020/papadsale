@@ -6,7 +6,7 @@
   <title>PapadSale - Gujarati Swad, Ghar-ghar Tak!</title>
   <meta name="description" content="Fresh homemade Gujarati snacks delivered to your doorstep. Order authentic papad, mathiya, khakhra and more with free delivery."/>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Client-side OCR for screenshot verification -->
+  <!-- Client-side OCR to verify paid amount on screenshot -->
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
@@ -94,12 +94,12 @@
 
       <div id="cart-items" class="space-y-4 mb-6">
         <p class="text-gray-500 text-center py-8">Your cart is empty</p>
-        <!-- Upsell (appears when cart has items) -->
-        <div id="upsell-section" class="mt-4 hidden">
-          <h4 class="font-semibold mb-2">You may also like</h4>
-          <div id="upsell-items" class="space-y-3"></div>
-        </div>
+      </div>
 
+      <!-- Upsell (appears when cart has items) -->
+      <div id="upsell-section" class="mt-4 hidden">
+        <h4 class="font-semibold mb-2">You may also like</h4>
+        <div id="upsell-items" class="space-y-3"></div>
       </div>
 
       <div id="cart-total-block" class="border-t pt-4 mb-6 hidden">
@@ -172,8 +172,8 @@
   <script>
   /********** CONFIG **********/
   const ADMIN_WHATSAPP = '919978113276';      // your WhatsApp (no +)
-  const OCR_TOLERANCE = 2;                    // ₹ tolerance for matching amount
-  const ADMIN_UPLOAD_ENDPOINT = '';           // optional backend to host screenshot; set to URL to enable
+  const OCR_TOLERANCE  = 2;                   // ₹ tolerance for amount match
+  const ADMIN_UPLOAD_ENDPOINT = '';           // optional backend to host screenshot (returns {url})
   const SHOP_NAME = 'Papadsale';
 
   /********** DATA **********/
@@ -195,7 +195,7 @@
   let cart = [];
   let currentFilter = 'all';
   let uploadedScreenshotFile = null;
-  let uploadedScreenshotURL = ''; // if you provide backend, we’ll place URL here
+  let uploadedScreenshotURL  = '';  // if backend returns URL
   let ocrDetectedAmount = null;
 
   /********** HELPERS **********/
@@ -264,9 +264,6 @@
   }
   function removeFromCart(index){ cart.splice(index,1); updateCartUI(); }
   function toggleCart(){ $('cart-drawer').classList.toggle('open'); }
-  function updateCart(){
-    toggleCart(); // just re-open product area
-  }
 
   function updateCartUI(){
     const count=cart.reduce((s,i)=>s+i.quantity,0);
@@ -277,6 +274,7 @@
       list.innerHTML='<p class="text-gray-500 text-center py-8">Your cart is empty</p>';
       $('cart-total-block').classList.add('hidden');
       $('checkout-form').classList.add('hidden');
+      $('upsell-section').classList.add('hidden');
       return;
     }
     list.innerHTML = cart.map((item,idx)=>`
@@ -303,9 +301,10 @@
     $('checkout-form').classList.remove('hidden');
 
     // refresh UPI link with exact amount
-    const upi = buildUpiLink(total);
-    const payLink = $('payUPI');
-    if (payLink) payLink.onclick = (e)=>{ e.preventDefault(); openUpiLink(upi); };
+    attachPaymentListeners(); // ensures PayUPI & screenshot handlers exist
+
+    // render upsell every time cart changes
+    renderUpsell();
   }
 
   /********** UPI **********/
@@ -325,9 +324,21 @@
       }
     }, 1200);
   }
+  function attachPaymentListeners(){
+    const payLink = $('payUPI');
+    if (payLink){
+      const upi = buildUpiLink(cartTotal());
+      payLink.onclick = (e)=>{ e.preventDefault(); openUpiLink(upi); };
+    }
+    const input = $('payment-screenshot');
+    if (input && !input._bound){
+      input._bound = true;
+      input.addEventListener('change', handleScreenshotUpload);
+    }
+  }
 
   /********** PAYMENT VERIFICATION (OCR) **********/
-  $('payment-screenshot')?.addEventListener('change', async (e)=>{
+  async function handleScreenshotUpload(e){
     uploadedScreenshotFile = e.target.files && e.target.files[0] ? e.target.files[0] : null;
     $('confirmPaymentBtn').disabled = true;
     $('ocr-status').textContent = '';
@@ -337,7 +348,7 @@
 
     $('ocr-status').textContent = 'Reading screenshot to detect paid amount...';
     try {
-      const { data:{ text } } = await Tesseract.recognize(uploadedScreenshotFile, 'eng', { logger:m=>{} });
+      const { data:{ text } } = await Tesseract.recognize(uploadedScreenshotFile, 'eng');
       const detected = extractAmount(text);
       const total = cartTotal();
 
@@ -357,18 +368,15 @@
       console.warn(err);
       $('ocr-status').textContent = '⚠️ Unable to read the image. Please try again or upload a clearer screenshot.';
     }
-  });
+  }
 
-  // Heuristic: try to find numbers that look like rupee amounts
+  // extract a rupee-like amount from OCR text
   function extractAmount(text){
     if (!text) return null;
-    // Normalize
     const t = text.replace(/[,]/g,'').replace(/₹/g,' INR ');
-    // Prefer amounts with INR/UPI context
     const re1 = /(INR|Rs\.?|Amount|Paid)\s*[:\-]?\s*([0-9]+(?:\.[0-9]{1,2})?)/ig;
     let m, candidates=[];
     while ((m = re1.exec(t)) !== null){ candidates.push(parseFloat(m[2])); }
-    // Fallback: any standalone biggish number
     if (candidates.length === 0){
       const re2 = /([0-9]{2,6}(?:\.[0-9]{1,2})?)/g;
       while ((m = re2.exec(t)) !== null){ 
@@ -377,15 +385,14 @@
       }
     }
     if (candidates.length === 0) return null;
-    // Heuristic: the largest looks most like the final amount
     return Math.max(...candidates);
   }
 
-  /********** WHATSAPP **********/
+  /********** WHATSApp **********/
   function buildWhatsAppText(includeScreenshotURL){
     let total = cartTotal();
     let lines = '';
-    cart.forEach(it=>{ const s=it.price*it.quantity; lines += `• ${it.name} (${it.weight}g) × ${it.quantity} = ₹${s}\\n`; });
+    cart.forEach(it=>{ const s=it.price*it.quantity; lines += `• ${it.name} (${it.weight}g) × ${it.quantity} = ₹${s}\n`; });
     const name=$('customer-name')?.value||'';
     const mobile=$('customer-mobile')?.value||'';
     const address=$('customer-address')?.value||'';
@@ -417,10 +424,9 @@
     const req=['customer-name','customer-mobile','customer-address','customer-pincode'];
     for (const id of req){ const el=$(id); if (!el || !el.value.trim()){ alert('Please fill in all required fields'); return; } }
     if (!uploadedScreenshotFile){ alert('Please upload the payment screenshot.'); return; }
-    // ensure OCR matched
-    if ($('confirmPaymentBtn').disabled){ alert('Payment amount not verified yet. Please ensure a clear screenshot with the paid amount visible.'); return; }
+    if ($('confirmPaymentBtn').disabled){ alert('Payment amount not verified yet. Please upload a clear screenshot.'); return; }
 
-    // Optional: upload to your server to get a public URL
+    // Optional: upload screenshot to your server for URL
     if (ADMIN_UPLOAD_ENDPOINT){
       try{
         const fd = new FormData();
@@ -433,12 +439,12 @@
       } catch(e){ console.warn('Upload failed, proceeding without URL'); }
     }
 
-    // 1) Send to Admin (your WhatsApp)
+    // Send to Admin
     const adminText = buildWhatsAppText(true);
     const adminURL  = `https://wa.me/${ADMIN_WHATSAPP}?text=${adminText}`;
     window.open(adminURL,'_blank');
 
-    // 2) Optional: send to customer summary
+    // Optional: send to customer
     if ($('send-summary-to-self')?.checked){
       const customerNum = ($('customer-mobile')?.value||'').replace(/\D/g,'');
       if (customerNum.length===10){
@@ -448,7 +454,7 @@
       }
     }
 
-    // 3) Clear cart & success modal
+    // Clear cart & show success
     cart = [];
     updateCartUI();
     $('cart-drawer').classList.remove('open');
@@ -457,13 +463,65 @@
 
   function closeModal(){ $('success-modal').classList.remove('show'); }
 
+  /********** UPSELL **********/
+  function getUpsellItems() {
+    if (!cart.length) return [];
+    const catCount = {};
+    cart.forEach(i => {
+      const p = products.find(x => x.id === i.id);
+      if (p) catCount[p.category] = (catCount[p.category] || 0) + 1;
+    });
+    const topCat = Object.entries(catCount).sort((a,b)=>b[1]-a[1])[0]?.[0];
+    const pool = products.filter(p => !cart.some(c => c.id === p.id));
+    const score = (p) => {
+      let s = 0;
+      if (p.category === topCat) s += 3;
+      if (p.badge && /best|crispy|popular|classic/i.test(p.badge)) s += 2;
+      s += (p.price500 ? 1/(p.price500+1) : 0);
+      return s;
+    };
+    return pool.map(p=>({p,s:score(p)})).sort((a,b)=>b.s-a.s).slice(0,3).map(x=>x.p);
+  }
+  function renderUpsell() {
+    const section = $('upsell-section');
+    const list = $('upsell-items');
+    if (!section || !list) return;
+    if (!cart.length){ section.classList.add('hidden'); list.innerHTML=''; return; }
+    const recs = getUpsellItems();
+    if (!recs.length){ section.classList.add('hidden'); list.innerHTML=''; return; }
+    section.classList.remove('hidden');
+    list.innerHTML = recs.map(p => `
+      <div class="flex items-center justify-between p-3 bg-cream rounded-lg">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-lg overflow-hidden bg-gray-100">
+            <img loading="lazy" src="assets/${p.image}" alt="${p.name}" class="w-full h-full object-cover">
+          </div>
+          <div>
+            <p class="font-medium text-sm">${p.name}</p>
+            <p class="text-xs text-gray-600">₹${p.price500} • 500g</p>
+          </div>
+        </div>
+        <button class="text-white bg-saffron px-3 py-1.5 rounded-lg text-sm" onclick="addQuickUpsell(${p.id})">Add</button>
+      </div>
+    `).join('');
+  }
+  function addQuickUpsell(id) {
+    const p = products.find(x => x.id === id);
+    if (!p) return;
+    const existing = cart.find(i => i.id === id && i.weight === 500);
+    if (existing) existing.quantity += 1;
+    else cart.push({ id: p.id, name: p.name, nameEn: p.nameEn, price: p.price500, weight: 500, quantity: 1, image: p.image });
+    updateCartUI();
+    toast(`${p.name} added`);
+  }
+
   /********** INIT **********/
   document.addEventListener('DOMContentLoaded', ()=>{
     renderProducts();
-    updateCartUI();
+    updateCartUI();        // draws cart, attaches pay/screenshot listeners, and upsell
   });
 
-  // click outside to close drawer / modal
+  // Close drawer or modal on outside click
   document.addEventListener('click', (e)=>{
     const drawer=$('cart-drawer'); const cartBtn=e.target.closest('button[onclick="toggleCart()"]');
     if (drawer && drawer.classList.contains('open') && !drawer.contains(e.target) && !cartBtn) drawer.classList.remove('open');
