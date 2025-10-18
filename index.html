@@ -2,11 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PapadSale - Gujarati Swad, Ghar-ghar Tak!</title>
-  <meta name="description" content="Fresh homemade Gujarati snacks delivered to your doorstep. Order authentic papad, mathiya, khakhra and more with free delivery." />
+  <meta name="description" content="Fresh homemade Gujarati snacks delivered to your doorstep. Order authentic papad, mathiya, khakhra and more with free delivery."/>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <!-- Client-side OCR for screenshot verification -->
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
     body{box-sizing:border-box}
     .font-baloo{font-family:"Baloo 2",cursive}
@@ -14,7 +16,6 @@
     .bg-cream{background:#FEF7ED}
     .bg-saffron{background:#FF6A00}
     .text-saffron{color:#FF6A00}
-    .gujarati-pattern{background-image:radial-gradient(circle at 25px 25px,rgba(255,106,0,.08) 2px,transparent 2px),radial-gradient(circle at 75px 75px,rgba(255,140,0,.06) 2px,transparent 2px);background-size:100px 100px,150px 150px}
     .soft-shadow{box-shadow:0 8px 32px rgba(255,106,0,.12)}
     .product-card{transition:.3s}
     .product-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(255,106,0,.2)}
@@ -28,13 +29,13 @@
 </head>
 <body class="bg-cream font-inter">
 
-  <!-- HEADER (unchanged) -->
+  <!-- HEADER -->
   <header class="bg-white shadow-lg sticky top-0 z-50">
     <div class="max-w-6xl mx-auto px-4 py-3">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden">
-            <img src="assets/logo.png" alt="PapadSale Logo" class="w-8 h-8 object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <img src="assets/logo.png" alt="PapadSale Logo" class="w-8 h-8 object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"/>
             <span class="text-saffron font-bold text-lg hidden">P</span>
           </div>
           <div>
@@ -42,9 +43,9 @@
             <p class="text-xs text-gray-600">Gujarati Swad, Ghar-ghar Tak!</p>
           </div>
         </div>
-
         <div class="flex items-center gap-4">
-          <button onclick="toggleCart()" class="relative bg-saffron text-white px-4 py-2 rounded-lg font-semibold hover:bg-orange-600">🛒 કાર્ટ
+          <button onclick="toggleCart()" class="relative bg-saffron text-white px-4 py-2 rounded-lg font-semibold hover:bg-orange-600">
+            🛒 કાર્ટ
             <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
           </button>
           <div class="text-right">
@@ -56,101 +57,43 @@
     </div>
   </header>
 
-  <!-- HERO (unchanged) -->
-  <section class="gujarati-pattern py-16">
-    <div class="max-w-6xl mx-auto px-4 text-center">
-      <h2 class="font-baloo font-bold text-4xl md:text-6xl text-saffron mb-4">સ્વાદિષ્ટ ગુજરાતી નાસ્તો</h2>
-      <p class="text-lg md:text-xl text-gray-700 mb-8 max-w-2xl mx-auto">Fresh homemade Gujarati snacks delivered to your doorstep. Experience authentic flavors with every bite!</p>
-      <div class="flex flex-wrap justify-center gap-4">
-        <div class="bg-white px-6 py-3 rounded-full soft-shadow"><span class="text-2xl">🏠</span><span class="ml-2 font-semibold">Homemade Quality</span></div>
-        <div class="bg-white px-6 py-3 rounded-full soft-shadow"><span class="text-2xl">🚚</span><span class="ml-2 font-semibold">Free Delivery</span></div>
-        <div class="bg-white px-6 py-3 rounded-full soft-shadow"><span class="text-2xl">⭐</span><span class="ml-2 font-semibold">Premium Quality</span></div>
-      </div>
-    </div>
+  <!-- SIMPLE HERO -->
+  <section class="py-12 text-center">
+    <h2 class="font-baloo text-4xl text-saffron">સ્વાદિષ્ટ ગુજરાતી નાસ્તો</h2>
+    <p class="max-w-2xl mx-auto mt-3 text-gray-700">Fresh homemade Gujarati snacks delivered to your doorstep. Experience authentic flavors with every bite!</p>
   </section>
 
-  <!-- CATEGORY FILTERS (unchanged) -->
-  <section class="py-8 bg-white">
+  <!-- FILTERS -->
+  <section class="py-6 bg-white">
     <div class="max-w-6xl mx-auto px-4">
-      <div class="flex flex-wrap justify-center gap-4">
-        <button onclick="filterProducts('all')" class="filter-btn bg-saffron text-white px-6 py-2 rounded-full font-semibold">બધું</button>
-        <button onclick="filterProducts('papad')" class="filter-btn bg-white text-gray-700 px-6 py-2 rounded-full border">પાપડ</button>
-        <button onclick="filterProducts('mathiya')" class="filter-btn bg-white text-gray-700 px-6 py-2 rounded-full border">મઠિયા</button>
-        <button onclick="filterProducts('khakhra')" class="filter-btn bg-white text-gray-700 px-6 py-2 rounded-full border">ખાખરા</button>
-        <button onclick="filterProducts('snacks')" class="filter-btn bg-white text-gray-700 px-6 py-2 rounded-full border">નાસ્તો</button>
-        <button onclick="filterProducts('sweets')" class="filter-btn bg-white text-gray-700 px-6 py-2 rounded-full border">મિઠાઈ</button>
+      <div class="flex flex-wrap justify-center gap-3">
+        <button onclick="filterProducts('all')" class="filter-btn bg-saffron text-white px-4 py-2 rounded-full">બધું</button>
+        <button onclick="filterProducts('papad')" class="filter-btn bg-white text-gray-700 px-4 py-2 rounded-full border">પાપડ</button>
+        <button onclick="filterProducts('mathiya')" class="filter-btn bg-white text-gray-700 px-4 py-2 rounded-full border">મઠિયા</button>
+        <button onclick="filterProducts('khakhra')" class="filter-btn bg-white text-gray-700 px-4 py-2 rounded-full border">ખાખરા</button>
+        <button onclick="filterProducts('snacks')" class="filter-btn bg-white text-gray-700 px-4 py-2 rounded-full border">નાસ્તો</button>
+        <button onclick="filterProducts('sweets')" class="filter-btn bg-white text-gray-700 px-4 py-2 rounded-full border">મિઠાઈ</button>
       </div>
     </div>
   </section>
 
   <!-- PRODUCTS -->
-  <section class="py-16">
+  <section class="py-10">
     <div class="max-w-6xl mx-auto px-4">
-      <div class="text-center mb-12">
-        <h3 class="font-baloo font-bold text-3xl text-gray-800 mb-4">અમારા પ્રોડક્ટ્સ</h3>
-        <p class="text-gray-600">Fresh, authentic Gujarati snacks made with love</p>
-      </div>
-      <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-    </div>
-  </section>
-
-  <!-- CONTACT (unchanged content) -->
-  <section class="py-16 bg-white">
-    <div class="max-w-6xl mx-auto px-4">
-      <div class="max-w-4xl mx-auto">
-        <div class="text-center mb-12">
-          <h3 class="font-baloo font-bold text-3xl text-gray-800 mb-4">સંપર્ક કરો</h3>
-          <p class="text-gray-600">Get in touch with us for orders and inquiries</p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div class="space-y-6">
-            <div class="flex items-center gap-4">
-              <div class="w-12 h-12 bg-saffron rounded-full flex items-center justify-center"><span class="text-white text-xl">📱</span></div>
-              <div><h4 class="font-semibold">WhatsApp</h4><p class="text-gray-600">+91 99781 13276</p></div>
-            </div>
-            <div class="flex items-center gap-4">
-              <div class="w-12 h-12 bg-saffron rounded-full flex items-center justify-center"><span class="text-white text-xl">📧</span></div>
-              <div><h4 class="font-semibold">Email</h4><p class="text-gray-600">info@papadsale.com</p></div>
-            </div>
-            <div class="flex items-center gap-4">
-              <div class="w-12 h-12 bg-saffron rounded-full flex items-center justify-center"><span class="text-white text-xl">📍</span></div>
-              <div><h4 class="font-semibold">Location</h4><p class="text-gray-600">Ahmedabad, Gujarat, India</p></div>
-            </div>
-            <div class="flex items-center gap-4">
-              <div class="w-12 h-12 bg-saffron rounded-full flex items-center justify-center"><span class="text-white text-xl">🕒</span></div>
-              <div><h4 class="font-semibold">Working Hours</h4><p class="text-gray-600">Mon - Sat: 9 AM - 8 PM</p></div>
-            </div>
-          </div>
-          <div class="bg-gray-50 p-6 rounded-2xl">
-            <h4 class="font-semibold text-lg mb-4">Send us a message</h4>
-            <form onsubmit="sendMessage(event)" class="space-y-4">
-              <input type="text" placeholder="Your Name" required class="w-full p-3 border rounded-lg focus:border-saffron outline-none" />
-              <input type="tel" placeholder="Phone Number" required class="w-full p-3 border rounded-lg focus:border-saffron outline-none" />
-              <textarea placeholder="Your Message" rows="4" required class="w-full p-3 border rounded-lg focus:border-saffron outline-none resize-none"></textarea>
-              <button type="submit" class="w-full bg-saffron text-white py-3 rounded-lg font-semibold hover:bg-orange-600">Send Message</button>
-            </form>
-          </div>
-        </div>
-      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="products-grid"></div>
     </div>
   </section>
 
   <!-- CART DRAWER -->
   <div id="cart-drawer" class="cart-drawer fixed top-0 right-0 h-full w-full md:w-96 bg-white shadow-2xl z-50 overflow-y-auto">
-    <div class="p-4 md:p-6">
-      <div class="flex justify-between items-center mb-6">
-        <h3 class="text-xl md:text-2xl font-baloo font-bold text-gray-800">Your Cart</h3>
-        <button onclick="toggleCart()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+    <div class="p-5">
+      <div class="flex justify-between items-center mb-5">
+        <h3 class="text-xl font-baloo font-bold">Your Cart</h3>
+        <button onclick="toggleCart()" class="text-2xl text-gray-500">&times;</button>
       </div>
 
       <div id="cart-items" class="space-y-4 mb-6">
         <p class="text-gray-500 text-center py-8">Your cart is empty</p>
-      </div>
-
-      <!-- Upsells (kept) -->
-      <div id="upsell-section" class="mt-4 hidden">
-        <h4 class="font-semibold mb-2">You may also like</h4>
-        <div id="upsell-items" class="space-y-3"></div>
       </div>
 
       <div id="cart-total-block" class="border-t pt-4 mb-6 hidden">
@@ -159,47 +102,50 @@
         </div>
       </div>
 
-      <!-- CHECKOUT (updated per request) -->
+      <!-- CHECKOUT (UPI only) -->
       <div id="checkout-form" class="hidden">
-        <h4 class="text-lg font-baloo font-bold mb-4">Delivery Details</h4>
-        <div class="space-y-4">
-          <input id="customer-name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-saffron" placeholder="Full Name *" required />
-          <input id="customer-mobile" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-saffron" placeholder="Mobile Number (WhatsApp) *" pattern="[0-9]{10}" required />
-          <textarea id="customer-address" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-saffron" rows="3" placeholder="Full Address *" required></textarea>
-          <input id="customer-pincode" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-saffron" placeholder="Pincode *" pattern="[0-9]{6}" required />
-          <input id="customer-landmark" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-saffron" placeholder="Landmark (Optional)" />
-          <textarea id="order-notes" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-saffron" rows="2" placeholder="Notes (Optional)"></textarea>
-          <!-- Removed COD as requested -->
-          <div class="p-3 rounded-lg bg-yellow-50 border border-yellow-200">
-            <p class="font-semibold mb-2">Payment Method: <span class="text-saffron">UPI Only</span></p>
-            <p class="text-sm text-gray-600">Scan and pay, then upload the screenshot below to confirm.</p>
+        <h4 class="text-lg font-baloo font-bold mb-3">Delivery Details</h4>
+        <div class="space-y-3">
+          <input id="customer-name" class="w-full p-3 border rounded-lg" placeholder="Full Name *" required/>
+          <input id="customer-mobile" class="w-full p-3 border rounded-lg" placeholder="Mobile Number (WhatsApp) *" pattern="[0-9]{10}" required/>
+          <textarea id="customer-address" class="w-full p-3 border rounded-lg" rows="3" placeholder="Full Address *" required></textarea>
+          <input id="customer-pincode" class="w-full p-3 border rounded-lg" placeholder="Pincode *" pattern="[0-9]{6}" required/>
+          <input id="customer-landmark" class="w-full p-3 border rounded-lg" placeholder="Landmark (Optional)"/>
+          <textarea id="order-notes" class="w-full p-3 border rounded-lg" rows="2" placeholder="Notes (Optional)"></textarea>
+          <div class="p-3 rounded-lg bg-yellow-50 border border-yellow-200 text-sm">
+            <strong>Payment Method: <span class="text-saffron">UPI Only</span></strong><br/>
+            Scan and pay, then upload the payment screenshot for verification.
           </div>
         </div>
 
-        <div class="space-y-3 mt-6">
-          <button onclick="updateCart()" class="w-full bg-gray-500 hover:bg-gray-600 text-white py-2 rounded-lg">🛒 Update Cart (Add More Items)</button>
-          <a id="payUPI" href="upi://pay?pa=9978113276@okbizaxis&pn=Papadsale&cu=INR" target="_blank" class="block text-center w-full bg-saffron hover:bg-orange-600 text-white py-3 rounded-lg font-semibold">💳 Pay via UPI</a>
+        <div class="space-y-3 mt-4">
+          <button onclick="toggleCart()" class="w-full bg-gray-500 hover:bg-gray-600 text-white py-2 rounded-lg">🛒 Update Cart</button>
+          <a id="payUPI" href="#" class="block text-center w-full bg-saffron hover:bg-orange-600 text-white py-3 rounded-lg font-semibold">💳 Pay via UPI (opens your app)</a>
         </div>
 
-        <!-- Payment QR + Screenshot Upload FIRST -->
-        <div class="mt-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200 text-center">
+        <!-- QR + Verification -->
+        <div class="mt-5 p-4 bg-yellow-50 rounded-lg border border-yellow-200 text-center">
           <h5 class="font-bold text-gray-800 mb-3">💳 Pay Papadsale via UPI</h5>
-          <!-- Your QR is shown from assets/qr.png -->
-          <img src="assets/qr.png" alt="UPI QR Code" class="w-36 h-36 mx-auto rounded-lg border mb-3" />
-          <p class="text-sm text-gray-600 mb-3">Scan, pay and upload the payment screenshot below.</p>
-          <input id="payment-screenshot" type="file" accept="image/*" class="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-saffron file:text-white hover:file:bg-orange-600 mx-auto" />
-          <label class="mt-3 inline-flex items-center gap-2 text-sm text-gray-700">
-            <input id="send-summary-to-self" type="checkbox" class="rounded text-saffron" checked />
-            <span>Send order summary to my WhatsApp</span>
-          </label>
-          <button id="confirmPaymentBtn" onclick="confirmPaymentAndSend()" class="mt-4 w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold disabled:opacity-60" disabled>✅ Confirm Payment & Send on WhatsApp</button>
-          <p id="upload-hint" class="text-xs text-gray-500 mt-2">Upload screenshot to enable the button.</p>
+          <img src="assets/qr.png" alt="UPI QR Code" class="w-36 h-36 mx-auto rounded-lg border mb-3"/>
+          <p class="text-sm text-gray-600 mb-2">After payment, upload the screenshot. We’ll verify the paid amount equals your total.</p>
+
+          <div class="grid grid-cols-1 gap-3">
+            <input id="payment-screenshot" type="file" accept="image/*" class="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-saffron file:text-white hover:file:bg-orange-600 mx-auto"/>
+            <div id="ocr-status" class="text-xs text-gray-600"></div>
+            <label class="inline-flex items-center gap-2 text-sm justify-center">
+              <input id="send-summary-to-self" type="checkbox" class="rounded text-saffron" checked/>
+              <span>Send order summary to my WhatsApp</span>
+            </label>
+            <button id="confirmPaymentBtn" onclick="confirmPaymentAndSend()" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold disabled:opacity-60" disabled>
+              ✅ Confirm Payment & Send on WhatsApp
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- SUCCESS MODAL (shows only AFTER confirm) -->
+  <!-- SUCCESS MODAL -->
   <div id="success-modal" class="modal">
     <div class="bg-white p-8 rounded-2xl max-w-md mx-4 text-center">
       <div class="text-6xl mb-4">✅</div>
@@ -209,28 +155,22 @@
     </div>
   </div>
 
-  <!-- FLOATING WHATSAPP (unchanged) -->
-  <a href="https://wa.me/919978113276" target="_blank" class="fixed bottom-5 right-5">
-    <div class="bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600">💬</div>
-  </a>
-
-  <!-- FOOTER (unchanged layout) -->
-  <footer class="bg-gray-800 text-white py-12 mt-16">
+  <!-- FOOTER -->
+  <footer class="bg-gray-800 text-white py-10 mt-16">
     <div class="max-w-6xl mx-auto px-4 text-center">
-      <p class="text-gray-300">© 2024 PapadSale. All rights reserved. Made with ❤️ for authentic Gujarati flavors.</p>
+      <p class="text-gray-300">© 2024 PapadSale. All rights reserved.</p>
     </div>
   </footer>
 
   <!-- APP SCRIPT -->
   <script>
   /********** CONFIG **********/
-  const ADMIN_WHATSAPP = '919978113276'; // your WhatsApp number (no +)
-  const UPI_ID = '9978113276@okbizaxis';
-  const UPI_LINK = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent('Papadsale')}&cu=INR`;
-  // Optional: set to your backend endpoint that accepts a multipart image and returns {url: "https://..."}
-  const ADMIN_UPLOAD_ENDPOINT = ''; // e.g., "/api/upload"
+  const ADMIN_WHATSAPP = '919978113276';      // your WhatsApp (no +)
+  const OCR_TOLERANCE = 2;                    // ₹ tolerance for matching amount
+  const ADMIN_UPLOAD_ENDPOINT = '';           // optional backend to host screenshot; set to URL to enable
+  const SHOP_NAME = 'Papadsale';
 
-  /********** STATE **********/
+  /********** DATA **********/
   const products = [
     { id:1, name:"ગ્રીન ચીલી ખીચિયા પાપડ", nameEn:"Green Chili Khichiya Papad", price250:90, price500:180, image:"papad1.jpg", category:"papad" },
     { id:2, name:"આસ્વાદ સાદા મઠિયા", nameEn:"Aswad Plain Mathiya", price250:100, price500:200, image:"mathiya1.jpg", category:"mathiya" },
@@ -244,30 +184,33 @@
     { id:10, name:"બિસ્કિટ/નાનખટાઈ", nameEn:"Biscuit/Nankhatai", price250:70, price500:140, image:"combomathiyachorafali.png", category:"sweets" },
     { id:11, name:"ડ્રાય કચોરી", nameEn:"Dry Kachori", price250:70, price500:140, image:"chorafali1.jpg", category:"snacks" }
   ];
+
+  /********** STATE **********/
   let cart = [];
   let currentFilter = 'all';
-  let uploadedScreenshotFile = null; // local file reference
-  let uploadedScreenshotURL = '';    // public URL if backend provided
+  let uploadedScreenshotFile = null;
+  let uploadedScreenshotURL = ''; // if you provide backend, we’ll place URL here
+  let ocrDetectedAmount = null;
 
   /********** HELPERS **********/
   const $ = (id)=>document.getElementById(id);
-  function money(n){ return `₹${n}`; }
+  const money = (n)=>`₹${n}`;
+  const cartTotal = ()=>cart.reduce((s,i)=>s+i.price*i.quantity,0);
   function toast(msg){
     const t=document.createElement('div');
     t.className='fixed top-4 right-4 bg-green-600 text-white px-4 py-2 rounded shadow z-50';
     t.textContent=msg; document.body.appendChild(t); setTimeout(()=>t.remove(),2200);
   }
 
-  /********** RENDER PRODUCTS **********/
+  /********** PRODUCTS **********/
   function renderProducts(){
-    const grid=$('products-grid');
+    const grid = $('products-grid');
     const items = currentFilter==='all' ? products : products.filter(p=>p.category===currentFilter);
     grid.innerHTML = items.map(p=>`
       <div class="product-card bg-white rounded-2xl p-6 soft-shadow">
         <div class="text-center mb-4">
           <div class="w-32 h-32 mx-auto mb-3 rounded-lg overflow-hidden bg-gray-100">
-            <img src="assets/${p.image}" alt="${p.nameEn}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
-            <div class="hidden w-full h-full bg-saffron text-white text-4xl items-center justify-center">📦</div>
+            <img src="assets/${p.image}" alt="${p.nameEn}" class="w-full h-full object-cover"/>
           </div>
           <h3 class="font-baloo font-semibold text-lg text-gray-800 mb-1">${p.name}</h3>
           <p class="text-sm text-gray-600">${p.nameEn}</p>
@@ -290,7 +233,7 @@
   function filterProducts(cat){
     currentFilter=cat; renderProducts();
     document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('bg-saffron','text-white'));
-    if (event && event.target) { event.target.classList.add('bg-saffron','text-white'); }
+    if (event && event.target) event.target.classList.add('bg-saffron','text-white');
   }
   function selectWeight(id,w){
     $('weight-250-'+id).classList.toggle('active',w===250);
@@ -315,21 +258,31 @@
   }
   function removeFromCart(index){ cart.splice(index,1); updateCartUI(); }
   function toggleCart(){ $('cart-drawer').classList.toggle('open'); }
-  function updateCart(){ toggleCart(); }
+  function updateCart(){
+    toggleCart(); // just re-open product area
+  }
 
   function updateCartUI(){
     const count=cart.reduce((s,i)=>s+i.quantity,0);
-    const total=cart.reduce((s,i)=>s+i.price*i.quantity,0);
+    const total=cartTotal();
     $('cart-count').textContent=count; $('cart-total-header').textContent=money(total);
     const list=$('cart-items');
-    if(!cart.length){ list.innerHTML='<p class="text-gray-500 text-center py-8">Your cart is empty</p>'; $('cart-total-block').classList.add('hidden'); $('checkout-form').classList.add('hidden'); return; }
+    if(!cart.length){
+      list.innerHTML='<p class="text-gray-500 text-center py-8">Your cart is empty</p>';
+      $('cart-total-block').classList.add('hidden');
+      $('checkout-form').classList.add('hidden');
+      return;
+    }
     list.innerHTML = cart.map((item,idx)=>`
       <div class="flex items-center justify-between p-4 border-b">
         <div class="flex items-center gap-3">
           <div class="w-12 h-12 rounded-lg overflow-hidden bg-gray-100">
-            <img src="assets/${item.image}" alt="${item.nameEn}" class="w-full h-full object-cover" />
+            <img src="assets/${item.image}" alt="${item.nameEn}" class="w-full h-full object-cover"/>
           </div>
-          <div><h4 class="font-semibold text-sm">${item.name}</h4><p class="text-xs text-gray-600">${item.weight}g - ${money(item.price)}</p></div>
+          <div>
+            <h4 class="font-semibold text-sm">${item.name}</h4>
+            <p class="text-xs text-gray-600">${item.weight}g - ${money(item.price)}</p>
+          </div>
         </div>
         <div class="flex items-center gap-2">
           <button onclick="changeCartQuantity(${item.id},${item.weight},-1)" class="w-6 h-6 bg-gray-200 rounded-full text-sm">-</button>
@@ -342,99 +295,173 @@
     $('total-amount').textContent=money(total);
     $('cart-total-block').classList.remove('hidden');
     $('checkout-form').classList.remove('hidden');
+
+    // refresh UPI link with exact amount
+    const upi = buildUpiLink(total);
+    const payLink = $('payUPI');
+    if (payLink) payLink.onclick = (e)=>{ e.preventDefault(); openUpiLink(upi); };
   }
 
-  /********** PAYMENT & WHATSAPP **********/
-  // Enable confirm button when a screenshot is chosen
-  $('payment-screenshot')?.addEventListener('change', (e)=>{
+  /********** UPI **********/
+  function buildUpiLink(amount){
+    const pa = encodeURIComponent('9978113276@okbizaxis'); // payee UPI
+    const pn = encodeURIComponent(SHOP_NAME);
+    const tn = encodeURIComponent('Papadsale Order');
+    const am = encodeURIComponent(amount.toFixed(2));
+    return `upi://pay?pa=${pa}&pn=${pn}&tn=${tn}&am=${am}&cu=INR`;
+  }
+  function openUpiLink(upiUrl){
+    const start = Date.now();
+    window.location.href = upiUrl;
+    setTimeout(()=>{
+      if ((Date.now()-start) < 1400) {
+        alert('If your UPI app did not open, please scan the QR shown below and then upload your screenshot.');
+      }
+    }, 1200);
+  }
+
+  /********** PAYMENT VERIFICATION (OCR) **********/
+  $('payment-screenshot')?.addEventListener('change', async (e)=>{
     uploadedScreenshotFile = e.target.files && e.target.files[0] ? e.target.files[0] : null;
-    $('confirmPaymentBtn').disabled = !uploadedScreenshotFile;
+    $('confirmPaymentBtn').disabled = true;
+    $('ocr-status').textContent = '';
+    ocrDetectedAmount = null;
+
+    if (!uploadedScreenshotFile) return;
+
+    $('ocr-status').textContent = 'Reading screenshot to detect paid amount...';
+    try {
+      const { data:{ text } } = await Tesseract.recognize(uploadedScreenshotFile, 'eng', { logger:m=>{} });
+      const detected = extractAmount(text);
+      const total = cartTotal();
+
+      if (detected != null){
+        ocrDetectedAmount = detected;
+        const diff = Math.abs(detected - total);
+        if (diff <= OCR_TOLERANCE){
+          $('ocr-status').innerHTML = `✅ Verified payment amount appears to be <strong>₹${detected.toFixed(2)}</strong> (matches your total ₹${total.toFixed(2)}).`;
+          $('confirmPaymentBtn').disabled = false;
+        } else {
+          $('ocr-status').innerHTML = `❌ Detected amount <strong>₹${detected.toFixed(2)}</strong> does not match your total <strong>₹${total.toFixed(2)}</strong>. Please ensure you paid the exact amount, re-upload a clearer screenshot, or contact us.`;
+        }
+      } else {
+        $('ocr-status').innerHTML = '⚠️ Could not read an amount from the image. Please ensure the amount is visible or re-upload.';
+      }
+    } catch(err){
+      console.warn(err);
+      $('ocr-status').textContent = '⚠️ Unable to read the image. Please try again or upload a clearer screenshot.';
+    }
   });
 
-  function buildOrderText(){
-    let total=0, lines='';
-    cart.forEach(it=>{ const s=it.price*it.quantity; total+=s; lines += `• ${it.name} (${it.weight}g) × ${it.quantity} = ₹${s}\\n`; });
+  // Heuristic: try to find numbers that look like rupee amounts
+  function extractAmount(text){
+    if (!text) return null;
+    // Normalize
+    const t = text.replace(/[,]/g,'').replace(/₹/g,' INR ');
+    // Prefer amounts with INR/UPI context
+    const re1 = /(INR|Rs\.?|Amount|Paid)\s*[:\-]?\s*([0-9]+(?:\.[0-9]{1,2})?)/ig;
+    let m, candidates=[];
+    while ((m = re1.exec(t)) !== null){ candidates.push(parseFloat(m[2])); }
+    // Fallback: any standalone biggish number
+    if (candidates.length === 0){
+      const re2 = /([0-9]{2,6}(?:\.[0-9]{1,2})?)/g;
+      while ((m = re2.exec(t)) !== null){ 
+        const v = parseFloat(m[1]);
+        if (v >= 10) candidates.push(v);
+      }
+    }
+    if (candidates.length === 0) return null;
+    // Heuristic: the largest looks most like the final amount
+    return Math.max(...candidates);
+  }
+
+  /********** WHATSAPP **********/
+  function buildWhatsAppText(includeScreenshotURL){
+    let total = cartTotal();
+    let lines = '';
+    cart.forEach(it=>{ const s=it.price*it.quantity; lines += `• ${it.name} (${it.weight}g) × ${it.quantity} = ₹${s}\\n`; });
     const name=$('customer-name')?.value||'';
     const mobile=$('customer-mobile')?.value||'';
     const address=$('customer-address')?.value||'';
     const pincode=$('customer-pincode')?.value||'';
     const landmark=$('customer-landmark')?.value||'';
     const notes=$('order-notes')?.value||'';
-    let msg = `🛒 *NEW ORDER - PAPADSALE*%0A%0A`;
+    let msg = `🛒 *NEW ORDER - ${SHOP_NAME.toUpperCase()}*%0A%0A`;
     msg += `📦 *Items:*%0A${encodeURIComponent(lines).replace(/%250A/g,'%0A')}`;
-    msg += `%0A💰 *Total:* ₹${total}%0A%0A`;
-    if (name || mobile || address) {
-      msg += `👤 *Customer Details*%0A`;
-      if (name) msg += `Name: ${encodeURIComponent(name)}%0A`;
-      if (mobile) msg += `Mobile: ${encodeURIComponent(mobile)}%0A`;
-      if (address) msg += `Address: ${encodeURIComponent(address)}%0A`;
-      if (pincode) msg += `Pincode: ${encodeURIComponent(pincode)}%0A`;
-      if (landmark) msg += `Landmark: ${encodeURIComponent(landmark)}%0A`;
+    msg += `%0A💰 *Total:* ₹${total.toFixed(2)}%0A`;
+    if (ocrDetectedAmount!=null) msg += `✅ *Paid:* ₹${ocrDetectedAmount.toFixed(2)}%0A`;
+    msg += `%0A👤 *Customer*%0A`;
+    if (name) msg += `Name: ${encodeURIComponent(name)}%0A`;
+    if (mobile) msg += `Mobile: ${encodeURIComponent(mobile)}%0A`;
+    if (address) msg += `Address: ${encodeURIComponent(address)}%0A`;
+    if (pincode) msg += `Pincode: ${encodeURIComponent(pincode)}%0A`;
+    if (landmark) msg += `Landmark: ${encodeURIComponent(landmark)}%0A`;
+    if (notes) msg += `%0A📝 Notes: ${encodeURIComponent(notes)}%0A`;
+    if (includeScreenshotURL && uploadedScreenshotURL) {
+      msg += `%0A📸 Payment screenshot: ${encodeURIComponent(uploadedScreenshotURL)}%0A`;
+    } else {
+      msg += `%0A📸 Payment screenshot uploaded by customer (file cannot be auto-attached to WhatsApp link).%0A`;
     }
-    if (notes) msg += `%0A📝 Notes: ${encodeURIComponent(notes)}`;
-    if (uploadedScreenshotURL) msg += `%0A%0A📸 Payment screenshot: ${encodeURIComponent(uploadedScreenshotURL)}`;
-    return msg + `%0A%0A🙏 Thank you!`;
+    msg += `%0A🙏 Thank you!`;
+    return msg;
   }
 
   async function confirmPaymentAndSend(){
-    // Basic validations
-    const need=['customer-name','customer-mobile','customer-address','customer-pincode'];
-    for (const id of need){ const el=$(id); if(el && !el.value.trim()){ alert('Please fill in all required fields'); return; } }
+    // basic required fields
+    const req=['customer-name','customer-mobile','customer-address','customer-pincode'];
+    for (const id of req){ const el=$(id); if (!el || !el.value.trim()){ alert('Please fill in all required fields'); return; } }
     if (!uploadedScreenshotFile){ alert('Please upload the payment screenshot.'); return; }
+    // ensure OCR matched
+    if ($('confirmPaymentBtn').disabled){ alert('Payment amount not verified yet. Please ensure a clear screenshot with the paid amount visible.'); return; }
 
-    // Optional upload to your server to get a public URL (so you see the image in WhatsApp message)
+    // Optional: upload to your server to get a public URL
     if (ADMIN_UPLOAD_ENDPOINT){
       try{
-        const fd=new FormData(); fd.append('file', uploadedScreenshotFile);
-        const r=await fetch(ADMIN_UPLOAD_ENDPOINT,{method:'POST',body:fd});
-        const j=await r.json(); if (j && j.url) uploadedScreenshotURL=j.url;
-      }catch(e){ console.warn('Upload failed, proceeding without URL.', e); }
+        const fd = new FormData();
+        fd.append('file', uploadedScreenshotFile);
+        const r = await fetch(ADMIN_UPLOAD_ENDPOINT,{ method:'POST', body:fd });
+        if (r.ok){
+          const j = await r.json();
+          if (j && j.url) uploadedScreenshotURL = j.url;
+        }
+      } catch(e){ console.warn('Upload failed, proceeding without URL'); }
     }
 
-    // Send to Admin (your WhatsApp)
-    const adminText = buildOrderText();
-    const adminURL = `https://wa.me/${ADMIN_WHATSAPP}?text=${adminText}`;
-    window.open(adminURL, '_blank');
+    // 1) Send to Admin (your WhatsApp)
+    const adminText = buildWhatsAppText(true);
+    const adminURL  = `https://wa.me/${ADMIN_WHATSAPP}?text=${adminText}`;
+    window.open(adminURL,'_blank');
 
-    // Optional: send to customer
+    // 2) Optional: send to customer summary
     if ($('send-summary-to-self')?.checked){
       const customerNum = ($('customer-mobile')?.value||'').replace(/\D/g,'');
-      if (customerNum && customerNum.length===10){
-        const summary = `🧾 *Order Summary - PapadSale*%0A%0A` + buildOrderText();
+      if (customerNum.length===10){
+        const summary = `🧾 *Order Summary - ${SHOP_NAME}*%0A%0A` + buildWhatsAppText(false);
         const customerURL = `https://wa.me/91${customerNum}?text=${summary}`;
-        setTimeout(()=>window.open(customerURL,'_blank'), 600); // small offset
+        setTimeout(()=>window.open(customerURL,'_blank'), 600);
       }
     }
 
-    // Clear cart & show success modal
+    // 3) Clear cart & success modal
     cart = [];
     updateCartUI();
     $('cart-drawer').classList.remove('open');
     $('success-modal').classList.add('show');
   }
 
-  function sendMessage(e){
-    e.preventDefault();
-    const f=e.target;
-    const name=f.querySelector('input[type="text"]').value;
-    const phone=f.querySelector('input[type="tel"]').value;
-    const message=f.querySelector('textarea').value;
-    const url=`https://wa.me/${ADMIN_WHATSAPP}?text=${encodeURIComponent(`નમસ્તે! મારું નામ ${name} છે.\nફોન: ${phone}\nમેસેજ: ${message}`)}`;
-    window.open(url,'_blank'); f.reset(); toast('Message prepared on WhatsApp!');
-  }
+  function closeModal(){ $('success-modal').classList.remove('show'); }
 
-  // Click outside to close drawer / modal
+  /********** INIT **********/
+  document.addEventListener('DOMContentLoaded', ()=>{
+    renderProducts();
+    updateCartUI();
+  });
+
+  // click outside to close drawer / modal
   document.addEventListener('click', (e)=>{
     const drawer=$('cart-drawer'); const cartBtn=e.target.closest('button[onclick="toggleCart()"]');
     if (drawer && drawer.classList.contains('open') && !drawer.contains(e.target) && !cartBtn) drawer.classList.remove('open');
     const modal=$('success-modal'); if (e.target===modal) modal.classList.remove('show');
-  });
-
-  /********** INIT **********/
-  document.addEventListener('DOMContentLoaded', ()=>{
-    // Ensure the UPI link is correct
-    const payLink = document.getElementById('payUPI'); if (payLink) payLink.href = UPI_LINK;
-    renderProducts(); updateCartUI();
   });
   </script>
 </body>
