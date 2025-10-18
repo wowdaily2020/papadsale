@@ -21,10 +21,29 @@
     .product-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(255,106,0,.2)}
     .weight-toggle{transition:.2s}
     .weight-toggle.active{background:#FF6A00;color:#fff;border-color:#FF6A00;transform:scale(1.02)}
-    .cart-drawer{transform:translateX(100%);transition:transform .3s ease-in-out}
-    .cart-drawer.open{transform:translateX(0)}
+
+    /* Drawer FIX: use right property instead of transform so file input is always tappable */
+    .cart-drawer{
+      position: fixed;
+      top: 0;
+      right: -100%;
+      height: 100%;
+      width: 100%;
+      transition: right .3s ease-in-out;
+      will-change: right;
+      z-index: 50;
+      background:#fff;
+      box-shadow:0 20px 60px rgba(0,0,0,.2);
+    }
+    @media (min-width:768px){ .cart-drawer{ width:24rem; } }
+    .cart-drawer.open{ right: 0; }
+
     .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000}
     .modal.show{display:flex;align-items:center;justify-content:center}
+
+    /* Small helpers for stars */
+    .star{cursor:pointer; user-select:none}
+    .star.on{color:#f59e0b}
   </style>
 </head>
 <body class="bg-cream font-inter">
@@ -84,8 +103,84 @@
     </div>
   </section>
 
+  <!-- STATS / TRACKER GRID -->
+  <section class="py-12 bg-white">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="text-center mb-10">
+        <h3 class="font-baloo font-bold text-3xl text-gray-800">Why customers trust PapadSale</h3>
+        <p class="text-gray-600">Real numbers from our kitchen to your home</p>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-cream rounded-2xl p-6 text-center soft-shadow">
+          <p class="text-3xl font-bold text-saffron counter" data-target="12500">0</p>
+          <p class="text-gray-700 mt-1">Total Orders</p>
+        </div>
+        <div class="bg-cream rounded-2xl p-6 text-center soft-shadow">
+          <p class="text-3xl font-bold text-saffron counter" data-target="11840">0</p>
+          <p class="text-gray-700 mt-1">Deliveries</p>
+        </div>
+        <div class="bg-cream rounded-2xl p-6 text-center soft-shadow">
+          <p class="text-3xl font-bold text-saffron counter" data-target="10980">0</p>
+          <p class="text-gray-700 mt-1">Happy Customers</p>
+        </div>
+        <div class="bg-cream rounded-2xl p-6 text-center soft-shadow">
+          <p class="text-3xl font-bold text-saffron counter" data-target="42">0</p>
+          <p class="text-gray-700 mt-1">Cities Served</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REVIEWS -->
+  <section class="py-12">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="text-center mb-10">
+        <h3 class="font-baloo font-bold text-3xl text-gray-800">Customer Reviews</h3>
+        <p class="text-gray-600">Hear it from those who’ve tasted the crunch!</p>
+      </div>
+
+      <!-- Review list -->
+      <div id="reviews-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10"></div>
+
+      <!-- Add Review -->
+      <div class="bg-white rounded-2xl p-6 soft-shadow max-w-3xl mx-auto">
+        <h4 class="font-semibold mb-3">Add your review</h4>
+        <div class="grid md:grid-cols-2 gap-3">
+          <input id="rev-name" class="w-full p-3 border rounded-lg" placeholder="Your Name *"/>
+          <input id="rev-city" class="w-full p-3 border rounded-lg" placeholder="City (Optional)"/>
+        </div>
+        <div class="mt-3">
+          <span class="mr-2 text-sm text-gray-700">Your Rating:</span>
+          <span id="rev-stars" class="text-2xl">
+            <span class="star" data-v="1">★</span>
+            <span class="star" data-v="2">★</span>
+            <span class="star" data-v="3">★</span>
+            <span class="star" data-v="4">★</span>
+            <span class="star" data-v="5">★</span>
+          </span>
+        </div>
+        <textarea id="rev-text" rows="4" class="w-full p-3 border rounded-lg mt-3" placeholder="Share your experience *"></textarea>
+        <button onclick="submitReview()" class="mt-3 bg-saffron text-white px-5 py-3 rounded-lg font-semibold hover:bg-orange-600">Submit Review</button>
+        <p id="rev-hint" class="text-xs text-gray-500 mt-2">Your review appears instantly and is saved on your device (localStorage).</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQs -->
+  <section class="py-12 bg-white">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="text-center mb-10">
+        <h3 class="font-baloo font-bold text-3xl text-gray-800">FAQs</h3>
+        <p class="text-gray-600">Everything you need to know</p>
+      </div>
+      <div class="max-w-4xl mx-auto space-y-3" id="faq-acc">
+        <!-- items added via JS -->
+      </div>
+    </div>
+  </section>
+
   <!-- CART DRAWER -->
-  <div id="cart-drawer" class="cart-drawer fixed top-0 right-0 h-full w-full md:w-96 bg-white shadow-2xl z-50 overflow-y-auto">
+  <div id="cart-drawer" class="cart-drawer">
     <div class="p-5">
       <div class="flex justify-between items-center mb-5">
         <h3 class="text-xl font-baloo font-bold">Your Cart</h3>
@@ -135,17 +230,20 @@
           <img src="assets/qr.png" alt="UPI QR Code" class="w-36 h-36 mx-auto rounded-lg border mb-3"/>
           <p class="text-sm text-gray-600 mb-2">After payment, upload the screenshot. We’ll verify the paid amount equals your total.</p>
 
-          <div class="grid grid-cols-1 gap-3">
-            <input id="payment-screenshot" type="file" accept="image/*" class="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-saffron file:text-white hover:file:bg-orange-600 mx-auto"/>
-            <div id="ocr-status" class="text-xs text-gray-600"></div>
-            <label class="inline-flex items-center gap-2 text-sm justify-center">
-              <input id="send-summary-to-self" type="checkbox" class="rounded text-saffron" checked/>
-              <span>Send order summary to my WhatsApp</span>
-            </label>
-            <button id="confirmPaymentBtn" onclick="confirmPaymentAndSend()" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold disabled:opacity-60" disabled>
-              ✅ Confirm Payment & Send on WhatsApp
-            </button>
-          </div>
+          <!-- Larger tap target using label -->
+          <label class="inline-block bg-saffron text-white px-4 py-2 rounded-lg cursor-pointer">
+            📎 Upload Payment Screenshot
+            <input id="payment-screenshot" type="file" accept="image/*" class="hidden">
+          </label>
+          <div id="ocr-status" class="text-xs text-gray-600 mt-2"></div>
+
+          <label class="mt-3 inline-flex items-center gap-2 text-sm justify-center">
+            <input id="send-summary-to-self" type="checkbox" class="rounded text-saffron" checked/>
+            <span>Send order summary to my WhatsApp</span>
+          </label>
+          <button id="confirmPaymentBtn" onclick="confirmPaymentAndSend()" class="mt-3 w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold disabled:opacity-60" disabled>
+            ✅ Confirm Payment & Send on WhatsApp
+          </button>
         </div>
       </div>
     </div>
@@ -161,10 +259,47 @@
     </div>
   </div>
 
-  <!-- FOOTER -->
-  <footer class="bg-gray-800 text-white py-10 mt-16">
-    <div class="max-w-6xl mx-auto px-4 text-center">
-      <p class="text-gray-300">© 2024 PapadSale. All rights reserved.</p>
+  <!-- FOOTER (expanded) -->
+  <footer class="bg-gray-900 text-gray-300 pt-12">
+    <div class="max-w-6xl mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-gray-700">
+        <div>
+          <div class="flex items-center gap-2 mb-3">
+            <img src="assets/logo.png" class="w-8 h-8" alt="logo" onerror="this.style.display='none'"/>
+            <span class="font-baloo text-white font-bold text-xl">PapadSale</span>
+          </div>
+          <p class="text-sm">Authentic Gujarati snacks—freshly made, hygienic, and delivered with love.</p>
+        </div>
+        <div>
+          <h5 class="text-white font-semibold mb-3">Quick Links</h5>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#" class="hover:text-white">Home</a></li>
+            <li><a href="#products-grid" class="hover:text-white">Products</a></li>
+            <li><a href="#reviews-list" class="hover:text-white">Reviews</a></li>
+            <li><a href="#faq-acc" class="hover:text-white">FAQs</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="text-white font-semibold mb-3">Contact</h5>
+          <ul class="space-y-2 text-sm">
+            <li>📍 Ahmedabad, Gujarat</li>
+            <li>📞 <a href="https://wa.me/919978113276" class="hover:text-white">+91 99781 13276</a></li>
+            <li>✉️ info@papadsale.com</li>
+            <li>UPI: <span class="text-white">food53.06@idfcbank</span></li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="text-white font-semibold mb-3">Follow</h5>
+          <div class="flex gap-3 text-lg">
+            <a class="hover:text-white" href="#" aria-label="Instagram">📸</a>
+            <a class="hover:text-white" href="#" aria-label="Facebook">👍</a>
+            <a class="hover:text-white" href="#" aria-label="Twitter">🐦</a>
+          </div>
+        </div>
+      </div>
+      <div class="py-6 text-center text-sm text-gray-400">
+        © 2024 PapadSale. All rights reserved.
+      </div>
     </div>
   </footer>
 
@@ -175,6 +310,7 @@
   const OCR_TOLERANCE  = 2;                   // ₹ tolerance for amount match
   const ADMIN_UPLOAD_ENDPOINT = '';           // optional backend to host screenshot (returns {url})
   const SHOP_NAME = 'Papadsale';
+  const UPI_VPA = 'food53.06@idfcbank';       // updated UPI ID
 
   /********** DATA **********/
   const products = [
@@ -191,12 +327,26 @@
     { id:11, name:"ડ્રાય કચોરી", nameEn:"Dry Kachori", price250:70, price500:140, image:"chorafali1.jpg", category:"snacks" }
   ];
 
+  const seedReviews = [
+    {name:'Priya S.', city:'Vadodara', rating:5, text:'Mathiya is super crispy and fresh. Loved the packaging too!'},
+    {name:'Rahul P.', city:'Ahmedabad', rating:4, text:'Khakhra quality is great. Delivery was quick.'},
+    {name:'Kajal T.', city:'Surat', rating:5, text:'Chorafali took me back to festivals at home. Must try!'}
+  ];
+
+  const faqs = [
+    {q:'Do you offer free delivery?', a:'Yes, we offer free delivery on qualifying orders within serviceable areas.'},
+    {q:'How fresh are the snacks?', a:'Everything is made in small batches for optimal freshness and hygienic handling.'},
+    {q:'What payment methods do you accept?', a:'UPI only for now. Pay using the UPI button or QR and upload your screenshot.'},
+    {q:'What is the delivery time?', a:'Typically 1–3 days depending on your city and product availability.'},
+  ];
+
   /********** STATE **********/
   let cart = [];
   let currentFilter = 'all';
   let uploadedScreenshotFile = null;
   let uploadedScreenshotURL  = '';  // if backend returns URL
   let ocrDetectedAmount = null;
+  let currentStars = 5;
 
   /********** HELPERS **********/
   const $ = (id)=>document.getElementById(id);
@@ -300,8 +450,8 @@
     $('cart-total-block').classList.remove('hidden');
     $('checkout-form').classList.remove('hidden');
 
-    // refresh UPI link with exact amount
-    attachPaymentListeners(); // ensures PayUPI & screenshot handlers exist
+    // refresh UPI link with exact amount & bind screenshot input
+    attachPaymentListeners();
 
     // render upsell every time cart changes
     renderUpsell();
@@ -309,7 +459,7 @@
 
   /********** UPI **********/
   function buildUpiLink(amount){
-    const pa = encodeURIComponent('9978113276@okbizaxis'); // payee UPI
+    const pa = encodeURIComponent(UPI_VPA);
     const pn = encodeURIComponent(SHOP_NAME);
     const tn = encodeURIComponent('Papadsale Order');
     const am = encodeURIComponent(amount.toFixed(2));
@@ -388,7 +538,7 @@
     return Math.max(...candidates);
   }
 
-  /********** WHATSApp **********/
+  /********** WHATSAPP **********/
   function buildWhatsAppText(includeScreenshotURL){
     let total = cartTotal();
     let lines = '';
@@ -515,10 +665,114 @@
     toast(`${p.name} added`);
   }
 
+  /********** REVIEWS RENDER/FORM **********/
+  function getStoredReviews(){
+    const raw = localStorage.getItem('papadsale_reviews');
+    let arr = raw ? JSON.parse(raw) : [];
+    if (!localStorage.getItem('papadsale_seeded')){
+      arr = [...seedReviews, ...arr];
+      localStorage.setItem('papadsale_seeded','1');
+      localStorage.setItem('papadsale_reviews', JSON.stringify(arr));
+    }
+    return arr;
+  }
+  function setStoredReviews(list){
+    localStorage.setItem('papadsale_reviews', JSON.stringify(list));
+  }
+  function renderReviews(){
+    const wrap = $('reviews-list');
+    const list = getStoredReviews();
+    if (!list.length){ wrap.innerHTML = '<p class="text-center text-gray-500 col-span-full">No reviews yet. Be the first to review!</p>'; return; }
+    wrap.innerHTML = list.slice(0,12).map(r=>{
+      const stars = '★'.repeat(r.rating) + '☆'.repeat(5-r.rating);
+      return `
+        <div class="bg-white rounded-2xl p-5 soft-shadow">
+          <div class="flex items-center justify-between">
+            <p class="font-semibold">${r.name}${r.city?` • <span class='text-gray-500 text-sm'>${r.city}</span>`:''}</p>
+            <p class="text-yellow-500">${stars}</p>
+          </div>
+          <p class="text-gray-700 mt-2 text-sm">${r.text}</p>
+        </div>
+      `;
+    }).join('');
+  }
+  function wireStars(){
+    const box = $('rev-stars');
+    if (!box) return;
+    box.querySelectorAll('.star').forEach(st=>{
+      st.addEventListener('mouseenter',()=>paintStars(+st.dataset.v));
+      st.addEventListener('click',()=>{ currentStars = +st.dataset.v; paintStars(currentStars); });
+    });
+    box.addEventListener('mouseleave',()=>paintStars(currentStars));
+    paintStars(currentStars);
+  }
+  function paintStars(n){
+    const box = $('rev-stars');
+    box.querySelectorAll('.star').forEach(st=> st.classList.toggle('on', +st.dataset.v <= n));
+  }
+  function submitReview(){
+    const name = $('rev-name').value.trim();
+    const city = $('rev-city').value.trim();
+    const text = $('rev-text').value.trim();
+    if (!name || !text){ alert('Please enter your name and review.'); return; }
+    const list = getStoredReviews();
+    list.unshift({name, city, rating: currentStars, text});
+    setStoredReviews(list);
+    $('rev-name').value=''; $('rev-city').value=''; $('rev-text').value='';
+    renderReviews();
+    toast('Thank you for your review!');
+  }
+
+  /********** FAQ **********/
+  function renderFAQ(){
+    const root = $('faq-acc');
+    root.innerHTML = faqs.map((f,i)=>`
+      <div class="bg-white rounded-xl border">
+        <button class="w-full text-left px-5 py-4 flex justify-between items-center" onclick="toggleFaq(${i})">
+          <span class="font-medium">${f.q}</span>
+          <span id="faq-ico-${i}" class="text-xl">+</span>
+        </button>
+        <div id="faq-body-${i}" class="hidden px-5 pb-5 text-gray-700">${f.a}</div>
+      </div>
+    `).join('');
+  }
+  function toggleFaq(i){
+    const body = $('faq-body-'+i);
+    const ico = $('faq-ico-'+i);
+    body.classList.toggle('hidden');
+    ico.textContent = body.classList.contains('hidden') ? '+' : '–';
+  }
+
+  /********** COUNTER ANIMATION **********/
+  function animateCounters(){
+    const els = document.querySelectorAll('.counter');
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          const el = entry.target;
+          const target = +el.dataset.target;
+          let current = 0;
+          const step = Math.max(1, Math.floor(target/120));
+          const iv = setInterval(()=>{
+            current += step;
+            if (current >= target){ current = target; clearInterval(iv); }
+            el.textContent = current.toLocaleString('en-IN');
+          }, 16);
+          io.unobserve(el);
+        }
+      });
+    }, {threshold:0.3});
+    els.forEach(el=>io.observe(el));
+  }
+
   /********** INIT **********/
   document.addEventListener('DOMContentLoaded', ()=>{
     renderProducts();
-    updateCartUI();        // draws cart, attaches pay/screenshot listeners, and upsell
+    renderReviews();
+    wireStars();
+    renderFAQ();
+    animateCounters();
+    updateCartUI(); // draws cart, attaches pay/screenshot listeners, and upsell
   });
 
   // Close drawer or modal on outside click
