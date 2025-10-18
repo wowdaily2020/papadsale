@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PapadSale - Gujarati Swad, Ghar-ghar Tak!</title>
+    <meta name="description" content="Fresh homemade Gujarati snacks delivered to your doorstep. Order authentic papad, mathiya, khakhra and more with free delivery." />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+    <style>
+        body { box-sizing: border-box; }
+        .font-baloo { font-family: 'Baloo 2', cursive; }
+        .font-poppins { font-family: 'Poppins', sans-serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+        .font-lato { font-family: 'Lato', sans-serif; }
+        .bg-cream { background-color: #FEF7ED; }
+        .bg-saffron { background-color: #FF6A00; }
+        .text-saffron { color: #FF6A00; }
+        .border-saffron { border-color: #FF6A00; }
+        .gujarati-pattern {
+            background-image:
+                radial-gradient(circle at 25px 25px, rgba(255,106,0,0.08) 2px, transparent 2px),
+                radial-gradient(circle at 75px 75px, rgba(255,140,0,0.06) 2px, transparent 2px);
+            background-size: 100px 100px, 150px 150px;
+        }
+        .soft-shadow { box-shadow: 0 8px 32px rgba(255,106,0,0.12); }
+        .product-card { transition: all .3s ease; }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(255,106,0,0.2); }
+        .weight-toggle { transition: all .2s ease; }
+        .weight-toggle.active { background:#FF6A00; color:#fff; border-color:#FF6A00; transform: scale(1.02); }
+        .weight-toggle.active span { color:#fff !important; }
+        .counter-animation { opacity:0; transform: translateY(30px); transition: all .8s ease; }
+        .counter-animation.animate { opacity:1; transform: translateY(0); }
+        .floating-whatsapp { position: fixed; bottom: 20px; right: 20px; z-index: 1000; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%,20%,50%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-10px)} 60%{transform:translateY(-5px)} }
+        .cart-drawer { transform: translateX(100%); transition: transform .3s ease-in-out; }
+        .cart-drawer.open { transform: translateX(0); }
+        .testimonial-card { transition: all .3s ease; }
+        .testimonial-card:hover { transform: translateY(-2px); }
+        .fade-in { opacity: 0; transform: translateY(20px); transition: all .6s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,.5); z-index:1000; }
+        .modal.show { display:flex; align-items:center; justify-content:center; }
+        @media (max-width:768px){ .badge-container{ position:static; transform:none; padding:1rem; } }
+    </style>
+</head>
+<body class="bg-cream font-inter">
+    <!-- Header -->
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden">
+                        <img src="assets/logo.png" alt="PapadSale Logo" class="w-8 h-8 object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                        <span class="text-saffron font-bold text-lg hidden">P</span>
+                    </div>
+                    <div>
+                        <h1 class="font-baloo font-bold text-xl text-saffron">PapadSale</h1>
+                        <p class="text-xs text-gray-600 font-inter">Gujarati Swad, Ghar-ghar Tak!</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <button onclick="toggleCart()" class="relative bg-saffron text-white px-4 py-2 rounded-lg font-semibold hover:bg-orange-600 transition-colors">
+                        🛒 કાર્ટ
+                        <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">0</span>
+                    </button>
+                    <div class="text-right">
+                        <p class="text-sm text-gray-600">કુલ</p>
+                        <p id="cart-total-header" class="font-bold text-saffron">₹0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="gujarati-pattern py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="font-baloo font-bold text-4xl md:text-6xl text-saffron mb-4">સ્વાદિષ્ટ ગુજરાતી નાસ્તો</h2>
+            <p class="font-inter text-lg md:text-xl text-gray-700 mb-8 max-w-2xl mx-auto">
+                Fresh homemade Gujarati snacks delivered to your doorstep. Experience authentic flavors with every bite!
+            </p>
+            <div class="flex flex-wrap justify-center gap-4 mb-8">
+                <div class="bg-white px-6 py-3 rounded-full soft-shadow">
+                    <span class="text-2xl">🏠</span><span class="ml-2 font-semibold">Homemade Quality</span>
+                </div>
+                <div class="bg-white px-6 py-3 rounded-full soft-shadow">
+                    <span class="text-2xl">🚚</span><span class="ml-2 font-semibold">Free Delivery</span>
+                </div>
+                <div class="bg-white px-6 py-3 rounded-full soft-shadow">
+                    <span class="text-2xl">⭐</span><span class="ml-2 font-semibold">Premium Quality</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Categories -->
+    <section class="py-8 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap justify-center gap-4">
+                <button onclick="filterProducts('all')" class="filter-btn bg-saffron text-white px-6 py-2 rounded-full font-semibold transition-colors">બધું</button>
+                <button onclick="filterProducts('papad')" class="filter-btn bg-white text-gray-700 px-6 py-2 rounded-full font-semibold transition-colors border">પાપડ</button>
+                <button onclick="filterProducts('mathiya')" class="filter-btn bg-white text-gray-700 px-6 py-2 rounded-full font-semibold transition-colors border">મઠિયા</button>
+                <button onclick="filterProducts('khakhra')" class="filter-btn bg-white text-gray-700 px-6 py-2 rounded-full font-semibold transition-colors border">ખાખરા</button>
+                <button onclick="filterProducts('snacks')" class="filter-btn bg-white text-gray-700 px-6 py-2 rounded-full font-semibold transition-colors border">નાસ્તો</button>
+                <button onclick="filterProducts('sweets')" class="filter-btn bg-white text-gray-700 px-6 py-2 rounded-full font-semibold transition-colors border">મિઠાઈ</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h3 class="font-baloo font-bold text-3xl text-gray-800 mb-4">અમારા પ્રોડક્ટ્સ</h3>
+                <p class="text-gray-600 font-inter">Fresh, authentic Gujarati snacks made with love</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="products-grid"></div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h3 class="font-baloo font-bold text-3xl text-gray-800 mb-6">અમારા વિશે</h3>
+                <p class="text-lg text-gray-600 mb-8 leading-relaxed">
+                    PapadSale is your trusted source for authentic Gujarati snacks. We've been serving families across Gujarat with traditional homemade flavors for over 5 years. Our commitment to quality and authentic taste has made us a household name.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-saffron rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-2xl text-white">🏠</span>
+                        </div>
+                        <h4 class="font-semibold text-lg mb-2">Homemade Quality</h4>
+                        <p class="text-gray-600">Made with traditional recipes passed down through generations</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-saffron rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-2xl text-white">🌿</span>
+                        </div>
+                        <h4 class="font-semibold text-lg mb-2">Fresh Ingredients</h4>
+                        <p class="text-gray-600">Only the finest and freshest ingredients sourced locally</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="w-16 h-16 bg-saffron rounded-full flex items-center justify-center mx-auto mb-4">
+                            <span class="text-2xl text-white">🚚</span>
+                        </div>
+                        <h4 class="font-semibold text-lg mb-2">Fast Delivery</h4>
+                        <p class="text-gray-600">Quick and reliable delivery to your doorstep</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="counter-animation">
+                    <div class="text-4xl font-bold text-saffron mb-2" data-count="500">0</div>
+                    <p class="text-gray-600">Happy Customers</p>
+                </div>
+                <div class="counter-animation">
+                    <div class="text-4xl font-bold text-saffron mb-2" data-count="11">0</div>
+                    <p class="text-gray-600">Products</p>
+                </div>
+                <div class="counter-animation">
+                    <div class="text-4xl font-bold text-saffron mb-2" data-count="100">0</div>
+                    <p class="text-gray-600">Orders Daily</p>
+                </div>
+                <div class="counter-animation">
+                    <div class="text-4xl font-bold text-saffron mb-2" data-count="5">0</div>
+                    <p class="text-gray-600">Years Experience</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="py-16 gujarati-pattern">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h3 class="font-baloo font-bold text-3xl text-gray-800 mb-4">ગ્રાહકોના અભિપ્રાય</h3>
+                <p class="text-gray-600 font-inter">What our customers say about us</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="testimonial-card bg-white p-6 rounded-2xl soft-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-saffron rounded-full flex items-center justify-center text-white font-bold">P</div>
+                        <div class="ml-3">
+                            <h4 class="font-semibold">Priya Patel</h4>
+                            <div class="text-yellow-400">⭐⭐⭐⭐⭐</div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"Best mathiya I've ever tasted! Reminds me of my grandmother's cooking. Fresh and crispy every time."</p>
+                </div>
+
+                <div class="testimonial-card bg-white p-6 rounded-2xl soft-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-saffron rounded-full flex items-center justify-center text-white font-bold">R</div>
+                        <div class="ml-3">
+                            <h4 class="font-semibold">Rajesh Shah</h4>
+                            <div class="text-yellow-400">⭐⭐⭐⭐⭐</div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"Excellent quality and fast delivery. The khakhra is perfectly crispy and the flavors are authentic."</p>
+                </div>
+
+                <div class="testimonial-card bg-white p-6 rounded-2xl soft-shadow">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-saffron rounded-full flex items-center justify-center text-white font-bold">M</div>
+                        <div class="ml-3">
+                            <h4 class="font-semibold">Meera Desai</h4>
+                            <div class="text-yellow-400">⭐⭐⭐⭐⭐</div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"Amazing variety and taste! My family loves all the products. Highly recommend PapadSale."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-12">
+                    <h3 class="font-baloo font-bold text-3xl text-gray-800 mb-4">સંપર્ક કરો</h3>
+                    <p class="text-gray-600 font-inter">Get in touch with us for orders and inquiries</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="space-y-6">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-saffron rounded-full flex items-center justify-center">
+                                <span class="text-white text-xl">📱</span>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">WhatsApp</h4>
+                                <p class="text-gray-600">+91 99781 13276</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-saffron rounded-full flex items-center justify-center">
+                                <span class="text-white text-xl">📧</span>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Email</h4>
+                                <p class="text-gray-600">info@papadsale.com</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-saffron rounded-full flex items-center justify-center">
+                                <span class="text-white text-xl">📍</span>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Location</h4>
+                                <p class="text-gray-600">Ahmedabad, Gujarat, India</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-saffron rounded-full flex items-center justify-center">
+                                <span class="text-white text-xl">🕒</span>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold">Working Hours</h4>
+                                <p class="text-gray-600">Mon - Sat: 9 AM - 8 PM</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-6 rounded-2xl">
+                        <h4 class="font-semibold text-lg mb-4">Send us a message</h4>
+                        <form onsubmit="sendMessage(event)" class="space-y-4">
+                            <input type="text" placeholder="Your Name" required class="w-full p-3 border border-gray-300 rounded-lg focus:border-saffron focus:outline-none" />
+                            <input type="tel" placeholder="Phone Number" required class="w-full p-3 border border-gray-300 rounded-lg focus:border-saffron focus:outline-none" />
+                            <textarea placeholder="Your Message" rows="4" required class="w-full p-3 border border-gray-300 rounded-lg focus:border-saffron focus:outline-none resize-none"></textarea>
+                            <button type="submit" class="w-full bg-saffron text-white py-3 rounded-lg font-semibold hover:bg-orange-600 transition-colors">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Drawer -->
+    <div id="cart-drawer" class="cart-drawer fixed top-0 right-0 h-full w-full md:w-96 bg-white shadow-2xl z-50 overflow-y-auto">
+        <div class="p-4 md:p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl md:text-2xl font-baloo font-bold text-gray-800">Your Cart</h3>
+                <button onclick="toggleCart()" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+            </div>
+
+            <div id="cart-items" class="space-y-4 mb-6">
+                <p class="text-gray-500 text-center py-8">Your cart is empty</p>
+            </div>
+
+            <!-- Upsell Section -->
+            <div id="upsell-section" class="mt-4 hidden">
+                <h4 class="font-semibold mb-2">You may also like</h4>
+                <div id="upsell-items" class="space-y-3"></div>
+            </div>
+
+            <div id="cart-total-block" class="border-t pt-4 mb-6 hidden">
+                <div class="flex justify-between items-center text-lg font-bold">
+                    <span>Total:</span>
+                    <span id="total-amount">₹0</span>
+                </div>
+            </div>
+
+            <div id="checkout-form" class="hidden">
+                <h4 class="text-lg font-baloo font-bold mb-4">Delivery Details</h4>
+                <div class="space-y-4">
+                    <input type="text" id="customer-name" placeholder="Full Name *" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent" />
+                    <input type="tel" id="customer-mobile" placeholder="Mobile Number *" required pattern="[0-9]{10}" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent" />
+                    <textarea id="customer-address" placeholder="Full Address *" required rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent"></textarea>
+                    <input type="text" id="customer-pincode" placeholder="Pincode *" required pattern="[0-9]{6}" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent" />
+                    <input type="text" id="customer-landmark" placeholder="Landmark (Optional)" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent" />
+                    <textarea id="order-notes" placeholder="Notes (Optional)" rows="2" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent"></textarea>
+                    <select id="payment-mode" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-saffron focus:border-transparent">
+                        <option value="UPI">UPI Payment</option>
+                        <option value="COD">Cash on Delivery</option>
+                    </select>
+                </div>
+
+                <div class="space-y-3 mt-6">
+                    <button onclick="updateCart()" class="w-full bg-gray-500 hover:bg-gray-600 text-white py-2 rounded-lg font-medium transition-colors">🛒 Update Cart (Add More Items)</button>
+                    <button onclick="processPayment()" class="w-full bg-saffron hover:bg-orange-600 text-white py-4 rounded-lg font-bold text-lg transition-colors">💳 Pay Now & Place Order</button>
+                    <button onclick="placeOrder()" class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg font-medium transition-colors">📱 Order via WhatsApp</button>
+                </div>
+
+                <!-- Payment Info -->
+                <div class="mt-6 p-4 bg-yellow-50 rounded-lg border border-yellow-200 text-center">
+                    <h5 class="font-bold text-gray-800 mb-3">💳 Pay Papadsale via UPI</h5>
+                    <div class="text-center mb-3">
+                        <!-- Put your static QR at assets/qr.png -->
+                        <img src="assets/qr.png" alt="UPI QR Code" class="w-32 h-32 mx-auto rounded-lg" />
+                    </div>
+                    <a href="upi://pay?pa=9978113276@okbizaxis&pn=Papadsale&cu=INR" target="_blank" class="inline-block bg-saffron text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">Pay Now</a>
+                    <p class="text-sm text-gray-600 mt-2">Share payment screenshot on WhatsApp for faster dispatch</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/919978113276" target="_blank" rel="noopener noreferrer" class="floating-whatsapp">
+        <div class="bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition-colors">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884" />
+            </svg>
+        </div>
+    </a>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden">
+                            <img src="assets/logo.png" alt="PapadSale Logo" class="w-8 h-8 object-contain" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+                            <span class="text-saffron font-bold text-lg hidden">P</span>
+                        </div>
+                        <div><h3 class="font-baloo font-bold text-xl text-saffron">PapadSale</h3></div>
+                    </div>
+                    <p class="text-gray-300 mb-4">Authentic Gujarati snacks delivered fresh to your doorstep. Taste the tradition!</p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="w-8 h-8 bg-saffron rounded-full flex items-center justify-center hover:bg-orange-600 transition-colors">📘</a>
+                        <a href="https://instagram.com/papadsale.live" target="_blank" rel="noopener noreferrer" class="w-8 h-8 bg-saffron rounded-full flex items-center justify-center hover:bg-orange-600 transition-colors">📷</a>
+                        <a href="https://wa.me/919978113276" target="_blank" rel="noopener noreferrer" class="w-8 h-8 bg-saffron rounded-full flex items-center justify-center hover:bg-orange-600 transition-colors">💬</a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#" class="hover:text-saffron transition-colors">Home</a></li>
+                        <li><a href="#products" class="hover:text-saffron transition-colors">Products</a></li>
+                        <li><a href="#about" class="hover:text-saffron transition-colors">About Us</a></li>
+                        <li><a href="#contact" class="hover:text-saffron transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Categories</h4>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><a href="#" class="hover:text-saffron transition-colors">Papad</a></li>
+                        <li><a href="#" class="hover:text-saffron transition-colors">Mathiya</a></li>
+                        <li><a href="#" class="hover:text-saffron transition-colors">Khakhra</a></li>
+                        <li><a href="#" class="hover:text-saffron transition-colors">Snacks</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold text-lg mb-4">Contact Info</h4>
+                    <div class="space-y-2 text-gray-300">
+                        <p>📱 +91 99781 13276</p>
+                        <p>📧 info@papadsale.com</p>
+                        <p>📍 Ahmedabad, Gujarat</p>
+                        <p>🕒 Mon-Sat: 9 AM - 8 PM</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
+                <p>&copy; 2024 PapadSale. All rights reserved. Made with ❤️ for authentic Gujarati flavors.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Order Success Modal -->
+    <div id="success-modal" class="modal">
+        <div class="bg-white p-8 rounded-2xl max-w-md mx-4 text-center">
+            <div class="text-6xl mb-4">✅</div>
+            <h3 class="font-bold text-xl mb-2">Order Placed Successfully!</h3>
+            <p class="text-gray-600 mb-6">We'll contact you shortly on WhatsApp to confirm your order.</p>
+            <button onclick="closeModal()" class="bg-saffron text-white px-6 py-2 rounded-lg hover:bg-orange-600 transition-colors">Continue Shopping</button>
+        </div>
+    </div>
+
+    <!-- ====== App Script (Products, Cart, WhatsApp & UPI) ====== -->
+    <script>
+    /* ---------- Data ---------- */
+    const products = [
+        { id:1, name:"ગ્રીન ચીલી ખીચિયા પાપડ", nameEn:"Green Chili Khichiya Papad", price250:90, price500:180, image:"papad1.jpg", category:"papad" },
+        { id:2, name:"આસ્વાદ સાદા મઠિયા", nameEn:"Aswad Plain Mathiya", price250:100, price500:200, image:"mathiya1.jpg", category:"mathiya", brand:"Aaswad" },
+        { id:3, name:"આસ્વાદ લીલા મરચા મઠિયા", nameEn:"Aswad Green Chili Mathiya", price250:110, price500:220, image:"mathiya1.jpg", category:"mathiya", brand:"Aaswad" },
+        { id:4, name:"આસ્વાદ ચોળાફળી", nameEn:"Aswad Cholafali", price250:100, price500:200, image:"chorafali1.jpg", category:"snacks", brand:"Aaswad", badge:"Crispy" },
+        { id:5, name:"યશ લીલા મરચા મઠિયા", nameEn:"Yash Green Chili Mathiya", price250:150, price500:300, image:"combomathiyachorafali.png", category:"mathiya", brand:"Yash" },
+        { id:6, name:"યશ સાદા મઠિયા", nameEn:"Yash Plain Mathiya", price250:140, price500:280, image:"combomathiyachorafali.png", category:"mathiya", brand:"Yash" },
+        { id:7, name:"યશ ચોળાફળી", nameEn:"Yash Cholafali", price250:140, price500:280, image:"chorafali1.jpg", category:"snacks", brand:"Yash", badge:"Crispy" },
+        { id:8, name:"મેથી / મસાલા ખાખરા", nameEn:"Methi / Masala Khakhra", price250:100, price500:200, image:"khakhra1.jpg", category:"khakhra", badge:"Bestseller" },
+        { id:9, name:"મઠ / જુવાર / રાગી ખાખરા", nameEn:"Math / Juwar / Ragi Khakhra", price250:135, price500:270, image:"khakhra1.jpg", category:"khakhra", badge:"Bestseller" },
+        { id:10, name:"બિસ્કિટ/નાનખટાઈ", nameEn:"Biscuit/Nankhatai", price250:70, price500:140, image:"combomathiyachorafali.png", category:"sweets" },
+        { id:11, name:"ડ્રાય કચોરી", nameEn:"Dry Kachori", price250:70, price500:140, image:"chorafali1.jpg", category:"snacks" }
+    ];
+    let cart = [];
+    let currentFilter = 'all';
+
+    /* ---------- UI: Products ---------- */
+    function renderProducts() {
+        const grid = document.getElementById('products-grid');
+        const filtered = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter);
+        grid.innerHTML = filtered.map(p => `
+            <div class="product-card bg-white rounded-2xl p-6 soft-shadow">
+                <div class="text-center mb-4 relative">
+                    <div class="relative w-32 h-32 mx-auto mb-3 rounded-lg overflow-hidden bg-gray-100">
+                        <img loading="lazy" decoding="async" src="assets/${p.image}" alt="PapadSale - ${p.nameEn}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="w-full h-full bg-saffron text-white text-4xl flex items-center justify-center hidden">📦</div>
+                    </div>
+                    ${p.badge ? `<span class="absolute top-0 right-0 bg-yellow-600 text-white px-2 py-0.5 rounded-full text-[10px] font-medium">${p.badge}</span>` : ''}
+                    <h3 class="font-baloo font-semibold text-lg text-gray-800 mb-1">${p.name}</h3>
+                    <p class="text-sm text-gray-600 font-inter">${p.nameEn}</p>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex justify-center space-x-2">
+                        <button class="weight-toggle px-4 py-2 border-2 border-gray-300 rounded-lg text-sm font-medium" onclick="selectWeight(${p.id}, 250)" id="weight-250-${p.id}">250g - ₹${p.price250}</button>
+                        <button class="weight-toggle active px-4 py-2 border-2 border-saffron rounded-lg text-sm font-medium" onclick="selectWeight(${p.id}, 500)" id="weight-500-${p.id}">500g - ₹${p.price500}</button>
+                    </div>
+                    <div class="flex items-center justify-center space-x-3">
+                        <button class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-lg font-bold" onclick="updateQuantity(${p.id}, -1)">-</button>
+                        <span class="font-semibold text-lg w-8 text-center" id="qty-${p.id}">1</span>
+                        <button class="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-lg font-bold" onclick="updateQuantity(${p.id}, 1)">+</button>
+                    </div>
+                    <button class="w-full bg-saffron text-white py-3 rounded-xl font-semibold hover:bg-orange-600 transition-colors" onclick="addToCart(${p.id})">કાર્ટમાં ઉમેરો</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function selectWeight(productId, weight) {
+        document.getElementById(`weight-250-${productId}`).classList.remove('active');
+        document.getElementById(`weight-500-${productId}`).classList.remove('active');
+        document.getElementById(`weight-${weight}-${productId}`).classList.add('active');
+    }
+
+    function updateQuantity(productId, change) {
+        const el = document.getElementById(`qty-${productId}`);
+        let q = parseInt(el.textContent)||1; q = Math.max(1, q + change);
+        el.textContent = q;
+    }
+
+    /* ---------- Cart ---------- */
+    function addToCart(productId) {
+        const p = products.find(x => x.id === productId);
+        const qty = parseInt(document.getElementById(`qty-${productId}`).textContent)||1;
+        const weight = document.getElementById(`weight-500-${productId}`).classList.contains('active') ? 500 : 250;
+        const price = weight === 500 ? p.price500 : p.price250;
+        const existing = cart.find(i => i.id === productId && i.weight === weight);
+        if (existing) existing.quantity += qty;
+        else cart.push({ id:p.id, name:p.name, nameEn:p.nameEn, price, weight, quantity:qty, image:p.image });
+        updateCartUI();
+        document.getElementById(`qty-${productId}`).textContent = '1';
+        showToast('પ્રોડક્ટ કાર્ટમાં ઉમેરાઈ!');
+    }
+
+    function updateCartUI() {
+        const cartCount = cart.reduce((s,i)=>s+i.quantity,0);
+        const cartTotal = cart.reduce((s,i)=>s+i.price*i.quantity,0);
+        document.getElementById('cart-count').textContent = cartCount;
+        document.getElementById('cart-total-header').textContent = `₹${cartTotal}`;
+
+        const cartItems = document.getElementById('cart-items');
+        if (cart.length === 0) {
+            cartItems.innerHTML = '<p class="text-gray-500 text-center py-8">Your cart is empty</p>';
+            document.getElementById('cart-total-block').classList.add('hidden');
+            document.getElementById('checkout-form').classList.add('hidden');
+        } else {
+            let total = 0;
+            cartItems.innerHTML = cart.map((item, idx)=>{
+                const sub = item.price * item.quantity; total += sub;
+                return `<div class="flex items-center justify-between p-4 border-b">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                            <img src="assets/${item.image}" alt="${item.nameEn}" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="w-full h-full bg-saffron text-white text-lg flex items-center justify-center hidden">📦</div>
+                        </div>
+                        <div><h4 class="font-semibold text-sm">${item.name}</h4><p class="text-xs text-gray-600">${item.weight}g - ₹${item.price}</p></div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="changeCartQuantity(${item.id}, ${item.weight}, -1)" class="w-6 h-6 bg-gray-200 rounded-full text-sm">-</button>
+                        <span class="w-8 text-center text-sm">${item.quantity}</span>
+                        <button onclick="changeCartQuantity(${item.id}, ${item.weight}, 1)" class="w-6 h-6 bg-gray-200 rounded-full text-sm">+</button>
+                        <button onclick="removeFromCart(${idx})" class="text-red-500 ml-2">🗑️</button>
+                    </div>
+                </div>`;
+            }).join('');
+            document.getElementById('total-amount').textContent = `₹${total}`;
+            document.getElementById('cart-total-block').classList.remove('hidden');
+            document.getElementById('checkout-form').classList.remove('hidden');
+        }
+        renderUpsell();
+    }
+
+    function changeCartQuantity(productId, weight, change) {
+        const item = cart.find(i => i.id === productId && i.weight === weight);
+        if (!item) return;
+        item.quantity = Math.max(1, item.quantity + change);
+        updateCartUI();
+    }
+
+    function removeFromCart(index) { cart.splice(index,1); updateCartUI(); }
+    function toggleCart() { document.getElementById('cart-drawer').classList.toggle('open'); }
+    function updateCart(){ toggleCart(); } /* keeps your existing button behavior, no visual change */
+
+    function filterProducts(category) {
+        currentFilter = category; renderProducts();
+        document.querySelectorAll('.filter-btn').forEach(btn => { btn.classList.remove('bg-saffron','text-white'); btn.classList.add('bg-white','text-gray-700'); });
+        if (window.event && window.event.target) { window.event.target.classList.remove('bg-white','text-gray-700'); window.event.target.classList.add('bg-saffron','text-white'); }
+    }
+
+    function showToast(message) {
+        const t = document.createElement('div');
+        t.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50';
+        t.textContent = message; document.body.appendChild(t); setTimeout(()=>t.remove(), 2500);
+    }
+
+    /* ---------- Upsell ---------- */
+    function getUpsellItems() {
+        const inCart = new Set(cart.map(i => i.id + ':' + i.weight));
+        const pool = products.filter(p => ![...inCart].some(k => k.startsWith(p.id+':')));
+        const scored = pool.map(p => ({p, score: (p.badge && /bestseller|classic/i.test(p.badge) ? 2 : 0)})).sort((a,b)=>b.score-a.score).slice(0,3).map(x=>x.p);
+        return scored;
+    }
+    function renderUpsell() {
+        const section = document.getElementById('upsell-section');
+        const list = document.getElementById('upsell-items');
+        if (!section || !list) return;
+        const recs = getUpsellItems();
+        if (cart.length === 0 || recs.length === 0) { section.classList.add('hidden'); list.innerHTML=''; return; }
+        section.classList.remove('hidden');
+        list.innerHTML = recs.map(p => `
+            <div class="flex items-center justify-between p-3 bg-cream rounded-lg">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 rounded-lg overflow-hidden bg-gray-100">
+                        <img loading="lazy" src="assets/${p.image}" alt="PapadSale - ${p.name}" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <p class="font-medium text-sm">${p.name}</p>
+                        <p class="text-xs text-gray-600">₹${p.price500} • 500g</p>
+                    </div>
+                </div>
+                <button class="text-white bg-saffron px-3 py-1.5 rounded-lg text-sm" onclick="addQuickUpsell(${p.id})">Add</button>
+            </div>
+        `).join('');
+    }
+    function addQuickUpsell(id) {
+        const p = products.find(x=>x.id===id);
+        if (!p) return;
+        const existing = cart.find(i => i.id===id && i.weight===500);
+        if (existing) existing.quantity += 1; else cart.push({ id:p.id, name:p.name, nameEn:p.nameEn, price:p.price500, weight:500, quantity:1, image:p.image });
+        updateCartUI();
+        showToast(p.name + ' added to cart');
+    }
+
+    /* ---------- WhatsApp Order ---------- */
+    const WHATSAPP_NUM = '919978113276';
+    function buildWhatsappMessage() {
+        let total = 0;
+        let lines = '';
+        cart.forEach(it => { const s = it.price * it.quantity; total += s; lines += `• ${it.name} (${it.weight}g) × ${it.quantity} = ₹${s}\n`; });
+        const name = (document.getElementById('customer-name')||{}).value || '';
+        const mobile = (document.getElementById('customer-mobile')||{}).value || '';
+        const address = (document.getElementById('customer-address')||{}).value || '';
+        const pincode = (document.getElementById('customer-pincode')||{}).value || '';
+        const landmark = (document.getElementById('customer-landmark')||{}).value || '';
+        const notes = (document.getElementById('order-notes')||{}).value || '';
+        let msg = `🛒 *NEW ORDER - PAPADSALE*%0A%0A`;
+        if (name || mobile || address) {
+            msg += `👤 *Customer Details*%0A`;
+            if (name) msg += `Name: ${encodeURIComponent(name)}%0A`;
+            if (mobile) msg += `Mobile: ${encodeURIComponent(mobile)}%0A`;
+            if (address) msg += `Address: ${encodeURIComponent(address)}%0A`;
+            if (pincode) msg += `Pincode: ${encodeURIComponent(pincode)}%0A`;
+            if (landmark) msg += `Landmark: ${encodeURIComponent(landmark)}%0A`;
+            msg += `%0A`;
+        }
+        msg += `📦 *Items:*%0A${encodeURIComponent(lines).replace(/%250A/g,'%0A')}`;
+        msg += `%0A💰 *Total:* ₹${total}%0A`;
+        if (notes) msg += `%0A📝 Notes: ${encodeURIComponent(notes)}%0A`;
+        msg += `%0A🙏 Thank you!`;
+        return `https://wa.me/${WHATSAPP_NUM}?text=${msg}`;
+    }
+    function placeOrder() {
+        try {
+            const url = buildWhatsappMessage();
+            window.open(url, '_blank');
+            if (document.getElementById('success-modal')) document.getElementById('success-modal').classList.add('show');
+            cart = []; updateCartUI(); toggleCart();
+        } catch(e) { alert('Unable to open WhatsApp. Please try again.'); }
+    }
+
+    /* ---------- UPI Payment ---------- */
+    const UPI_URL = 'upi://pay?pa=9978113276@okbizaxis&pn=Papadsale&cu=INR';
+    function processPayment() {
+        const need = ['customer-name','customer-mobile','customer-address','customer-pincode'];
+        for (const id of need) { const el = document.getElementById(id); if (el && !el.value.trim()) { alert('Please fill in all required fields'); return; } }
+        const mob = (document.getElementById('customer-mobile')||{}).value||'';
+        const pin = (document.getElementById('customer-pincode')||{}).value||'';
+        if (mob && !/^[0-9]{10}$/.test(mob)) { alert('Enter a valid 10-digit mobile number'); return; }
+        if (pin && !/^[0-9]{6}$/.test(pin)) { alert('Enter a valid 6-digit pincode'); return; }
+        window.open(UPI_URL, '_blank');
+        // QR is displayed in the Payment Info box (assets/qr.png)
+    }
+
+    /* ---------- Contact Form to WhatsApp ---------- */
+    function sendMessage(event) {
+        event.preventDefault();
+        const form = event.target;
+        const name = form.querySelector('input[type="text"]').value;
+        const phone = form.querySelector('input[type="tel"]').value;
+        const message = form.querySelector('textarea').value;
+        const wa = `https://wa.me/${WHATSAPP_NUM}?text=${encodeURIComponent(`નમસ્તે! મારું નામ ${name} છે.\nફોન: ${phone}\nમેસેજ: ${message}`)}`;
+        window.open(wa, '_blank');
+        form.reset();
+        showToast('Message sent successfully!');
+    }
+
+    function closeModal() { document.getElementById('success-modal').classList.remove('show'); }
+
+    /* ---------- Animations & Init ---------- */
+    function animateCounters() {
+        const counters = document.querySelectorAll('[data-count]');
+        const obs = new IntersectionObserver((entries)=>{
+            entries.forEach(entry=>{
+                if (entry.isIntersecting) {
+                    const c = entry.target; const target = parseInt(c.getAttribute('data-count')); let cur=0; const inc = target/50;
+                    const upd = () => { if (cur < target) { cur += inc; c.textContent = Math.ceil(cur); requestAnimationFrame(upd);} else { c.textContent = target; } };
+                    upd(); c.parentElement.classList.add('animate'); obs.unobserve(c);
+                }
+            });
+        });
+        counters.forEach(c=>obs.observe(c));
+    }
+    function initFadeInAnimation() {
+        const els = document.querySelectorAll('.fade-in');
+        const obs = new IntersectionObserver((entries)=>{ entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); }); });
+        els.forEach(el=>obs.observe(el));
+    }
+    function initSmoothScrolling() {
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', function(e){
+                e.preventDefault();
+                const t=document.querySelector(this.getAttribute('href'));
+                if (t) t.scrollIntoView({behavior:'smooth', block:'start'});
+            });
+        });
+    }
+
+    // Close cart when clicking outside
+    document.addEventListener('click', function(event) {
+        const drawer = document.getElementById('cart-drawer');
+        const cartBtn = event.target.closest('button[onclick="toggleCart()"]');
+        if (!drawer.contains(event.target) && !cartBtn && drawer.classList.contains('open')) toggleCart();
+    });
+    // Close modal when clicking outside
+    document.addEventListener('click', function(event) {
+        const modal = document.getElementById('success-modal');
+        if (event.target === modal) closeModal();
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        renderProducts();
+        updateCartUI();
+        animateCounters();
+        initFadeInAnimation();
+        initSmoothScrolling();
+    });
+    </script>
+</body>
+</html>
